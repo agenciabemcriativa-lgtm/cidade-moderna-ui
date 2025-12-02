@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import brasaoIpubi from "@/assets/brasao-ipubi.png";
 
 const secretarias = [
   { label: "Administração", slug: "administracao" },
@@ -79,14 +80,12 @@ export function Header() {
     <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container flex items-center justify-between py-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3">
-          <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-black text-xl">PM</span>
-          </div>
-          <div className="hidden sm:block">
-            <h1 className="text-lg font-bold text-primary leading-tight">PREFEITURA MUNICIPAL</h1>
-            <p className="text-xs text-muted-foreground font-medium">Cidade Exemplo - Estado</p>
-          </div>
+        <Link to="/" className="flex items-center gap-2">
+          <img 
+            src={brasaoIpubi} 
+            alt="Brasão de Ipubi" 
+            className="h-14 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop Navigation */}
