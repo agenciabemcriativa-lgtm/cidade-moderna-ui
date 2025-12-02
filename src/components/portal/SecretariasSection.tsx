@@ -3,22 +3,27 @@ import {
   GraduationCap, 
   Heart, 
   Leaf, 
-  Scale, 
   Wallet,
   Users,
-  Truck
+  Truck,
+  Palette,
+  Tractor,
+  Trophy,
+  ShieldCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { Link } from "react-router-dom";
 const secretarias = [
   { icon: Building2, name: "Administração", slug: "administracao" },
+  { icon: ShieldCheck, name: "Controle Interno", slug: "controle-interno" },
+  { icon: Palette, name: "Cultura", slug: "cultura" },
+  { icon: Tractor, name: "Desenvolvimento Rural", slug: "desenvolvimento-rural" },
+  { icon: Users, name: "Desenvolvimento Social", slug: "desenvolvimento-social" },
   { icon: GraduationCap, name: "Educação", slug: "educacao" },
-  { icon: Heart, name: "Saúde", slug: "saude" },
-  { icon: Users, name: "Assistência Social", slug: "assistencia-social" },
+  { icon: Trophy, name: "Esporte", slug: "esporte" },
   { icon: Wallet, name: "Finanças", slug: "financas" },
-  { icon: Truck, name: "Obras e Infraestrutura", slug: "obras" },
-  { icon: Leaf, name: "Meio Ambiente", slug: "meio-ambiente" },
-  { icon: Scale, name: "Assuntos Jurídicos", slug: "juridico" },
+  { icon: Truck, name: "Obras e Urbanismo", slug: "obras-urbanismo" },
+  { icon: Heart, name: "Saúde", slug: "saude" },
 ];
 
 export function SecretariasSection() {
@@ -48,8 +53,8 @@ export function SecretariasSection() {
               <h3 className="font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                 {sec.name}
               </h3>
-              <Button variant="outline" size="sm" className="w-full">
-                Acessar Secretaria
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <Link to={`/secretaria/${sec.slug}`}>Acessar Secretaria</Link>
               </Button>
             </div>
           ))}
