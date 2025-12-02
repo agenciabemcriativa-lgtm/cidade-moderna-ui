@@ -56,14 +56,14 @@ export function HeroBanner() {
             <div className="absolute top-0 right-0 w-64 h-64 bg-highlight/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-foreground/5 rounded-full blur-2xl" />
             
-            <div className="relative z-10 max-w-3xl">
+            <div className="relative z-10 max-w-3xl mx-auto text-center">
               <span className="inline-block px-4 py-1 bg-highlight text-highlight-foreground text-xs font-bold uppercase tracking-wider rounded-full mb-4 animate-fade-in">
                 {slide.subtitle}
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-primary-foreground leading-tight mb-4 animate-slide-in">
                 {slide.title}
               </h2>
-              <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 max-w-2xl animate-fade-in" style={{ animationDelay: "200ms" }}>
+              <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 mx-auto animate-fade-in" style={{ animationDelay: "200ms" }}>
                 {slide.description}
               </p>
               <Button variant="hero" className="animate-scale-in" style={{ animationDelay: "400ms" }}>
