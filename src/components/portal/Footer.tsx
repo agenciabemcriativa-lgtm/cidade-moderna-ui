@@ -8,6 +8,7 @@ import {
   Mail,
   Clock
 } from "lucide-react";
+import brasaoIpubi from "@/assets/brasao-ipubi.png";
 
 const footerLinks = {
   institucional: [
@@ -49,12 +50,14 @@ export function Footer() {
           {/* Logo & Contact */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-14 h-14 rounded-full bg-primary-foreground flex items-center justify-center">
-                <span className="text-primary font-black text-xl">PM</span>
-              </div>
+              <img 
+                src={brasaoIpubi} 
+                alt="Brasão de Ipubi" 
+                className="h-16 w-auto object-contain"
+              />
               <div>
                 <h3 className="text-lg font-bold">PREFEITURA MUNICIPAL</h3>
-                <p className="text-sm text-primary-foreground/80">Cidade Exemplo - Estado</p>
+                <p className="text-sm text-primary-foreground/80">Ipubi - Pernambuco</p>
               </div>
             </div>
             <div className="space-y-3 text-sm">
