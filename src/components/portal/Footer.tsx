@@ -8,7 +8,7 @@ import {
   Mail,
   Clock
 } from "lucide-react";
-import brasaoIpubi from "@/assets/brasao-ipubi.png";
+import brasaoIpubiBranco from "@/assets/brasao-ipubi-branco.png";
 
 const footerLinks = {
   institucional: [
@@ -51,7 +51,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <img 
-                src={brasaoIpubi} 
+                src={brasaoIpubiBranco} 
                 alt="Brasão de Ipubi" 
                 className="h-16 w-auto object-contain"
               />
