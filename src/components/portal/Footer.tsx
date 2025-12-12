@@ -8,15 +8,16 @@ import {
   Mail,
   Clock
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import brasaoIpubiBranco from "@/assets/brasao-ipubi-branco.png";
 
 const footerLinks = {
   institucional: [
-    { label: "Sobre a Prefeitura", href: "#sobre" },
-    { label: "Prefeito e Vice", href: "#prefeito" },
-    { label: "Secretarias", href: "#secretarias" },
-    { label: "Legislação Municipal", href: "#legislacao" },
-    { label: "Símbolos Oficiais", href: "#simbolos" },
+    { label: "Sobre a Prefeitura", href: "#sobre", isLink: false },
+    { label: "Prefeito e Vice", href: "#prefeito", isLink: false },
+    { label: "Secretarias", href: "/secretarias", isLink: true },
+    { label: "Notícias", href: "/noticias", isLink: true },
+    { label: "Legislação Municipal", href: "#legislacao", isLink: false },
   ],
   servicos: [
     { label: "Portal da Transparência", href: "#transparencia" },
@@ -86,9 +87,15 @@ export function Footer() {
             <ul className="space-y-2">
               {footerLinks.institucional.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-sm hover:text-highlight transition-colors">
-                    {link.label}
-                  </a>
+                  {link.isLink ? (
+                    <Link to={link.href} className="text-sm hover:text-highlight transition-colors">
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a href={link.href} className="text-sm hover:text-highlight transition-colors">
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

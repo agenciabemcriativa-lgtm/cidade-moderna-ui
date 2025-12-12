@@ -33,12 +33,12 @@ const servicosCidadao = [
 ];
 
 const menuItems = [
-  { label: "Institucional", href: "#institucional", hasDropdown: false },
-  { label: "Notícias", href: "#noticias", hasDropdown: false },
-  { label: "Secretarias", href: "#secretarias", hasDropdown: true, type: "secretarias" },
-  { label: "Serviços ao Cidadão", href: "#servicos", hasDropdown: true, type: "servicos" },
-  { label: "Publicações", href: "#publicacoes", hasDropdown: false },
-  { label: "Contato", href: "#contato", hasDropdown: false },
+  { label: "Institucional", href: "#institucional", hasDropdown: false, isLink: false },
+  { label: "Notícias", href: "/noticias", hasDropdown: false, isLink: true },
+  { label: "Secretarias", href: "/secretarias", hasDropdown: true, type: "secretarias", isLink: true },
+  { label: "Serviços ao Cidadão", href: "#servicos", hasDropdown: true, type: "servicos", isLink: false },
+  { label: "Publicações", href: "#publicacoes", hasDropdown: false, isLink: false },
+  { label: "Contato", href: "#contato", hasDropdown: false, isLink: false },
 ];
 
 export function Header() {
@@ -106,6 +106,14 @@ export function Header() {
                   {renderDropdownContent(item.type!)}
                 </DropdownMenuContent>
               </DropdownMenu>
+            ) : item.isLink ? (
+              <Link
+                key={item.label}
+                to={item.href}
+                className="px-4 py-2 text-sm font-semibold text-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 uppercase tracking-wide"
+              >
+                {item.label}
+              </Link>
             ) : (
               <a
                 key={item.label}
@@ -169,6 +177,16 @@ export function Header() {
                     </div>
                   )}
                 </div>
+              ) : item.isLink ? (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className="px-4 py-3 text-sm font-semibold text-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 uppercase tracking-wide"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
               ) : (
                 <a
                   key={item.label}
