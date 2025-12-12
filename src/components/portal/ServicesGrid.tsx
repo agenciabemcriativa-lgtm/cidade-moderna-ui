@@ -1,12 +1,12 @@
 import { 
   Eye, 
   FileText, 
-  MessageSquare, 
-  Receipt, 
-  Heart, 
-  Users,
+  Info,
+  FileCheck,
+  Radio,
+  Newspaper,
   Building2,
-  GraduationCap
+  BookOpen
 } from "lucide-react";
 
 const services = [
@@ -18,53 +18,53 @@ const services = [
     href: "#transparencia",
   },
   {
+    icon: Info,
+    title: "SIC - Serviço de Acesso à Informação",
+    description: "Solicite informações públicas",
+    color: "bg-accent",
+    href: "#sic",
+  },
+  {
+    icon: FileCheck,
+    title: "Contra-Cheque Online",
+    description: "Consulte seu contracheque digital",
+    color: "bg-primary",
+    href: "#contracheque",
+  },
+  {
     icon: FileText,
+    title: "Nota Fiscal Eletrônica",
+    description: "Emissão e consulta de NF-e",
+    color: "bg-accent",
+    href: "#nfe",
+  },
+  {
+    icon: Radio,
+    title: "Radar Transparência Pública",
+    description: "Acompanhe indicadores de transparência",
+    color: "bg-primary",
+    href: "#radar",
+  },
+  {
+    icon: Newspaper,
     title: "Diário Oficial",
     description: "Publicações oficiais do município",
-    color: "bg-secondary",
+    color: "bg-accent",
     href: "#diario",
   },
   {
-    icon: MessageSquare,
-    title: "Ouvidoria",
-    description: "Faça denúncias, reclamações ou sugestões",
-    color: "bg-accent",
-    href: "#ouvidoria",
-  },
-  {
-    icon: Receipt,
-    title: "IPTU e Tributos",
-    description: "Emissão de guias e consulta de débitos",
-    color: "bg-primary",
-    href: "#tributos",
-  },
-  {
-    icon: Heart,
-    title: "Saúde",
-    description: "Agendamentos, UBS e serviços de saúde",
-    color: "bg-accent",
-    href: "#saude",
-  },
-  {
-    icon: Users,
-    title: "Assistência Social",
-    description: "Programas sociais e CRAS",
-    color: "bg-secondary",
-    href: "#assistencia",
-  },
-  {
     icon: Building2,
-    title: "Obras e Urbanismo",
-    description: "Alvarás, licenças e fiscalização",
+    title: "Secretarias",
+    description: "Conheça as secretarias municipais",
     color: "bg-primary",
-    href: "#obras",
+    href: "#secretarias",
   },
   {
-    icon: GraduationCap,
-    title: "Educação",
-    description: "Matrículas, escolas e programas",
+    icon: BookOpen,
+    title: "Publicações",
+    description: "Documentos e publicações oficiais",
     color: "bg-accent",
-    href: "#educacao",
+    href: "#publicacoes",
   },
 ];
 
