@@ -3,7 +3,6 @@ import { Header } from "@/components/portal/Header";
 import { HeroBanner } from "@/components/portal/HeroBanner";
 import { ServicesGrid } from "@/components/portal/ServicesGrid";
 import { NewsSection } from "@/components/portal/NewsSection";
-import { SecretariasSection } from "@/components/portal/SecretariasSection";
 import { QuickServices } from "@/components/portal/QuickServices";
 import { Footer } from "@/components/portal/Footer";
 
@@ -16,7 +15,6 @@ const Index = () => {
         <HeroBanner />
         <ServicesGrid />
         <NewsSection />
-        <SecretariasSection />
         <QuickServices />
       </main>
       <Footer />
