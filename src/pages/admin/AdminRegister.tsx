@@ -73,13 +73,12 @@ export default function AdminRegister() {
       }
 
       if (authData.user) {
-        // Add admin role
-        const { error: roleError } = await supabase
-          .from("user_roles")
-          .insert([{ user_id: authData.user.id, role: "admin" }]);
+        // Add admin role using secure RPC function (atomic, prevents race conditions)
+        const { data: success, error: roleError } = await supabase
+          .rpc("create_first_admin");
 
-        if (roleError) {
-          toast.error("Erro ao atribuir permissões de admin");
+        if (roleError || !success) {
+          toast.error(roleError?.message || "Já existe um administrador cadastrado");
           setLoading(false);
           return;
         }
