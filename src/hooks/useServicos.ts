@@ -9,6 +9,11 @@ import {
   Briefcase,
   Scale,
   Phone,
+  Eye,
+  Info,
+  Radio,
+  Newspaper,
+  BookOpen,
   type LucideIcon
 } from "lucide-react";
 
@@ -29,6 +34,11 @@ const iconMap: Record<string, LucideIcon> = {
   Briefcase,
   Scale,
   Phone,
+  Eye,
+  Info,
+  Radio,
+  Newspaper,
+  BookOpen,
 };
 
 const fallbackServicos: Servico[] = [
