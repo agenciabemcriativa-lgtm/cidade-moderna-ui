@@ -11,6 +11,7 @@ import NoticiaPage from "./pages/NoticiaPage";
 import NoticiasPage from "./pages/NoticiasPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
+import AdminRegister from "./pages/admin/AdminRegister";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminNoticias from "./pages/admin/AdminNoticias";
 import AdminSecretarias from "./pages/admin/AdminSecretarias";
@@ -36,6 +37,7 @@ const App = () => (
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/register" element={<AdminRegister />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/noticias" element={<AdminNoticias />} />
             <Route path="/admin/secretarias" element={<AdminSecretarias />} />

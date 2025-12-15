@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Shield, Mail, Lock } from "lucide-react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
@@ -86,6 +86,11 @@ export default function AdminLogin() {
               {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
+          <div className="mt-4 text-center">
+            <Link to="/admin/register" className="text-sm text-muted-foreground hover:text-primary">
+              Primeiro acesso? Cadastre-se
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
