@@ -1,53 +1,41 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const slides = [
-  {
-    id: 1,
-    title: "Juntos Construindo uma Cidade Melhor",
-    subtitle: "Gestão 2025-2028",
-    description: "Compromisso com a transparência, eficiência e qualidade de vida para todos os cidadãos.",
-    cta: "Conheça Nossas Ações",
-    bgClass: "hero-gradient",
-  },
-  {
-    id: 2,
-    title: "Novos Investimentos em Saúde",
-    subtitle: "R$ 15 Milhões em Melhorias",
-    description: "Ampliação de UBS, novos equipamentos e mais profissionais para atender você.",
-    cta: "Saiba Mais",
-    bgClass: "bg-secondary",
-  },
-  {
-    id: 3,
-    title: "Programa de Infraestrutura Urbana",
-    subtitle: "Pavimentação e Saneamento",
-    description: "Mais de 50km de ruas pavimentadas e expansão da rede de esgoto em toda a cidade.",
-    cta: "Ver Obras",
-    bgClass: "bg-accent",
-  },
-];
+import { useBannerSlides } from "@/hooks/useBannerSlides";
 
 export function HeroBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { data: slides = [] } = useBannerSlides();
 
   useEffect(() => {
+    if (slides.length === 0) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  if (slides.length === 0) {
+    return (
+      <section className="hero-gradient py-16 md:py-24 lg:py-32">
+        <div className="container text-center">
+          <div className="animate-pulse h-8 bg-primary-foreground/20 rounded w-1/3 mx-auto mb-4" />
+          <div className="animate-pulse h-12 bg-primary-foreground/20 rounded w-2/3 mx-auto mb-4" />
+          <div className="animate-pulse h-6 bg-primary-foreground/20 rounded w-1/2 mx-auto" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative overflow-hidden">
       {slides.map((slide, index) => (
         <div
-          key={slide.id}
-          className={`${slide.bgClass} transition-all duration-700 ease-in-out ${
+          key={index}
+          className={`${slide.bgClass || "hero-gradient"} transition-all duration-700 ease-in-out ${
             index === currentSlide ? "opacity-100" : "opacity-0 absolute inset-0"
           }`}
         >
