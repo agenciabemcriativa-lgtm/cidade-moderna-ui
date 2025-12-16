@@ -124,6 +124,36 @@ export type Database = {
           },
         ]
       }
+      governo_itens: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          id: string
+          ordem: number | null
+          slug: string
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          slug: string
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          slug?: string
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       licitacoes: {
         Row: {
           ano: number
@@ -194,6 +224,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      municipio_itens: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          id: string
+          ordem: number | null
+          slug: string
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          slug: string
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          slug?: string
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       noticias: {
         Row: {

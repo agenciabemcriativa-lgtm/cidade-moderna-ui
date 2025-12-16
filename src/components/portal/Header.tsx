@@ -9,33 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
-
-const secretarias = [
-  { label: "Administração", slug: "administracao" },
-  { label: "Controle Interno", slug: "controle-interno" },
-  { label: "Cultura", slug: "cultura" },
-  { label: "Desenvolvimento Rural", slug: "desenvolvimento-rural" },
-  { label: "Desenvolvimento Social", slug: "desenvolvimento-social" },
-  { label: "Educação", slug: "educacao" },
-  { label: "Esporte", slug: "esporte" },
-  { label: "Finanças", slug: "financas" },
-  { label: "Obras e Urbanismo", slug: "obras-urbanismo" },
-  { label: "Saúde", slug: "saude" },
-];
-
-const governoItems = [
-  { label: "Prefeito", href: "/governo/prefeito", external: false },
-  { label: "Vice-Prefeito", href: "/governo/vice-prefeito", external: false },
-  { label: "Estrutura Organizacional", href: "/governo/estrutura-organizacional", external: false },
-  { label: "Organograma", href: "/governo/organograma", external: false },
-];
-
-const municipioItems = [
-  { label: "Cultura", href: "/municipio/cultura", external: false },
-  { label: "História", href: "/municipio/historia", external: false },
-  { label: "Símbolos Oficiais", href: "/municipio/simbolos-oficiais", external: false },
-  { label: "Dados Demográficos", href: "/municipio/dados-demograficos", external: false },
-];
+import { useSecretarias } from "@/hooks/useSecretarias";
+import { useGovernoItens } from "@/hooks/useGovernoItens";
+import { useMunicipioItens } from "@/hooks/useMunicipioItens";
 
 const servicosCidadao = [
   { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
@@ -63,6 +39,10 @@ interface HeaderProps {
 export function Header({ id }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSubMenu, setMobileSubMenu] = useState<string | null>(null);
+  
+  const { data: secretarias = [] } = useSecretarias();
+  const { data: governoItens = [] } = useGovernoItens();
+  const { data: municipioItens = [] } = useMunicipioItens();
 
   const renderDropdownContent = (type: string) => {
     if (type === "secretarias") {
@@ -72,7 +52,7 @@ export function Header({ id }: HeaderProps) {
             to={`/secretaria/${item.slug}`}
             className="w-full cursor-pointer"
           >
-            {item.label}
+            {item.nome}
           </Link>
         </DropdownMenuItem>
       ));
@@ -101,48 +81,26 @@ export function Header({ id }: HeaderProps) {
       ));
     }
     if (type === "governo") {
-      return governoItems.map((item) => (
-        <DropdownMenuItem key={item.href} asChild>
-          {item.external ? (
-            <a 
-              href={item.href} 
-              className="w-full cursor-pointer"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {item.label}
-            </a>
-          ) : (
-            <Link
-              to={item.href}
-              className="w-full cursor-pointer"
-            >
-              {item.label}
-            </Link>
-          )}
+      return governoItens.map((item) => (
+        <DropdownMenuItem key={item.slug} asChild>
+          <Link
+            to={`/governo/${item.slug}`}
+            className="w-full cursor-pointer"
+          >
+            {item.titulo}
+          </Link>
         </DropdownMenuItem>
       ));
     }
     if (type === "municipio") {
-      return municipioItems.map((item) => (
-        <DropdownMenuItem key={item.href} asChild>
-          {item.external ? (
-            <a 
-              href={item.href} 
-              className="w-full cursor-pointer"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {item.label}
-            </a>
-          ) : (
-            <Link
-              to={item.href}
-              className="w-full cursor-pointer"
-            >
-              {item.label}
-            </Link>
-          )}
+      return municipioItens.map((item) => (
+        <DropdownMenuItem key={item.slug} asChild>
+          <Link
+            to={`/municipio/${item.slug}`}
+            className="w-full cursor-pointer"
+          >
+            {item.titulo}
+          </Link>
         </DropdownMenuItem>
       ));
     }
@@ -150,10 +108,10 @@ export function Header({ id }: HeaderProps) {
   };
 
   const getMobileSubItems = (type: string) => {
-    if (type === "secretarias") return secretarias;
+    if (type === "secretarias") return secretarias.map(s => ({ label: s.nome, slug: s.slug }));
     if (type === "servicos") return servicosCidadao;
-    if (type === "governo") return governoItems;
-    if (type === "municipio") return municipioItems;
+    if (type === "governo") return governoItens.map(g => ({ label: g.titulo, href: `/governo/${g.slug}`, external: false }));
+    if (type === "municipio") return municipioItens.map(m => ({ label: m.titulo, href: `/municipio/${m.slug}`, external: false }));
     return [];
   };
 
