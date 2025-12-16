@@ -11,7 +11,8 @@ import {
   Settings,
   LogOut,
   Menu,
-  X
+  X,
+  FileText
 } from "lucide-react";
 import { useState } from "react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
@@ -20,6 +21,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: Newspaper, label: "Notícias", href: "/admin/noticias" },
   { icon: Building2, label: "Secretarias", href: "/admin/secretarias" },
+  { icon: FileText, label: "Licitações", href: "/admin/licitacoes" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
   { icon: Wrench, label: "Serviços", href: "/admin/servicos" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },
