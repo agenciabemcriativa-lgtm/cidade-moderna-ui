@@ -4,12 +4,37 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Button } from "@/components/ui/button";
-import { getNoticiaBySlug, noticiasData } from "@/data/noticias";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useNoticia, useNoticias } from "@/hooks/useNoticias";
 import { sanitizeHTML } from "@/lib/sanitize";
 
 export default function NoticiaPage() {
   const { slug } = useParams<{ slug: string }>();
-  const noticia = slug ? getNoticiaBySlug(slug) : undefined;
+  const { data: noticia, isLoading } = useNoticia(slug ?? "");
+  const { data: noticias = [] } = useNoticias();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <TopBar />
+        <Header />
+        <main className="flex-1 container py-8 lg:py-12">
+          <div className="max-w-4xl mx-auto space-y-6">
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="aspect-video rounded-2xl" />
+            <div className="space-y-3">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!noticia) {
     return (
@@ -28,7 +53,7 @@ export default function NoticiaPage() {
     );
   }
 
-  const outrasNoticias = noticiasData.filter(n => n.id !== noticia.id).slice(0, 3);
+  const outrasNoticias = noticias.filter((n) => n.id !== noticia.id).slice(0, 3);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -44,7 +69,7 @@ export default function NoticiaPage() {
                 Início
               </Link>
               <span className="text-muted-foreground">/</span>
-              <Link to="/#noticias" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/noticias" className="text-muted-foreground hover:text-primary transition-colors">
                 Notícias
               </Link>
               <span className="text-muted-foreground">/</span>
@@ -57,8 +82,8 @@ export default function NoticiaPage() {
         <article className="container py-8 lg:py-12">
           <div className="max-w-4xl mx-auto">
             {/* Back button */}
-            <Link 
-              to="/#noticias" 
+            <Link
+              to="/noticias"
               className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
