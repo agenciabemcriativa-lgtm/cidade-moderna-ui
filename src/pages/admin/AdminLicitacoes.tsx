@@ -42,7 +42,7 @@ import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, FileText, ExternalLink, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, FileText, ExternalLink, Search, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
@@ -123,6 +123,7 @@ export default function AdminLicitacoes() {
   const [docFormData, setDocFormData] = useState<DocumentoFormData>(initialDocumentoFormData);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("");
+  const [activeTab, setActiveTab] = useState("lista");
 
   const { data: licitacoes, isLoading } = useLicitacoes({ publicadoOnly: false, busca: searchTerm, status: filterStatus as StatusLicitacao || undefined });
   const { data: licitacaoDetalhes } = useLicitacao(selectedLicitacaoId || "");
@@ -164,8 +165,15 @@ export default function AdminLicitacoes() {
     setDeleteDialogOpen(true);
   };
 
-  const handleOpenDocumentos = (licitacaoId: string) => {
-    setSelectedLicitacaoId(licitacaoId);
+  const handleOpenDocumentos = (licitacao: Licitacao) => {
+    setSelectedLicitacaoId(licitacao.id);
+    setSelectedLicitacao(licitacao);
+    setActiveTab("documentos");
+  };
+
+  const handleBackToList = () => {
+    setSelectedLicitacaoId(null);
+    setActiveTab("lista");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -292,12 +300,12 @@ export default function AdminLicitacoes() {
           </Select>
         </div>
 
-        <Tabs defaultValue="lista" className="space-y-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList>
             <TabsTrigger value="lista">Lista de Licitações</TabsTrigger>
-            {selectedLicitacaoId && (
-              <TabsTrigger value="documentos">Documentos</TabsTrigger>
-            )}
+            <TabsTrigger value="documentos" disabled={!selectedLicitacaoId}>
+              Documentos {selectedLicitacao && `(${selectedLicitacao.numero_processo})`}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="lista">
@@ -347,7 +355,7 @@ export default function AdminLicitacoes() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => handleOpenDocumentos(licitacao.id)}
+                              onClick={() => handleOpenDocumentos(licitacao)}
                               title="Gerenciar documentos"
                             >
                               <FileText className="w-4 h-4" />
@@ -387,12 +395,17 @@ export default function AdminLicitacoes() {
           <TabsContent value="documentos">
             {selectedLicitacaoId && licitacaoDetalhes && (
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <div>
-                    <CardTitle>Documentos da Licitação</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {licitacaoDetalhes.numero_processo} - {licitacaoDetalhes.objeto.substring(0, 50)}...
-                    </p>
+                <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex items-start gap-3">
+                    <Button variant="ghost" size="icon" onClick={handleBackToList}>
+                      <ArrowLeft className="w-4 h-4" />
+                    </Button>
+                    <div>
+                      <CardTitle>Documentos da Licitação</CardTitle>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        <span className="font-mono">{licitacaoDetalhes.numero_processo}</span> - {licitacaoDetalhes.objeto.substring(0, 80)}...
+                      </p>
+                    </div>
                   </div>
                   <Dialog open={isDocDialogOpen} onOpenChange={setIsDocDialogOpen}>
                     <DialogTrigger asChild>
@@ -510,6 +523,14 @@ export default function AdminLicitacoes() {
                       Nenhum documento cadastrado
                     </p>
                   )}
+                </CardContent>
+              </Card>
+            )}
+            {!selectedLicitacaoId && (
+              <Card>
+                <CardContent className="py-12 text-center text-muted-foreground">
+                  <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p>Selecione uma licitação na aba "Lista de Licitações" para gerenciar seus documentos.</p>
                 </CardContent>
               </Card>
             )}
