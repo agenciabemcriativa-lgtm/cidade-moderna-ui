@@ -25,7 +25,7 @@ const secretarias = [
 
 const servicosCidadao = [
   { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
-  { label: "Licitações", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/transparencia/20/", external: true },
+  { label: "Licitações", href: "/licitacoes", external: false },
   { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
   { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },
   { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
@@ -60,14 +60,23 @@ export function Header() {
     if (type === "servicos") {
       return servicosCidadao.map((item) => (
         <DropdownMenuItem key={item.href} asChild>
-          <a 
-            href={item.href} 
-            className="w-full cursor-pointer"
-            target={item.external ? "_blank" : undefined}
-            rel={item.external ? "noopener noreferrer" : undefined}
-          >
-            {item.label}
-          </a>
+          {item.external ? (
+            <a 
+              href={item.href} 
+              className="w-full cursor-pointer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <Link
+              to={item.href}
+              className="w-full cursor-pointer"
+            >
+              {item.label}
+            </Link>
+          )}
         </DropdownMenuItem>
       ));
     }

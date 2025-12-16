@@ -11,6 +11,8 @@ import NoticiaPage from "./pages/NoticiaPage";
 import NoticiasPage from "./pages/NoticiasPage";
 import InstitucionalPage from "./pages/InstitucionalPage";
 import ContatoPage from "./pages/ContatoPage";
+import LicitacoesPage from "./pages/LicitacoesPage";
+import LicitacaoPage from "./pages/LicitacaoPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -20,6 +22,7 @@ import AdminSecretarias from "./pages/admin/AdminSecretarias";
 import AdminBanner from "./pages/admin/AdminBanner";
 import AdminServicos from "./pages/admin/AdminServicos";
 import AdminConfiguracoes from "./pages/admin/AdminConfiguracoes";
+import AdminLicitacoes from "./pages/admin/AdminLicitacoes";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +41,8 @@ const App = () => (
             <Route path="/noticia/:slug" element={<NoticiaPage />} />
             <Route path="/institucional" element={<InstitucionalPage />} />
             <Route path="/contato" element={<ContatoPage />} />
+            <Route path="/licitacoes" element={<LicitacoesPage />} />
+            <Route path="/licitacao/:id" element={<LicitacaoPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -48,6 +53,7 @@ const App = () => (
             <Route path="/admin/banner" element={<AdminBanner />} />
             <Route path="/admin/servicos" element={<AdminServicos />} />
             <Route path="/admin/configuracoes" element={<AdminConfiguracoes />} />
+            <Route path="/admin/licitacoes" element={<AdminLicitacoes />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
