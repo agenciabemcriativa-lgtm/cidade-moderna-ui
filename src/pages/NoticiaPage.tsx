@@ -8,6 +8,27 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNoticia, useNoticias } from "@/hooks/useNoticias";
 import { sanitizeHTML } from "@/lib/sanitize";
 
+// Mapeamento de cores para garantir que o Tailwind inclua as classes
+const categoryColorMap: Record<string, string> = {
+  "bg-primary": "bg-primary",
+  "bg-blue-600": "bg-blue-600",
+  "bg-green-600": "bg-green-600",
+  "bg-red-600": "bg-red-600",
+  "bg-purple-600": "bg-purple-600",
+  "bg-orange-600": "bg-orange-600",
+  "bg-amber-600": "bg-amber-600",
+  "bg-teal-600": "bg-teal-600",
+  "bg-gray-600": "bg-gray-600",
+  "bg-green-700": "bg-green-700",
+  "bg-indigo-600": "bg-indigo-600",
+  "bg-pink-600": "bg-pink-600",
+  "bg-yellow-600": "bg-yellow-600",
+};
+
+const getCategoryColor = (color: string) => {
+  return categoryColorMap[color] || "bg-primary";
+};
+
 export default function NoticiaPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: noticia, isLoading } = useNoticia(slug ?? "");
@@ -93,7 +114,7 @@ export default function NoticiaPage() {
             {/* Header */}
             <header className="mb-8">
               <div className="flex items-center gap-4 mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${noticia.categoryColor}`}>
+                <span className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase text-white shadow-sm ${getCategoryColor(noticia.categoryColor)}`}>
                   {noticia.category}
                 </span>
                 <div className="flex items-center gap-2 text-muted-foreground text-sm">
@@ -177,7 +198,7 @@ export default function NoticiaPage() {
                       />
                     </div>
                     <div className="p-4">
-                      <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${item.categoryColor}`}>
+                      <span className={`px-2 py-1 rounded text-xs font-bold uppercase text-white ${getCategoryColor(item.categoryColor)}`}>
                         {item.category}
                       </span>
                       <h3 className="text-lg font-bold text-foreground mt-2 line-clamp-2 group-hover:text-primary transition-colors">

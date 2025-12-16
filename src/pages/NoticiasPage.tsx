@@ -6,6 +6,27 @@ import { useNoticias } from "@/hooks/useNoticias";
 import { Calendar } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Mapeamento de cores para garantir que o Tailwind inclua as classes
+const categoryColorMap: Record<string, string> = {
+  "bg-primary": "bg-primary",
+  "bg-blue-600": "bg-blue-600",
+  "bg-green-600": "bg-green-600",
+  "bg-red-600": "bg-red-600",
+  "bg-purple-600": "bg-purple-600",
+  "bg-orange-600": "bg-orange-600",
+  "bg-amber-600": "bg-amber-600",
+  "bg-teal-600": "bg-teal-600",
+  "bg-gray-600": "bg-gray-600",
+  "bg-green-700": "bg-green-700",
+  "bg-indigo-600": "bg-indigo-600",
+  "bg-pink-600": "bg-pink-600",
+  "bg-yellow-600": "bg-yellow-600",
+};
+
+const getCategoryColor = (color: string) => {
+  return categoryColorMap[color] || "bg-primary";
+};
+
 export default function NoticiasPage() {
   const { data: noticias, isLoading } = useNoticias();
 
@@ -61,7 +82,7 @@ export default function NoticiasPage() {
                     <div className="p-5">
                       <div className="flex items-center gap-3 mb-3">
                         <span
-                          className={`text-xs font-semibold px-2.5 py-1 rounded-full text-primary-foreground ${noticia.categoryColor}`}
+                          className={`text-xs font-semibold px-2.5 py-1.5 rounded-full text-white shadow-sm ${getCategoryColor(noticia.categoryColor)}`}
                         >
                           {noticia.category}
                         </span>

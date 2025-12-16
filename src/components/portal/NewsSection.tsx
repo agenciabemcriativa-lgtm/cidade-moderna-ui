@@ -3,6 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useNoticias } from "@/hooks/useNoticias";
 
+// Mapeamento de cores para garantir que o Tailwind inclua as classes
+const categoryColorMap: Record<string, string> = {
+  "bg-primary": "bg-primary",
+  "bg-blue-600": "bg-blue-600",
+  "bg-green-600": "bg-green-600",
+  "bg-red-600": "bg-red-600",
+  "bg-purple-600": "bg-purple-600",
+  "bg-orange-600": "bg-orange-600",
+  "bg-amber-600": "bg-amber-600",
+  "bg-teal-600": "bg-teal-600",
+  "bg-gray-600": "bg-gray-600",
+  "bg-green-700": "bg-green-700",
+  "bg-indigo-600": "bg-indigo-600",
+  "bg-pink-600": "bg-pink-600",
+  "bg-yellow-600": "bg-yellow-600",
+};
+
+const getCategoryColor = (color: string) => {
+  return categoryColorMap[color] || "bg-primary";
+};
+
 export function NewsSection() {
   const { data: noticias = [], isLoading } = useNoticias();
   const news = noticias.slice(0, 4);
@@ -52,7 +73,7 @@ export function NewsSection() {
                     alt={item.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className={`absolute top-4 left-4 ${item.categoryColor} text-primary-foreground px-3 py-1 text-xs font-bold uppercase rounded-full`}>
+                  <span className={`absolute top-4 left-4 ${getCategoryColor(item.categoryColor)} text-white px-3 py-1.5 text-xs font-bold uppercase rounded-full shadow-lg`}>
                     {item.category}
                   </span>
                 </div>

@@ -4,6 +4,21 @@ export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
+  safelist: [
+    "bg-primary",
+    "bg-blue-600",
+    "bg-green-600",
+    "bg-red-600",
+    "bg-purple-600",
+    "bg-orange-600",
+    "bg-amber-600",
+    "bg-teal-600",
+    "bg-gray-600",
+    "bg-green-700",
+    "bg-indigo-600",
+    "bg-pink-600",
+    "bg-yellow-600",
+  ],
   theme: {
     container: {
       center: true,
