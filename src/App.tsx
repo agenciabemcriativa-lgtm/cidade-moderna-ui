@@ -13,6 +13,7 @@ import InstitucionalPage from "./pages/InstitucionalPage";
 import ContatoPage from "./pages/ContatoPage";
 import LicitacoesPage from "./pages/LicitacoesPage";
 import LicitacaoPage from "./pages/LicitacaoPage";
+import BuscaPage from "./pages/BuscaPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/contato" element={<ContatoPage />} />
             <Route path="/licitacoes" element={<LicitacoesPage />} />
             <Route path="/licitacao/:id" element={<LicitacaoPage />} />
+            <Route path="/busca" element={<BuscaPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
