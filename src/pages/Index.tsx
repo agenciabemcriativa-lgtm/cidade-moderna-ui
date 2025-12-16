@@ -1,6 +1,7 @@
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { HeroBanner } from "@/components/portal/HeroBanner";
+import { SearchBar } from "@/components/portal/SearchBar";
 import { ServicesGrid } from "@/components/portal/ServicesGrid";
 import { NewsSection } from "@/components/portal/NewsSection";
 import { QuickServices } from "@/components/portal/QuickServices";
@@ -13,6 +14,7 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <HeroBanner />
+        <SearchBar />
         <ServicesGrid />
         <NewsSection />
         <QuickServices />
