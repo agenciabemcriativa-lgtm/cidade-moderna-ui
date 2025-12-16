@@ -77,6 +77,124 @@ export type Database = {
         }
         Relationships: []
       }
+      documentos_licitacao: {
+        Row: {
+          created_at: string
+          data_publicacao: string
+          descricao: string | null
+          id: string
+          licitacao_id: string
+          ordem: number | null
+          tipo: Database["public"]["Enums"]["tipo_documento_licitacao"]
+          titulo: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          data_publicacao?: string
+          descricao?: string | null
+          id?: string
+          licitacao_id: string
+          ordem?: number | null
+          tipo: Database["public"]["Enums"]["tipo_documento_licitacao"]
+          titulo: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          data_publicacao?: string
+          descricao?: string | null
+          id?: string
+          licitacao_id?: string
+          ordem?: number | null
+          tipo?: Database["public"]["Enums"]["tipo_documento_licitacao"]
+          titulo?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documentos_licitacao_licitacao_id_fkey"
+            columns: ["licitacao_id"]
+            isOneToOne: false
+            referencedRelation: "licitacoes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      licitacoes: {
+        Row: {
+          ano: number
+          created_at: string
+          created_by: string | null
+          data_abertura: string
+          data_encerramento: string | null
+          id: string
+          link_sistema_oficial: string | null
+          modalidade: Database["public"]["Enums"]["modalidade_licitacao"]
+          numero_processo: string
+          objeto: string
+          observacoes: string | null
+          publicado: boolean | null
+          secretaria_id: string | null
+          secretaria_nome: string | null
+          status: Database["public"]["Enums"]["status_licitacao"]
+          updated_at: string
+          updated_by: string | null
+          valor_estimado: number | null
+        }
+        Insert: {
+          ano: number
+          created_at?: string
+          created_by?: string | null
+          data_abertura: string
+          data_encerramento?: string | null
+          id?: string
+          link_sistema_oficial?: string | null
+          modalidade: Database["public"]["Enums"]["modalidade_licitacao"]
+          numero_processo: string
+          objeto: string
+          observacoes?: string | null
+          publicado?: boolean | null
+          secretaria_id?: string | null
+          secretaria_nome?: string | null
+          status?: Database["public"]["Enums"]["status_licitacao"]
+          updated_at?: string
+          updated_by?: string | null
+          valor_estimado?: number | null
+        }
+        Update: {
+          ano?: number
+          created_at?: string
+          created_by?: string | null
+          data_abertura?: string
+          data_encerramento?: string | null
+          id?: string
+          link_sistema_oficial?: string | null
+          modalidade?: Database["public"]["Enums"]["modalidade_licitacao"]
+          numero_processo?: string
+          objeto?: string
+          observacoes?: string | null
+          publicado?: boolean | null
+          secretaria_id?: string | null
+          secretaria_nome?: string | null
+          status?: Database["public"]["Enums"]["status_licitacao"]
+          updated_at?: string
+          updated_by?: string | null
+          valor_estimado?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "licitacoes_secretaria_id_fkey"
+            columns: ["secretaria_id"]
+            isOneToOne: false
+            referencedRelation: "secretarias"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       noticias: {
         Row: {
           categoria: string
@@ -252,6 +370,38 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "editor"
+      modalidade_licitacao:
+        | "pregao_eletronico"
+        | "pregao_presencial"
+        | "concorrencia"
+        | "tomada_de_precos"
+        | "convite"
+        | "concurso"
+        | "leilao"
+        | "dialogo_competitivo"
+        | "dispensa"
+        | "inexigibilidade"
+      status_licitacao:
+        | "aberta"
+        | "em_andamento"
+        | "encerrada"
+        | "cancelada"
+        | "suspensa"
+        | "deserta"
+        | "fracassada"
+      tipo_documento_licitacao:
+        | "edital"
+        | "termo_referencia"
+        | "projeto_basico"
+        | "aviso"
+        | "ata"
+        | "resultado"
+        | "homologacao"
+        | "contrato"
+        | "aditivo"
+        | "impugnacao"
+        | "esclarecimento"
+        | "outros"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -380,6 +530,41 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor"],
+      modalidade_licitacao: [
+        "pregao_eletronico",
+        "pregao_presencial",
+        "concorrencia",
+        "tomada_de_precos",
+        "convite",
+        "concurso",
+        "leilao",
+        "dialogo_competitivo",
+        "dispensa",
+        "inexigibilidade",
+      ],
+      status_licitacao: [
+        "aberta",
+        "em_andamento",
+        "encerrada",
+        "cancelada",
+        "suspensa",
+        "deserta",
+        "fracassada",
+      ],
+      tipo_documento_licitacao: [
+        "edital",
+        "termo_referencia",
+        "projeto_basico",
+        "aviso",
+        "ata",
+        "resultado",
+        "homologacao",
+        "contrato",
+        "aditivo",
+        "impugnacao",
+        "esclarecimento",
+        "outros",
+      ],
     },
   },
 } as const
