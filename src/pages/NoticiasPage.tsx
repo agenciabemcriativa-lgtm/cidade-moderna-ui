@@ -54,14 +54,14 @@ export default function NoticiasPage() {
                       <img
                         src={noticia.image}
                         alt={noticia.title}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                     <div className="p-5">
                       <div className="flex items-center gap-3 mb-3">
                         <span
-                          className="text-xs font-semibold px-2.5 py-1 rounded-full text-primary-foreground"
-                          style={{ backgroundColor: noticia.categoryColor }}
+                          className={`text-xs font-semibold px-2.5 py-1 rounded-full text-primary-foreground ${noticia.categoryColor}`}
                         >
                           {noticia.category}
                         </span>
