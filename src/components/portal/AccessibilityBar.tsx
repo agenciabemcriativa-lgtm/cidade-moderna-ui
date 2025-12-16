@@ -1,0 +1,120 @@
+import { useState, useEffect } from "react";
+import { Moon, ZoomIn, ZoomOut, Accessibility } from "lucide-react";
+
+const skipLinks = [
+  { label: "Ir para Menu", shortcut: "1", href: "#menu-principal" },
+  { label: "Ir para Buscador", shortcut: "2", href: "#buscador" },
+  { label: "Ir para Rodapé", shortcut: "3", href: "#rodape" },
+  { label: "Ir para o Mapa do Site", shortcut: "4", href: "#mapa-site" },
+];
+
+export function AccessibilityBar() {
+  const [fontSize, setFontSize] = useState(100);
+  const [highContrast, setHighContrast] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${fontSize}%`;
+  }, [fontSize]);
+
+  useEffect(() => {
+    if (highContrast) {
+      document.documentElement.classList.add("high-contrast");
+    } else {
+      document.documentElement.classList.remove("high-contrast");
+    }
+  }, [highContrast]);
+
+  const increaseFontSize = () => {
+    setFontSize((prev) => Math.min(prev + 10, 150));
+  };
+
+  const decreaseFontSize = () => {
+    setFontSize((prev) => Math.max(prev - 10, 80));
+  };
+
+  const resetFontSize = () => {
+    setFontSize(100);
+  };
+
+  const toggleContrast = () => {
+    setHighContrast((prev) => !prev);
+  };
+
+  return (
+    <div className="bg-[#0a1628] text-white">
+      <div className="container flex items-center justify-between py-1.5 text-xs">
+        {/* Skip Links */}
+        <nav className="hidden md:flex items-center gap-1" aria-label="Links de navegação rápida">
+          {skipLinks.map((link, index) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-white/10 transition-colors"
+            >
+              <span>{link.label}</span>
+              <span className="inline-flex items-center justify-center w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded">
+                {link.shortcut}
+              </span>
+            </a>
+          ))}
+        </nav>
+
+        {/* Accessibility Controls */}
+        <div className="flex items-center gap-2 ml-auto">
+          {/* High Contrast */}
+          <button
+            onClick={toggleContrast}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded transition-colors ${
+              highContrast 
+                ? "bg-highlight text-highlight-foreground" 
+                : "hover:bg-white/10"
+            }`}
+            aria-label="Alternar alto contraste"
+            aria-pressed={highContrast}
+          >
+            <Moon className="w-4 h-4" />
+            <span className="font-medium">ALTO CONTRASTE</span>
+          </button>
+
+          {/* Font Size Controls */}
+          <div className="flex items-center border-l border-white/20 pl-2 ml-1">
+            <button
+              onClick={increaseFontSize}
+              className="px-2 py-1 rounded hover:bg-white/10 transition-colors font-bold text-sm"
+              title="Aumentar fonte"
+              aria-label="Aumentar tamanho da fonte"
+            >
+              A+
+            </button>
+            <button
+              onClick={resetFontSize}
+              className="px-2 py-1 rounded hover:bg-white/10 transition-colors font-bold text-sm"
+              title="Tamanho normal"
+              aria-label="Restaurar tamanho da fonte"
+            >
+              A
+            </button>
+            <button
+              onClick={decreaseFontSize}
+              className="px-2 py-1 rounded hover:bg-white/10 transition-colors font-bold text-sm"
+              title="Diminuir fonte"
+              aria-label="Diminuir tamanho da fonte"
+            >
+              A-
+            </button>
+          </div>
+
+          {/* Accessibility Link */}
+          <a
+            href="#acessibilidade"
+            className="flex items-center gap-1.5 px-3 py-1 rounded hover:bg-white/10 transition-colors border-l border-white/20 ml-1 pl-3"
+            aria-label="Informações de acessibilidade"
+          >
+            <Accessibility className="w-4 h-4" />
+            <span className="hidden sm:inline">Acessibilidade</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}

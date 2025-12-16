@@ -40,7 +40,11 @@ const menuItems = [
   { label: "Contato", href: "/contato", hasDropdown: false, isLink: true },
 ];
 
-export function Header() {
+interface HeaderProps {
+  id?: string;
+}
+
+export function Header({ id }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSubMenu, setMobileSubMenu] = useState<string | null>(null);
 
@@ -90,7 +94,7 @@ export function Header() {
   };
 
   return (
-    <header className="bg-card shadow-md sticky top-0 z-50">
+    <header id={id} className="bg-card shadow-md sticky top-0 z-50">
       <div className="container flex items-center justify-between py-4">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">

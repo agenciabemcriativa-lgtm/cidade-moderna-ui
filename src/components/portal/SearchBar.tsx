@@ -4,7 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-export function SearchBar() {
+interface SearchBarProps {
+  id?: string;
+}
+
+export function SearchBar({ id }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -16,7 +20,7 @@ export function SearchBar() {
   };
 
   return (
-    <section className="bg-muted/50 py-6 border-b border-border">
+    <section id={id} className="bg-muted/50 py-6 border-b border-border">
       <div className="container">
         <form onSubmit={handleSearch} className="flex items-center gap-3 max-w-2xl mx-auto">
           <div className="relative flex-1">
