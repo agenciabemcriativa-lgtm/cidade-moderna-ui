@@ -15,7 +15,7 @@ export function SearchBar({ id }: SearchBarProps) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/noticias?busca=${encodeURIComponent(searchTerm.trim())}`);
+      navigate(`/busca?q=${encodeURIComponent(searchTerm.trim())}`);
     }
   };
 
