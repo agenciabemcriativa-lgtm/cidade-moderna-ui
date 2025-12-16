@@ -23,6 +23,20 @@ const secretarias = [
   { label: "Saúde", slug: "saude" },
 ];
 
+const governoItems = [
+  { label: "Prefeito", href: "/governo/prefeito", external: false },
+  { label: "Vice-Prefeito", href: "/governo/vice-prefeito", external: false },
+  { label: "Estrutura Organizacional", href: "/governo/estrutura-organizacional", external: false },
+  { label: "Organograma", href: "/governo/organograma", external: false },
+];
+
+const municipioItems = [
+  { label: "Cultura", href: "/municipio/cultura", external: false },
+  { label: "História", href: "/municipio/historia", external: false },
+  { label: "Símbolos Oficiais", href: "/municipio/simbolos-oficiais", external: false },
+  { label: "Dados Demográficos", href: "/municipio/dados-demograficos", external: false },
+];
+
 const servicosCidadao = [
   { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
   { label: "Licitações", href: "/licitacoes", external: false },
@@ -32,10 +46,12 @@ const servicosCidadao = [
 ];
 
 const menuItems = [
-  { label: "Institucional", href: "/institucional", hasDropdown: false, isLink: true },
+  { label: "O Governo", href: "/governo", hasDropdown: true, type: "governo", isLink: false },
+  { label: "Município", href: "/municipio", hasDropdown: true, type: "municipio", isLink: false },
   { label: "Notícias", href: "/noticias", hasDropdown: false, isLink: true },
   { label: "Secretarias", href: "/secretarias", hasDropdown: true, type: "secretarias", isLink: true },
   { label: "Serviços ao Cidadão", href: "#servicos", hasDropdown: true, type: "servicos", isLink: false },
+  { label: "Legislação", href: "/legislacao", hasDropdown: false, isLink: true },
   { label: "Publicações", href: "https://www.ipubi.pe.gov.br/publicacoes-oficiais/", hasDropdown: false, isLink: false, external: true },
   { label: "Contato", href: "/contato", hasDropdown: false, isLink: true },
 ];
@@ -84,13 +100,100 @@ export function Header({ id }: HeaderProps) {
         </DropdownMenuItem>
       ));
     }
+    if (type === "governo") {
+      return governoItems.map((item) => (
+        <DropdownMenuItem key={item.href} asChild>
+          {item.external ? (
+            <a 
+              href={item.href} 
+              className="w-full cursor-pointer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <Link
+              to={item.href}
+              className="w-full cursor-pointer"
+            >
+              {item.label}
+            </Link>
+          )}
+        </DropdownMenuItem>
+      ));
+    }
+    if (type === "municipio") {
+      return municipioItems.map((item) => (
+        <DropdownMenuItem key={item.href} asChild>
+          {item.external ? (
+            <a 
+              href={item.href} 
+              className="w-full cursor-pointer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <Link
+              to={item.href}
+              className="w-full cursor-pointer"
+            >
+              {item.label}
+            </Link>
+          )}
+        </DropdownMenuItem>
+      ));
+    }
     return null;
   };
 
   const getMobileSubItems = (type: string) => {
     if (type === "secretarias") return secretarias;
     if (type === "servicos") return servicosCidadao;
+    if (type === "governo") return governoItems;
+    if (type === "municipio") return municipioItems;
     return [];
+  };
+
+  const renderMobileSubItem = (subItem: any) => {
+    if ("slug" in subItem) {
+      return (
+        <Link
+          key={subItem.slug}
+          to={`/secretaria/${subItem.slug}`}
+          className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          {subItem.label}
+        </Link>
+      );
+    }
+    if (subItem.external) {
+      return (
+        <a
+          key={subItem.href}
+          href={subItem.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          {subItem.label}
+        </a>
+      );
+    }
+    return (
+      <Link
+        key={subItem.href}
+        to={subItem.href}
+        className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {subItem.label}
+      </Link>
+    );
   };
 
   return (
@@ -187,29 +290,7 @@ export function Header({ id }: HeaderProps) {
                   </button>
                   {mobileSubMenu === item.type && (
                     <div className="ml-4 mt-2 flex flex-col gap-1 animate-fade-in">
-                      {getMobileSubItems(item.type!).map((subItem) => (
-                        "slug" in subItem ? (
-                          <Link
-                            key={subItem.slug}
-                            to={`/secretaria/${subItem.slug}`}
-                            className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            {subItem.label}
-                          </Link>
-                        ) : (
-                          <a
-                            key={subItem.href}
-                            href={subItem.href}
-                            target={subItem.external ? "_blank" : undefined}
-                            rel={subItem.external ? "noopener noreferrer" : undefined}
-                            className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            {subItem.label}
-                          </a>
-                        )
-                      ))}
+                      {getMobileSubItems(item.type!).map((subItem) => renderMobileSubItem(subItem))}
                     </div>
                   )}
                 </div>
