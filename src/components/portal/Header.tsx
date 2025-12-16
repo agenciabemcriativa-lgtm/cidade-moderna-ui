@@ -24,21 +24,20 @@ const secretarias = [
 ];
 
 const servicosCidadao = [
-  { label: "Portal da Transparência", href: "#transparencia" },
-  { label: "Licitações", href: "#licitacoes" },
-  { label: "Contra-Cheque Online", href: "#contracheque" },
-  { label: "Nota Fiscal Eletrônica", href: "#nfe" },
-  { label: "e-SIC", href: "#esic" },
-  { label: "Ouvidoria", href: "#ouvidoria" },
+  { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
+  { label: "Licitações", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/transparencia/20/", external: true },
+  { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
+  { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },
+  { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
 ];
 
 const menuItems = [
-  { label: "Institucional", href: "#institucional", hasDropdown: false, isLink: false },
+  { label: "Institucional", href: "/institucional", hasDropdown: false, isLink: true },
   { label: "Notícias", href: "/noticias", hasDropdown: false, isLink: true },
   { label: "Secretarias", href: "/secretarias", hasDropdown: true, type: "secretarias", isLink: true },
   { label: "Serviços ao Cidadão", href: "#servicos", hasDropdown: true, type: "servicos", isLink: false },
-  { label: "Publicações", href: "#publicacoes", hasDropdown: false, isLink: false },
-  { label: "Contato", href: "#contato", hasDropdown: false, isLink: false },
+  { label: "Publicações", href: "https://www.ipubi.pe.gov.br/publicacoes-oficiais/", hasDropdown: false, isLink: false, external: true },
+  { label: "Contato", href: "/contato", hasDropdown: false, isLink: true },
 ];
 
 export function Header() {
@@ -61,7 +60,12 @@ export function Header() {
     if (type === "servicos") {
       return servicosCidadao.map((item) => (
         <DropdownMenuItem key={item.href} asChild>
-          <a href={item.href} className="w-full cursor-pointer">
+          <a 
+            href={item.href} 
+            className="w-full cursor-pointer"
+            target={item.external ? "_blank" : undefined}
+            rel={item.external ? "noopener noreferrer" : undefined}
+          >
             {item.label}
           </a>
         </DropdownMenuItem>
@@ -106,6 +110,16 @@ export function Header() {
                   {renderDropdownContent(item.type!)}
                 </DropdownMenuContent>
               </DropdownMenu>
+            ) : item.external ? (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 text-sm font-semibold text-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 uppercase tracking-wide"
+              >
+                {item.label}
+              </a>
             ) : item.isLink ? (
               <Link
                 key={item.label}
@@ -161,22 +175,43 @@ export function Header() {
                   {mobileSubMenu === item.type && (
                     <div className="ml-4 mt-2 flex flex-col gap-1 animate-fade-in">
                       {getMobileSubItems(item.type!).map((subItem) => (
-                        <Link
-                          key={"slug" in subItem ? subItem.slug : subItem.href}
-                          to={
-                            "slug" in subItem
-                              ? `/secretaria/${subItem.slug}`
-                              : subItem.href
-                          }
-                          className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {subItem.label}
-                        </Link>
+                        "slug" in subItem ? (
+                          <Link
+                            key={subItem.slug}
+                            to={`/secretaria/${subItem.slug}`}
+                            className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {subItem.label}
+                          </Link>
+                        ) : (
+                          <a
+                            key={subItem.href}
+                            href={subItem.href}
+                            target={subItem.external ? "_blank" : undefined}
+                            rel={subItem.external ? "noopener noreferrer" : undefined}
+                            className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {subItem.label}
+                          </a>
+                        )
                       ))}
                     </div>
                   )}
                 </div>
+              ) : item.external ? (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-3 text-sm font-semibold text-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 uppercase tracking-wide"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
               ) : item.isLink ? (
                 <Link
                   key={item.label}

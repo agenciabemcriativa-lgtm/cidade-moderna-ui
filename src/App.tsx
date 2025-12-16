@@ -9,6 +9,8 @@ import SecretariaPage from "./pages/SecretariaPage";
 import SecretariasPage from "./pages/SecretariasPage";
 import NoticiaPage from "./pages/NoticiaPage";
 import NoticiasPage from "./pages/NoticiasPage";
+import InstitucionalPage from "./pages/InstitucionalPage";
+import ContatoPage from "./pages/ContatoPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -34,6 +36,8 @@ const App = () => (
             <Route path="/secretaria/:slug" element={<SecretariaPage />} />
             <Route path="/noticias" element={<NoticiasPage />} />
             <Route path="/noticia/:slug" element={<NoticiaPage />} />
+            <Route path="/institucional" element={<InstitucionalPage />} />
+            <Route path="/contato" element={<ContatoPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />

@@ -116,3 +116,34 @@
     text-wrap: balance;
   }
 }
+
+/* High Contrast Mode */
+.high-contrast {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 0%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 0%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 60 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 60 100% 50%;
+  --secondary-foreground: 0 0% 0%;
+  --accent: 60 100% 50%;
+  --accent-foreground: 0 0% 0%;
+  --highlight: 60 100% 50%;
+  --highlight-foreground: 0 0% 0%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 100%;
+  --border: 0 0% 100%;
+  --input: 0 0% 20%;
+  --ring: 60 100% 50%;
+}
+
+.high-contrast .gov-gradient {
+  background: hsl(0 0% 0%);
+}
+
+.high-contrast .hero-gradient {
+  background: hsl(0 0% 0%);
+}
