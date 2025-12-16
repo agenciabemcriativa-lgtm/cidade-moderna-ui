@@ -5,6 +5,7 @@ import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Button } from "@/components/ui/button";
 import { getNoticiaBySlug, noticiasData } from "@/data/noticias";
+import { sanitizeHTML } from "@/lib/sanitize";
 
 export default function NoticiaPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -111,7 +112,7 @@ export default function NoticiaPage() {
             {/* Content */}
             <div 
               className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: noticia.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(noticia.content) }}
             />
 
             {/* Tags */}
