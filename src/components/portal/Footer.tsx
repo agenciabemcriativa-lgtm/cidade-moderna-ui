@@ -55,9 +55,13 @@ const socialLinks = [
   { icon: Youtube, href: "#youtube", label: "YouTube" },
 ];
 
-export function Footer() {
+interface FooterProps {
+  id?: string;
+}
+
+export function Footer({ id }: FooterProps) {
   return (
-    <footer className="gov-gradient text-primary-foreground" id="contato">
+    <footer id={id} className="gov-gradient text-primary-foreground">
       {/* Contact Info Bar */}
       <div className="bg-primary/80">
         <div className="container py-8">

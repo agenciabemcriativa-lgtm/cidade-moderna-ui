@@ -1,3 +1,4 @@
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { HeroBanner } from "@/components/portal/HeroBanner";
@@ -10,16 +11,17 @@ import { Footer } from "@/components/portal/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <AccessibilityBar />
       <TopBar />
-      <Header />
+      <Header id="menu-principal" />
       <main className="flex-1">
         <HeroBanner />
-        <SearchBar />
+        <SearchBar id="buscador" />
         <ServicesGrid />
         <NewsSection />
         <QuickServices />
       </main>
-      <Footer />
+      <Footer id="rodape" />
     </div>
   );
 };
