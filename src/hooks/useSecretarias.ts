@@ -5,7 +5,7 @@ import { secretariasData as fallbackSecretarias } from "@/data/secretarias";
 export interface Secretaria {
   slug: string;
   nome: string;
-  icone?: string;
+  icone: string;
   secretario: {
     nome: string;
     foto: string;
@@ -36,7 +36,7 @@ export function useSecretarias() {
       return data.map(item => ({
         slug: item.slug,
         nome: item.nome,
-        icone: item.icone,
+        icone: item.icone || "Building2",
         secretario: {
           nome: item.secretario_nome || "",
           foto: item.secretario_foto || "",
@@ -71,7 +71,7 @@ export function useSecretaria(slug: string) {
       return {
         slug: data.slug,
         nome: data.nome,
-        icone: data.icone,
+        icone: data.icone || "Building2",
         secretario: {
           nome: data.secretario_nome || "",
           foto: data.secretario_foto || "",

@@ -12,24 +12,37 @@ import {
   Dumbbell, 
   Wallet,
   HardHat,
-  Heart
+  Heart,
+  Trophy,
+  ShieldCheck,
+  Truck,
+  Leaf,
+  type LucideIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSecretarias } from "@/hooks/useSecretarias";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const secretarias = [
-  { icon: Building2, name: "Administração", slug: "administracao" },
-  { icon: Shield, name: "Controle Interno", slug: "controle-interno" },
-  { icon: Palette, name: "Cultura", slug: "cultura" },
-  { icon: Tractor, name: "Desenvolvimento Rural", slug: "desenvolvimento-rural" },
-  { icon: Users, name: "Desenvolvimento Social", slug: "desenvolvimento-social" },
-  { icon: GraduationCap, name: "Educação", slug: "educacao" },
-  { icon: Dumbbell, name: "Esporte", slug: "esporte" },
-  { icon: Wallet, name: "Finanças", slug: "financas" },
-  { icon: HardHat, name: "Obras e Urbanismo", slug: "obras-e-urbanismo" },
-  { icon: Heart, name: "Saúde", slug: "saude" },
-];
+const iconMap: Record<string, LucideIcon> = {
+  Building2,
+  Shield,
+  Palette,
+  Tractor,
+  Users,
+  GraduationCap,
+  Dumbbell,
+  Wallet,
+  HardHat,
+  Heart,
+  Trophy,
+  ShieldCheck,
+  Truck,
+  Leaf,
+};
 
 export default function SecretariasPage() {
+  const { data: secretarias, isLoading } = useSecretarias();
+
   return (
     <div className="min-h-screen flex flex-col">
       <TopBar />
@@ -57,25 +70,35 @@ export default function SecretariasPage() {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {secretarias.map((secretaria) => {
-                const IconComponent = secretaria.icon;
-                return (
-                  <div
-                    key={secretaria.slug}
-                    className="bg-card rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center"
-                  >
-                    <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mb-4">
-                      <IconComponent className="h-8 w-8 text-primary-foreground" />
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-4">{secretaria.name}</h3>
-                    <Button variant="outline" asChild className="w-full">
-                      <Link to={`/secretaria/${secretaria.slug}`}>
-                        ACESSAR SECRETARIA
-                      </Link>
-                    </Button>
+              {isLoading ? (
+                Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="bg-card rounded-xl p-6 flex flex-col items-center text-center">
+                    <Skeleton className="w-16 h-16 rounded-full mb-4" />
+                    <Skeleton className="h-5 w-24 mb-4" />
+                    <Skeleton className="h-10 w-full" />
                   </div>
-                );
-              })}
+                ))
+              ) : (
+                secretarias?.map((secretaria) => {
+                  const IconComponent = iconMap[secretaria.icone || "Building2"] || Building2;
+                  return (
+                    <div
+                      key={secretaria.slug}
+                      className="bg-card rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center"
+                    >
+                      <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mb-4">
+                        <IconComponent className="h-8 w-8 text-primary-foreground" />
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-4">{secretaria.nome}</h3>
+                      <Button variant="outline" asChild className="w-full">
+                        <Link to={`/secretaria/${secretaria.slug}`}>
+                          ACESSAR SECRETARIA
+                        </Link>
+                      </Button>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
         </section>

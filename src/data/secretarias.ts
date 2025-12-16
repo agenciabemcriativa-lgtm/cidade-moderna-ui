@@ -1,6 +1,7 @@
 export interface Secretaria {
   slug: string;
   nome: string;
+  icone: string;
   secretario: {
     nome: string;
     foto: string;
@@ -18,6 +19,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "administracao",
     nome: "Secretaria de Administração",
+    icone: "Building2",
     secretario: {
       nome: "Dr. Carlos Alberto Silva",
       foto: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
@@ -33,6 +35,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "controle-interno",
     nome: "Secretaria de Controle Interno",
+    icone: "ShieldCheck",
     secretario: {
       nome: "Dra. Maria Fernanda Costa",
       foto: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face",
@@ -48,6 +51,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "cultura",
     nome: "Secretaria de Cultura",
+    icone: "Palette",
     secretario: {
       nome: "Prof. Roberto Nascimento",
       foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
@@ -63,6 +67,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "desenvolvimento-rural",
     nome: "Secretaria de Desenvolvimento Rural",
+    icone: "Tractor",
     secretario: {
       nome: "Eng. Agr. José Antônio Pereira",
       foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face",
@@ -78,6 +83,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "desenvolvimento-social",
     nome: "Secretaria de Desenvolvimento Social",
+    icone: "Users",
     secretario: {
       nome: "Dra. Ana Paula Santos",
       foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
@@ -93,6 +99,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "educacao",
     nome: "Secretaria de Educação",
+    icone: "GraduationCap",
     secretario: {
       nome: "Profa. Dra. Luciana Mendes",
       foto: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face",
@@ -108,6 +115,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "esporte",
     nome: "Secretaria de Esporte",
+    icone: "Trophy",
     secretario: {
       nome: "Prof. Marcos Vinícius Lima",
       foto: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop&crop=face",
@@ -123,6 +131,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "financas",
     nome: "Secretaria de Finanças",
+    icone: "Wallet",
     secretario: {
       nome: "Dr. Paulo Ricardo Almeida",
       foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&crop=face",
@@ -138,6 +147,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "obras-urbanismo",
     nome: "Secretaria de Obras e Urbanismo",
+    icone: "HardHat",
     secretario: {
       nome: "Eng. Civil Fernando Oliveira",
       foto: "https://images.unsplash.com/photo-1556157382-97edd2f9e4b8?w=300&h=300&fit=crop&crop=face",
@@ -153,6 +163,7 @@ export const secretariasData: Secretaria[] = [
   {
     slug: "saude",
     nome: "Secretaria de Saúde",
+    icone: "Heart",
     secretario: {
       nome: "Dr. Ricardo Mendonça",
       foto: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=300&fit=crop&crop=face",

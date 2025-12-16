@@ -4,11 +4,46 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Button } from "@/components/ui/button";
-import { secretariasData } from "@/data/secretarias";
+import { useSecretaria } from "@/hooks/useSecretarias";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SecretariaPage() {
   const { slug } = useParams<{ slug: string }>();
-  const secretaria = secretariasData.find((s) => s.slug === slug);
+  const { data: secretaria, isLoading } = useSecretaria(slug || "");
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <TopBar />
+        <Header />
+        <main className="flex-1">
+          <section className="hero-gradient py-12 md:py-20">
+            <div className="container">
+              <Skeleton className="h-6 w-32 mb-6" />
+              <Skeleton className="h-12 w-64" />
+            </div>
+          </section>
+          <section className="py-12 md:py-16">
+            <div className="container">
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2">
+                  <div className="bg-card rounded-2xl p-6 md:p-8">
+                    <Skeleton className="h-40 w-full" />
+                  </div>
+                </div>
+                <div className="lg:col-span-1">
+                  <div className="bg-card rounded-2xl p-6 md:p-8">
+                    <Skeleton className="h-60 w-full" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!secretaria) {
     return (
@@ -59,18 +94,24 @@ export default function SecretariaPage() {
                   </h2>
                   <div className="flex flex-col sm:flex-row gap-6">
                     <div className="shrink-0">
-                      <img
-                        src={secretaria.secretario.foto}
-                        alt={secretaria.secretario.nome}
-                        className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg"
-                      />
+                      {secretaria.secretario.foto ? (
+                        <img
+                          src={secretaria.secretario.foto}
+                          alt={secretaria.secretario.nome}
+                          className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg"
+                        />
+                      ) : (
+                        <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-muted flex items-center justify-center">
+                          <span className="text-muted-foreground text-sm">Sem foto</span>
+                        </div>
+                      )}
                     </div>
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-primary mb-3">
-                        {secretaria.secretario.nome}
+                        {secretaria.secretario.nome || "A definir"}
                       </h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        {secretaria.secretario.biografia}
+                        {secretaria.secretario.biografia || "Biografia não disponível."}
                       </p>
                     </div>
                   </div>
@@ -93,7 +134,7 @@ export default function SecretariaPage() {
                           Endereço
                         </p>
                         <p className="text-muted-foreground text-sm">
-                          {secretaria.contato.endereco}
+                          {secretaria.contato.endereco || "Não informado"}
                         </p>
                       </div>
                     </div>
@@ -107,7 +148,7 @@ export default function SecretariaPage() {
                           Telefone
                         </p>
                         <p className="text-muted-foreground text-sm">
-                          {secretaria.contato.telefone}
+                          {secretaria.contato.telefone || "Não informado"}
                         </p>
                       </div>
                     </div>
@@ -121,7 +162,7 @@ export default function SecretariaPage() {
                           E-mail
                         </p>
                         <p className="text-muted-foreground text-sm break-all">
-                          {secretaria.contato.email}
+                          {secretaria.contato.email || "Não informado"}
                         </p>
                       </div>
                     </div>
