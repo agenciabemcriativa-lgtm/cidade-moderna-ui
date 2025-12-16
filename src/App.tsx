@@ -24,6 +24,8 @@ import AdminBanner from "./pages/admin/AdminBanner";
 import AdminServicos from "./pages/admin/AdminServicos";
 import AdminConfiguracoes from "./pages/admin/AdminConfiguracoes";
 import AdminLicitacoes from "./pages/admin/AdminLicitacoes";
+import AdminGoverno from "./pages/admin/AdminGoverno";
+import AdminMunicipio from "./pages/admin/AdminMunicipio";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +58,8 @@ const App = () => (
             <Route path="/admin/servicos" element={<AdminServicos />} />
             <Route path="/admin/configuracoes" element={<AdminConfiguracoes />} />
             <Route path="/admin/licitacoes" element={<AdminLicitacoes />} />
+            <Route path="/admin/governo" element={<AdminGoverno />} />
+            <Route path="/admin/municipio" element={<AdminMunicipio />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
