@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 
@@ -202,12 +203,10 @@ export default function AdminNoticias() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Conteúdo (HTML)</Label>
-                  <Textarea
-                    value={form.conteudo}
-                    onChange={(e) => setForm({ ...form, conteudo: e.target.value })}
-                    rows={6}
-                    required
+                  <Label>Conteúdo</Label>
+                  <RichTextEditor
+                    content={form.conteudo}
+                    onChange={(content) => setForm({ ...form, conteudo: content })}
                   />
                 </div>
                 <div className="flex items-center gap-2">
