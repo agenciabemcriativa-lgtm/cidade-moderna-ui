@@ -21,7 +21,7 @@ import {
   Hash,
   Gavel,
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   useLicitacao,
@@ -168,7 +168,7 @@ export default function LicitacaoPage() {
                     <div>
                       <p className="text-sm text-muted-foreground">Data de Abertura</p>
                       <p className="font-medium">
-                        {format(new Date(licitacao.data_abertura), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                        {format(parseISO(licitacao.data_abertura), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                       </p>
                     </div>
                   </div>
@@ -179,7 +179,7 @@ export default function LicitacaoPage() {
                       <div>
                         <p className="text-sm text-muted-foreground">Data de Encerramento</p>
                         <p className="font-medium">
-                          {format(new Date(licitacao.data_encerramento), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                          {format(parseISO(licitacao.data_encerramento), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                         </p>
                       </div>
                     </div>
@@ -264,7 +264,7 @@ export default function LicitacaoPage() {
                                       <p className="text-sm text-muted-foreground">{doc.descricao}</p>
                                     )}
                                     <p className="text-xs text-muted-foreground">
-                                      Publicado em {format(new Date(doc.data_publicacao), "dd/MM/yyyy", { locale: ptBR })}
+                                      Publicado em {format(parseISO(doc.data_publicacao), "dd/MM/yyyy", { locale: ptBR })}
                                     </p>
                                   </div>
                                 </div>

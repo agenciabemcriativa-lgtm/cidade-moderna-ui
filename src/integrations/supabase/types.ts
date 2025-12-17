@@ -543,6 +543,7 @@ export type Database = {
         | "dialogo_competitivo"
         | "dispensa"
         | "inexigibilidade"
+        | "chamada_publica"
       status_licitacao:
         | "aberta"
         | "em_andamento"
@@ -703,6 +704,7 @@ export const Constants = {
         "dialogo_competitivo",
         "dispensa",
         "inexigibilidade",
+        "chamada_publica",
       ],
       status_licitacao: [
         "aberta",

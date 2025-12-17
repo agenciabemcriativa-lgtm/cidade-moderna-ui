@@ -43,7 +43,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, FileText, ExternalLink, Search, ArrowLeft } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   useLicitacoes,
@@ -348,7 +348,7 @@ export default function AdminLicitacoes() {
                           </Badge>
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
-                          {format(new Date(licitacao.data_abertura), "dd/MM/yyyy", { locale: ptBR })}
+                          {format(parseISO(licitacao.data_abertura), "dd/MM/yyyy", { locale: ptBR })}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
@@ -495,7 +495,7 @@ export default function AdminLicitacoes() {
                                   {tipoDocumentoLabels[doc.tipo]}
                                 </Badge>
                                 <span>
-                                  {format(new Date(doc.data_publicacao), "dd/MM/yyyy", { locale: ptBR })}
+                                  {format(parseISO(doc.data_publicacao), "dd/MM/yyyy", { locale: ptBR })}
                                 </span>
                               </div>
                             </div>
@@ -654,12 +654,24 @@ export default function AdminLicitacoes() {
                 <div>
                   <Label>Valor Estimado (R$)</Label>
                   <Input
-                    type="number"
-                    step="0.01"
+                    type="text"
+                    inputMode="decimal"
                     value={formData.valor_estimado}
-                    onChange={(e) => setFormData({ ...formData, valor_estimado: e.target.value })}
-                    placeholder="0,00"
+                    onChange={(e) => {
+                      // Permite apenas números e um ponto decimal
+                      const value = e.target.value.replace(/[^0-9.]/g, '');
+                      // Garante apenas um ponto decimal
+                      const parts = value.split('.');
+                      const formatted = parts.length > 2 
+                        ? parts[0] + '.' + parts.slice(1).join('')
+                        : value;
+                      setFormData({ ...formData, valor_estimado: formatted });
+                    }}
+                    placeholder="0.00"
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Use ponto como separador decimal. Ex: 707730.00
+                  </p>
                 </div>
               </div>
 

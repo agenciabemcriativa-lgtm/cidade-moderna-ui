@@ -16,7 +16,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, FileText, Calendar, Building2, ExternalLink, Filter, AlertCircle } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   useLicitacoes,
@@ -210,7 +210,7 @@ export default function LicitacoesPage() {
                               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                                 <span className="flex items-center gap-1">
                                   <Calendar className="w-4 h-4" />
-                                  {format(new Date(licitacao.data_abertura), "dd/MM/yyyy", { locale: ptBR })}
+                                  {format(parseISO(licitacao.data_abertura), "dd/MM/yyyy", { locale: ptBR })}
                                 </span>
                                 {licitacao.secretaria_nome && (
                                   <span className="flex items-center gap-1">
