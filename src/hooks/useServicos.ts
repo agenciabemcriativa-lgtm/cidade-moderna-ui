@@ -43,58 +43,58 @@ const iconMap: Record<string, LucideIcon> = {
 
 const fallbackServicos: Servico[] = [
   {
-    icon: FileText,
+    icon: Eye,
     title: "Portal da Transparência",
-    description: "Acesse informações sobre receitas, despesas e licitações do município",
+    description: "Acesse informações sobre receitas, despesas e licitações",
     color: "bg-primary",
     href: "#"
   },
   {
-    icon: CreditCard,
-    title: "IPTU e Tributos",
-    description: "Emita guias, consulte débitos e negocie pendências",
+    icon: Info,
+    title: "Acesso à Informação (e-SIC)",
+    description: "Solicite informações públicas",
     color: "bg-secondary",
     href: "#"
   },
   {
     icon: FileCheck,
-    title: "Nota Fiscal",
-    description: "Emita notas fiscais de serviços eletrônicas",
+    title: "Licitações e Contratos",
+    description: "Consulte processos licitatórios e contratos",
     color: "bg-primary",
+    href: "/licitacoes"
+  },
+  {
+    icon: Newspaper,
+    title: "Diário Oficial",
+    description: "Publicações oficiais do município",
+    color: "bg-secondary",
     href: "#"
   },
   {
     icon: Building2,
-    title: "Alvará e Licenças",
-    description: "Solicite alvarás de funcionamento e construção",
-    color: "bg-secondary",
-    href: "#"
-  },
-  {
-    icon: Users,
-    title: "Concursos",
-    description: "Acompanhe editais e resultados de concursos públicos",
+    title: "Saúde",
+    description: "Serviços e informações de saúde",
     color: "bg-primary",
     href: "#"
   },
   {
-    icon: Briefcase,
-    title: "Licitações",
-    description: "Consulte processos licitatórios e contratos",
+    icon: BookOpen,
+    title: "Educação",
+    description: "Serviços e informações educacionais",
     color: "bg-secondary",
-    href: "#"
-  },
-  {
-    icon: Scale,
-    title: "Legislação",
-    description: "Consulte leis, decretos e atos normativos",
-    color: "bg-primary",
     href: "#"
   },
   {
     icon: Phone,
-    title: "Ouvidoria",
-    description: "Faça denúncias, sugestões ou elogios",
+    title: "Telefones Úteis",
+    description: "Lista de contatos importantes",
+    color: "bg-primary",
+    href: "#"
+  },
+  {
+    icon: FileText,
+    title: "Perguntas Frequentes",
+    description: "Dúvidas comuns respondidas",
     color: "bg-secondary",
     href: "#"
   }
