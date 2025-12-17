@@ -66,7 +66,7 @@ const menuItems = [
   { label: "Notícias", href: "/noticias", hasDropdown: false, isLink: true },
   { label: "Secretarias", href: "/secretarias", hasDropdown: true, type: "secretarias", isLink: true },
   { label: "Serviços ao Cidadão", href: "#servicos", hasDropdown: true, type: "servicos", isLink: false },
-  { label: "Legislação", href: "/legislacao", hasDropdown: false, isLink: true },
+  { label: "Legislação", href: "https://www.ipubi.pe.gov.br/publicacoes-filtro.php?ano=&cat=6&x=66&y=23", hasDropdown: false, isLink: false, external: true },
   { label: "Publicações", href: "https://www.ipubi.pe.gov.br/publicacoes-oficiais/", hasDropdown: false, isLink: false, external: true },
   { label: "Contato", href: "/contato", hasDropdown: false, isLink: true },
 ];
