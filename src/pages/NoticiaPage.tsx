@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Calendar, Tag, Share2, Facebook, Twitter } from "lucide-react";
+import { ArrowLeft, Calendar, Tag, Share2, Facebook, Instagram } from "lucide-react";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -143,12 +143,24 @@ export default function NoticiaPage() {
                 <Share2 className="w-4 h-4" />
                 Compartilhar:
               </span>
-              <button className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-80 transition-opacity">
+              <a 
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-80 transition-opacity"
+                aria-label="Compartilhar no Facebook"
+              >
                 <Facebook className="w-4 h-4" />
-              </button>
-              <button className="w-8 h-8 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:opacity-80 transition-opacity">
-                <Twitter className="w-4 h-4" />
-              </button>
+              </a>
+              <a 
+                href={`https://www.instagram.com/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 text-white flex items-center justify-center hover:opacity-80 transition-opacity"
+                aria-label="Seguir no Instagram"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
             </div>
 
             {/* Content */}
