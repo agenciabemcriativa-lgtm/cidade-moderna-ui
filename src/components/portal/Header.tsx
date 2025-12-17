@@ -42,20 +42,20 @@ const servicosCidadao: { category: string; items: ServicoItem[] }[] = [
       { 
         label: "Saúde", 
         children: [
-          { label: "UBS", href: "#ubs" },
-          { label: "CAPS", href: "#caps" },
-          { label: "Hospital", href: "#hospital" },
+          { label: "UBS", href: "/atendimento/ubs" },
+          { label: "CAPS", href: "/atendimento/caps" },
+          { label: "Hospital", href: "/atendimento/hospital" },
         ]
       },
       { 
         label: "Assistência Social", 
         children: [
-          { label: "CRAS", href: "#cras" },
-          { label: "CREAS", href: "#creas" },
+          { label: "CRAS", href: "/atendimento/cras" },
+          { label: "CREAS", href: "/atendimento/creas" },
         ]
       },
-      { label: "Educação", href: "#educacao" },
-      { label: "Programas e Serviços", href: "#programas" },
+      { label: "Educação", href: "/atendimento/educacao" },
+      { label: "Programas e Serviços", href: "/atendimento/programas-servicos" },
     ]
   }
 ];
