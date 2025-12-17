@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Moon, ZoomIn, ZoomOut, Accessibility } from "lucide-react";
+import { Moon, BookOpen, Accessibility } from "lucide-react";
 
 const skipLinks = [
   { label: "Ir para Menu", shortcut: "1", href: "#menu-principal" },
@@ -9,11 +9,20 @@ const skipLinks = [
 ];
 
 export function AccessibilityBar() {
-  const [fontSize, setFontSize] = useState(100);
-  const [highContrast, setHighContrast] = useState(false);
+  const [fontSize, setFontSize] = useState(() => {
+    const saved = localStorage.getItem("accessibility-font-size");
+    return saved ? parseInt(saved) : 100;
+  });
+  const [highContrast, setHighContrast] = useState(() => {
+    return localStorage.getItem("accessibility-high-contrast") === "true";
+  });
+  const [readingMode, setReadingMode] = useState(() => {
+    return localStorage.getItem("accessibility-reading-mode") === "true";
+  });
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontSize}%`;
+    localStorage.setItem("accessibility-font-size", fontSize.toString());
   }, [fontSize]);
 
   useEffect(() => {
@@ -22,7 +31,17 @@ export function AccessibilityBar() {
     } else {
       document.documentElement.classList.remove("high-contrast");
     }
+    localStorage.setItem("accessibility-high-contrast", highContrast.toString());
   }, [highContrast]);
+
+  useEffect(() => {
+    if (readingMode) {
+      document.documentElement.classList.add("reading-mode");
+    } else {
+      document.documentElement.classList.remove("reading-mode");
+    }
+    localStorage.setItem("accessibility-reading-mode", readingMode.toString());
+  }, [readingMode]);
 
   const increaseFontSize = () => {
     setFontSize((prev) => Math.min(prev + 10, 150));
@@ -40,12 +59,16 @@ export function AccessibilityBar() {
     setHighContrast((prev) => !prev);
   };
 
+  const toggleReadingMode = () => {
+    setReadingMode((prev) => !prev);
+  };
+
   return (
     <div className="bg-[#0a1628] text-white">
       <div className="container flex items-center justify-between py-1.5 text-xs">
         {/* Skip Links */}
         <nav className="hidden md:flex items-center gap-1" aria-label="Links de navegação rápida">
-          {skipLinks.map((link, index) => (
+          {skipLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -60,7 +83,23 @@ export function AccessibilityBar() {
         </nav>
 
         {/* Accessibility Controls */}
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center gap-2 ml-auto flex-wrap">
+          {/* Reading Mode */}
+          <button
+            onClick={toggleReadingMode}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded transition-colors ${
+              readingMode 
+                ? "bg-accent text-accent-foreground" 
+                : "hover:bg-white/10"
+            }`}
+            aria-label="Alternar modo de leitura simplificada"
+            aria-pressed={readingMode}
+            title="Ativa layout simplificado com maior espaçamento e fonte mais legível"
+          >
+            <BookOpen className="w-4 h-4" />
+            <span className="font-medium hidden sm:inline">LEITURA</span>
+          </button>
+
           {/* High Contrast */}
           <button
             onClick={toggleContrast}
@@ -73,7 +112,7 @@ export function AccessibilityBar() {
             aria-pressed={highContrast}
           >
             <Moon className="w-4 h-4" />
-            <span className="font-medium">ALTO CONTRASTE</span>
+            <span className="font-medium hidden sm:inline">CONTRASTE</span>
           </button>
 
           {/* Font Size Controls */}
@@ -106,7 +145,7 @@ export function AccessibilityBar() {
 
           {/* Accessibility Link */}
           <a
-            href="#acessibilidade"
+            href="/acessibilidade"
             className="flex items-center gap-1.5 px-3 py-1 rounded hover:bg-white/10 transition-colors border-l border-white/20 ml-1 pl-3"
             aria-label="Informações de acessibilidade"
           >

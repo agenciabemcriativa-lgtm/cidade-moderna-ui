@@ -148,6 +148,89 @@
   background: hsl(0 0% 0%);
 }
 
+/* Simplified Reading Mode - For cognitive accessibility */
+.reading-mode {
+  --background: 60 30% 96%;
+  --foreground: 30 10% 20%;
+  --card: 60 25% 98%;
+  --card-foreground: 30 10% 20%;
+}
+
+.reading-mode body,
+.reading-mode {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.15em;
+}
+
+.reading-mode * {
+  line-height: 1.8 !important;
+}
+
+.reading-mode p,
+.reading-mode li,
+.reading-mode span,
+.reading-mode a,
+.reading-mode td,
+.reading-mode th {
+  font-size: 1.15rem !important;
+}
+
+.reading-mode h1 {
+  font-size: 2rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.reading-mode h2 {
+  font-size: 1.75rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.reading-mode h3 {
+  font-size: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.reading-mode main {
+  max-width: 800px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+.reading-mode .container {
+  max-width: 800px !important;
+}
+
+.reading-mode img {
+  margin: 1.5rem auto !important;
+  display: block !important;
+}
+
+.reading-mode a {
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+}
+
+.reading-mode button,
+.reading-mode a[role="button"] {
+  padding: 0.75rem 1.5rem !important;
+  font-size: 1.1rem !important;
+}
+
+/* Hide decorative elements in reading mode */
+.reading-mode .gov-gradient,
+.reading-mode .hero-gradient {
+  background: hsl(var(--primary)) !important;
+}
+
+/* Focus indicator enhancement for reading mode */
+.reading-mode *:focus {
+  outline: 3px solid hsl(var(--primary)) !important;
+  outline-offset: 4px !important;
+}
+
 /* Rich Text Editor - Image Resize Styles */
 .ProseMirror img {
   cursor: pointer;
