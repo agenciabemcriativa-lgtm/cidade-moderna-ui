@@ -158,10 +158,48 @@ export default function AdminBanner() {
                 <Plus className="h-4 w-4 mr-2" /> Novo Slide
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{editingId ? "Editar Slide" : "Novo Slide"}</DialogTitle>
               </DialogHeader>
+              
+              {/* Preview em tempo real */}
+              <div className="mb-4">
+                <Label className="text-sm font-medium mb-2 block">Preview</Label>
+                <div 
+                  className={`${form.bg_class || ""} relative rounded-lg overflow-hidden`}
+                  style={!form.bg_class && form.bg_color ? { backgroundColor: form.bg_color } : undefined}
+                >
+                  {/* Background Image Layer */}
+                  {form.bg_image_url && (
+                    <div 
+                      className="absolute inset-0 bg-cover bg-no-repeat"
+                      style={{
+                        backgroundImage: `url(${form.bg_image_url})`,
+                        backgroundPosition: form.bg_image_position || "center",
+                        opacity: form.bg_image_opacity ?? 1,
+                      }}
+                    />
+                  )}
+                  <div className="relative z-10 py-8 px-6 text-center">
+                    {form.subtitulo && (
+                      <span className="inline-block px-3 py-1 bg-yellow-500 text-yellow-900 text-xs font-bold uppercase tracking-wider rounded-full mb-2">
+                        {form.subtitulo}
+                      </span>
+                    )}
+                    <h2 className="text-xl md:text-2xl font-black text-white leading-tight mb-2">
+                      {form.titulo || "Título do Banner"}
+                    </h2>
+                    <p className="text-sm text-white/90 mb-4 max-w-md mx-auto">
+                      {form.descricao || "Descrição do banner aparecerá aqui..."}
+                    </p>
+                    <button className="px-4 py-2 bg-yellow-500 text-yellow-900 text-sm font-bold rounded-lg">
+                      {form.cta_texto || "Saiba Mais"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label>Título</Label>
