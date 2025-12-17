@@ -11,7 +11,8 @@ export type ModalidadeLicitacao =
   | 'leilao'
   | 'dialogo_competitivo'
   | 'dispensa'
-  | 'inexigibilidade';
+  | 'inexigibilidade'
+  | 'chamada_publica';
 
 export type StatusLicitacao = 
   | 'aberta'
@@ -83,6 +84,7 @@ export const modalidadeLabels: Record<ModalidadeLicitacao, string> = {
   dialogo_competitivo: 'Diálogo Competitivo',
   dispensa: 'Dispensa de Licitação',
   inexigibilidade: 'Inexigibilidade',
+  chamada_publica: 'Chamada Pública',
 };
 
 export const statusLabels: Record<StatusLicitacao, string> = {
