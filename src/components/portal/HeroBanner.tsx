@@ -92,9 +92,17 @@ export function HeroBanner() {
               <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 mx-auto animate-fade-in" style={{ animationDelay: "200ms" }}>
                 {slide.description}
               </p>
-              <Button variant="hero" className="animate-scale-in" style={{ animationDelay: "400ms" }}>
-                {slide.cta}
-              </Button>
+              {slide.ctaLink && slide.ctaLink !== "#" ? (
+                <a href={slide.ctaLink} target="_blank" rel="noopener noreferrer">
+                  <Button variant="hero" className="animate-scale-in" style={{ animationDelay: "400ms" }}>
+                    {slide.cta}
+                  </Button>
+                </a>
+              ) : (
+                <Button variant="hero" className="animate-scale-in" style={{ animationDelay: "400ms" }}>
+                  {slide.cta}
+                </Button>
+              )}
             </div>
           </div>
         </div>
