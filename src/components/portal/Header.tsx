@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
@@ -7,18 +7,57 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
 import { useSecretarias } from "@/hooks/useSecretarias";
 import { useGovernoItens } from "@/hooks/useGovernoItens";
 import { useMunicipioItens } from "@/hooks/useMunicipioItens";
 
-const servicosCidadao = [
-  { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
-  { label: "Licitações", href: "/licitacoes", external: false },
-  { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
-  { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },
-  { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
+interface ServicoItem {
+  label: string;
+  href?: string;
+  external?: boolean;
+  children?: ServicoItem[];
+}
+
+const servicosCidadao: { category: string; items: ServicoItem[] }[] = [
+  {
+    category: "Serviços Digitais",
+    items: [
+      { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
+      { label: "Licitações", href: "/licitacoes", external: false },
+      { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
+      { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },
+      { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
+    ]
+  },
+  {
+    category: "Atendimento ao Cidadão",
+    items: [
+      { 
+        label: "Saúde", 
+        children: [
+          { label: "UBS", href: "#ubs" },
+          { label: "CAPS", href: "#caps" },
+          { label: "Hospital", href: "#hospital" },
+        ]
+      },
+      { 
+        label: "Assistência Social", 
+        children: [
+          { label: "CRAS", href: "#cras" },
+          { label: "CREAS", href: "#creas" },
+        ]
+      },
+      { label: "Educação", href: "#educacao" },
+      { label: "Programas e Serviços", href: "#programas" },
+    ]
+  }
 ];
 
 const menuItems = [
@@ -44,6 +83,47 @@ export function Header({ id }: HeaderProps) {
   const { data: governoItens = [] } = useGovernoItens();
   const { data: municipioItens = [] } = useMunicipioItens();
 
+  const renderServicoItem = (item: ServicoItem) => {
+    if (item.children && item.children.length > 0) {
+      return (
+        <DropdownMenuSub key={item.label}>
+          <DropdownMenuSubTrigger className="cursor-pointer">
+            {item.label}
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent className="bg-card border border-border shadow-lg">
+            {item.children.map((child) => (
+              <DropdownMenuItem key={child.label} asChild>
+                {child.external ? (
+                  <a href={child.href} target="_blank" rel="noopener noreferrer" className="w-full cursor-pointer">
+                    {child.label}
+                  </a>
+                ) : (
+                  <Link to={child.href || "#"} className="w-full cursor-pointer">
+                    {child.label}
+                  </Link>
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+      );
+    }
+    
+    return (
+      <DropdownMenuItem key={item.label} asChild>
+        {item.external ? (
+          <a href={item.href} target="_blank" rel="noopener noreferrer" className="w-full cursor-pointer">
+            {item.label}
+          </a>
+        ) : (
+          <Link to={item.href || "#"} className="w-full cursor-pointer">
+            {item.label}
+          </Link>
+        )}
+      </DropdownMenuItem>
+    );
+  };
+
   const renderDropdownContent = (type: string) => {
     if (type === "secretarias") {
       return secretarias.map((item) => (
@@ -58,26 +138,14 @@ export function Header({ id }: HeaderProps) {
       ));
     }
     if (type === "servicos") {
-      return servicosCidadao.map((item) => (
-        <DropdownMenuItem key={item.href} asChild>
-          {item.external ? (
-            <a 
-              href={item.href} 
-              className="w-full cursor-pointer"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {item.label}
-            </a>
-          ) : (
-            <Link
-              to={item.href}
-              className="w-full cursor-pointer"
-            >
-              {item.label}
-            </Link>
-          )}
-        </DropdownMenuItem>
+      return servicosCidadao.map((category) => (
+        <div key={category.category}>
+          <DropdownMenuLabel className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+            {category.category}
+          </DropdownMenuLabel>
+          {category.items.map((item) => renderServicoItem(item))}
+          <DropdownMenuSeparator />
+        </div>
       ));
     }
     if (type === "governo") {
@@ -109,7 +177,24 @@ export function Header({ id }: HeaderProps) {
 
   const getMobileSubItems = (type: string) => {
     if (type === "secretarias") return secretarias.map(s => ({ label: s.nome, slug: s.slug }));
-    if (type === "servicos") return servicosCidadao;
+    if (type === "servicos") {
+      // Flatten the hierarchical structure for mobile
+      const items: { label: string; href: string; external: boolean; isCategory?: boolean; isSubItem?: boolean }[] = [];
+      servicosCidadao.forEach(category => {
+        items.push({ label: category.category, href: "#", external: false, isCategory: true });
+        category.items.forEach(item => {
+          if (item.children) {
+            items.push({ label: item.label, href: "#", external: false, isSubItem: true });
+            item.children.forEach(child => {
+              items.push({ label: `  ${child.label}`, href: child.href || "#", external: child.external || false });
+            });
+          } else {
+            items.push({ label: item.label, href: item.href || "#", external: item.external || false });
+          }
+        });
+      });
+      return items;
+    }
     if (type === "governo") return governoItens.map(g => ({ label: g.titulo, href: `/governo/${g.slug}`, external: false }));
     if (type === "municipio") return municipioItens.map(m => ({ label: m.titulo, href: `/municipio/${m.slug}`, external: false }));
     return [];
@@ -128,10 +213,30 @@ export function Header({ id }: HeaderProps) {
         </Link>
       );
     }
+    if (subItem.isCategory) {
+      return (
+        <div
+          key={subItem.label}
+          className="px-4 py-2 text-xs font-bold text-muted-foreground uppercase tracking-wider mt-2 first:mt-0"
+        >
+          {subItem.label}
+        </div>
+      );
+    }
+    if (subItem.isSubItem) {
+      return (
+        <div
+          key={subItem.label}
+          className="px-4 py-1 text-sm font-semibold text-foreground"
+        >
+          {subItem.label}
+        </div>
+      );
+    }
     if (subItem.external) {
       return (
         <a
-          key={subItem.href}
+          key={`${subItem.label}-${subItem.href}`}
           href={subItem.href}
           target="_blank"
           rel="noopener noreferrer"
@@ -144,7 +249,7 @@ export function Header({ id }: HeaderProps) {
     }
     return (
       <Link
-        key={subItem.href}
+        key={`${subItem.label}-${subItem.href}`}
         to={subItem.href}
         className="px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
         onClick={() => setMobileMenuOpen(false)}
@@ -179,7 +284,7 @@ export function Header({ id }: HeaderProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="start"
-                  className="w-56 bg-card border border-border shadow-lg z-[100]"
+                  className={`bg-card border border-border shadow-lg z-[100] ${item.type === 'servicos' ? 'w-64' : 'w-56'}`}
                 >
                   {renderDropdownContent(item.type!)}
                 </DropdownMenuContent>
