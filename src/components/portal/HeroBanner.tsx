@@ -5,18 +5,39 @@ import { useBannerSlides } from "@/hooks/useBannerSlides";
 
 export function HeroBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [animationKey, setAnimationKey] = useState(0);
   const { data: slides = [] } = useBannerSlides();
+
+  const getTransitionAnimation = (effect: string = "fade") => {
+    const animations: Record<string, string> = {
+      "fade": "animate-banner-fade",
+      "slide-left": "animate-banner-slide-left",
+      "slide-right": "animate-banner-slide-right",
+      "zoom-in": "animate-banner-zoom-in",
+      "zoom-out": "animate-banner-zoom-out",
+      "flip": "animate-banner-flip",
+    };
+    return animations[effect] || animations["fade"];
+  };
 
   useEffect(() => {
     if (slides.length === 0) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setAnimationKey((prev) => prev + 1);
     }, 6000);
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setAnimationKey((prev) => prev + 1);
+  };
+  
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setAnimationKey((prev) => prev + 1);
+  };
 
   if (slides.length === 0) {
     return (
@@ -31,14 +52,16 @@ export function HeroBanner() {
   }
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden" style={{ perspective: "1000px" }}>
       {slides.map((slide, index) => (
         <div
-          key={index}
-          className={`${slide.bgClass || ""} transition-all duration-700 ease-in-out ${
+          key={`${index}-${index === currentSlide ? animationKey : 'inactive'}`}
+          className={`${slide.bgClass || ""} ${
             index === 0 ? "relative" : "absolute inset-0"
-          } ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"}`}
-          style={!slide.bgClass && slide.bgColor ? { backgroundColor: slide.bgColor } : undefined}
+          } ${index === currentSlide ? `opacity-100 z-10 ${getTransitionAnimation(slide.transitionEffect)}` : "opacity-0 z-0"}`}
+          style={{
+            ...(!slide.bgClass && slide.bgColor ? { backgroundColor: slide.bgColor } : {}),
+          }}
         >
           {/* Background Image Layer */}
           {slide.bgImageUrl && (
@@ -87,7 +110,10 @@ export function HeroBanner() {
           {slides.map((_, index) => (
             <button
               key={index}
-              onClick={() => setCurrentSlide(index)}
+              onClick={() => {
+                setCurrentSlide(index);
+                setAnimationKey((prev) => prev + 1);
+              }}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide ? "bg-highlight w-8" : "bg-primary-foreground/40 hover:bg-primary-foreground/60"
               }`}

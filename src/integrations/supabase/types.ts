@@ -90,6 +90,7 @@ export type Database = {
           ordem: number | null
           subtitulo: string | null
           titulo: string
+          transition_effect: string | null
           updated_at: string | null
         }
         Insert: {
@@ -107,6 +108,7 @@ export type Database = {
           ordem?: number | null
           subtitulo?: string | null
           titulo: string
+          transition_effect?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -124,6 +126,7 @@ export type Database = {
           ordem?: number | null
           subtitulo?: string | null
           titulo?: string
+          transition_effect?: string | null
           updated_at?: string | null
         }
         Relationships: []

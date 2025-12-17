@@ -24,6 +24,7 @@ interface BannerSlide {
   bg_image_url: string | null;
   bg_image_opacity: number | null;
   bg_image_position: string | null;
+  transition_effect: string | null;
   ordem: number;
   ativo: boolean;
 }
@@ -43,6 +44,7 @@ export default function AdminBanner() {
     bg_image_url: "",
     bg_image_opacity: 1,
     bg_image_position: "center",
+    transition_effect: "fade",
     ordem: 0,
     ativo: true,
   });
@@ -109,6 +111,7 @@ export default function AdminBanner() {
       bg_image_url: "",
       bg_image_opacity: 1,
       bg_image_position: "center",
+      transition_effect: "fade",
       ordem: 0,
       ativo: true,
     });
@@ -128,6 +131,7 @@ export default function AdminBanner() {
       bg_image_url: item.bg_image_url || "",
       bg_image_opacity: item.bg_image_opacity ?? 1,
       bg_image_position: item.bg_image_position || "center",
+      transition_effect: item.transition_effect || "fade",
       ordem: item.ordem,
       ativo: item.ativo,
     });
@@ -305,13 +309,30 @@ export default function AdminBanner() {
                     </select>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label>Ordem</Label>
-                  <Input
-                    type="number"
-                    value={form.ordem}
-                    onChange={(e) => setForm({ ...form, ordem: parseInt(e.target.value) })}
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Efeito de Transição</Label>
+                    <select
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      value={form.transition_effect}
+                      onChange={(e) => setForm({ ...form, transition_effect: e.target.value })}
+                    >
+                      <option value="fade">Fade (Desvanecer)</option>
+                      <option value="slide-left">Slide Esquerda</option>
+                      <option value="slide-right">Slide Direita</option>
+                      <option value="zoom-in">Zoom In</option>
+                      <option value="zoom-out">Zoom Out</option>
+                      <option value="flip">Flip (Girar)</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Ordem</Label>
+                    <Input
+                      type="number"
+                      value={form.ordem}
+                      onChange={(e) => setForm({ ...form, ordem: parseInt(e.target.value) })}
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch
