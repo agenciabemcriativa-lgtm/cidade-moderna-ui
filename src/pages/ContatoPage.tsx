@@ -3,7 +3,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Send } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -67,7 +67,6 @@ export default function ContatoPage() {
   const socialLinks = [
     { icon: Facebook, href: "https://facebook.com", label: "Facebook", color: "bg-blue-600 hover:bg-blue-700" },
     { icon: Instagram, href: "https://instagram.com", label: "Instagram", color: "bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600" },
-    { icon: Youtube, href: "https://youtube.com", label: "YouTube", color: "bg-red-600 hover:bg-red-700" },
   ];
 
   return (

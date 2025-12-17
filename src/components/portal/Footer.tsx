@@ -1,7 +1,6 @@
 import { 
   Facebook, 
   Instagram, 
-  Youtube,
   MapPin,
   Phone,
   Clock,
@@ -33,7 +32,6 @@ const quickLinks = [
 const socialLinks = [
   { icon: Facebook, href: "#facebook", label: "Facebook" },
   { icon: Instagram, href: "#instagram", label: "Instagram" },
-  { icon: Youtube, href: "#youtube", label: "YouTube" },
 ];
 
 interface FooterProps {
