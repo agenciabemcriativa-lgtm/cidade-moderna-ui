@@ -84,6 +84,7 @@ export type Database = {
           bg_image_url: string | null
           created_at: string | null
           cta_link: string | null
+          cta_nova_aba: boolean | null
           cta_texto: string | null
           descricao: string | null
           display_duration: number | null
@@ -104,6 +105,7 @@ export type Database = {
           bg_image_url?: string | null
           created_at?: string | null
           cta_link?: string | null
+          cta_nova_aba?: boolean | null
           cta_texto?: string | null
           descricao?: string | null
           display_duration?: number | null
@@ -124,6 +126,7 @@ export type Database = {
           bg_image_url?: string | null
           created_at?: string | null
           cta_link?: string | null
+          cta_nova_aba?: boolean | null
           cta_texto?: string | null
           descricao?: string | null
           display_duration?: number | null
