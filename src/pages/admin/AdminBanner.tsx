@@ -20,6 +20,9 @@ interface BannerSlide {
   cta_texto: string | null;
   cta_link: string | null;
   bg_class: string | null;
+  bg_image_url: string | null;
+  bg_image_opacity: number | null;
+  bg_image_position: string | null;
   ordem: number;
   ativo: boolean;
 }
@@ -35,6 +38,9 @@ export default function AdminBanner() {
     cta_texto: "Saiba Mais",
     cta_link: "#",
     bg_class: "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+    bg_image_url: "",
+    bg_image_opacity: 1,
+    bg_image_position: "center",
     ordem: 0,
     ativo: true,
   });
@@ -97,6 +103,9 @@ export default function AdminBanner() {
       cta_texto: "Saiba Mais",
       cta_link: "#",
       bg_class: "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+      bg_image_url: "",
+      bg_image_opacity: 1,
+      bg_image_position: "center",
       ordem: 0,
       ativo: true,
     });
@@ -112,6 +121,9 @@ export default function AdminBanner() {
       cta_texto: item.cta_texto || "Saiba Mais",
       cta_link: item.cta_link || "#",
       bg_class: item.bg_class || "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+      bg_image_url: item.bg_image_url || "",
+      bg_image_opacity: item.bg_image_opacity ?? 1,
+      bg_image_position: item.bg_image_position || "center",
       ordem: item.ordem,
       ativo: item.ativo,
     });
@@ -186,22 +198,60 @@ export default function AdminBanner() {
                     />
                   </div>
                 </div>
+                <div className="space-y-2">
+                  <Label>Classe de Background (cor/gradiente)</Label>
+                  <Input
+                    value={form.bg_class}
+                    onChange={(e) => setForm({ ...form, bg_class: e.target.value })}
+                    placeholder="bg-gradient-to-br from-primary via-primary/90 to-secondary"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>URL da Imagem de Fundo (opcional)</Label>
+                  <Input
+                    value={form.bg_image_url}
+                    onChange={(e) => setForm({ ...form, bg_image_url: e.target.value })}
+                    placeholder="https://exemplo.com/imagem.jpg"
+                  />
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Classe de Background</Label>
+                    <Label>Opacidade da Imagem (0 a 1)</Label>
                     <Input
-                      value={form.bg_class}
-                      onChange={(e) => setForm({ ...form, bg_class: e.target.value })}
+                      type="number"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={form.bg_image_opacity}
+                      onChange={(e) => setForm({ ...form, bg_image_opacity: parseFloat(e.target.value) || 1 })}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Ordem</Label>
-                    <Input
-                      type="number"
-                      value={form.ordem}
-                      onChange={(e) => setForm({ ...form, ordem: parseInt(e.target.value) })}
-                    />
+                    <Label>Posição da Imagem</Label>
+                    <select
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      value={form.bg_image_position}
+                      onChange={(e) => setForm({ ...form, bg_image_position: e.target.value })}
+                    >
+                      <option value="center">Centro</option>
+                      <option value="top">Superior</option>
+                      <option value="bottom">Inferior</option>
+                      <option value="left">Esquerda</option>
+                      <option value="right">Direita</option>
+                      <option value="top left">Superior Esquerda</option>
+                      <option value="top right">Superior Direita</option>
+                      <option value="bottom left">Inferior Esquerda</option>
+                      <option value="bottom right">Inferior Direita</option>
+                    </select>
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Ordem</Label>
+                  <Input
+                    type="number"
+                    value={form.ordem}
+                    onChange={(e) => setForm({ ...form, ordem: parseInt(e.target.value) })}
+                  />
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch
