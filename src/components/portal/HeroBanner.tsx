@@ -22,12 +22,13 @@ export function HeroBanner() {
 
   useEffect(() => {
     if (slides.length === 0) return;
+    const currentDisplayDuration = slides[currentSlide]?.displayDuration || 6;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
       setAnimationKey((prev) => prev + 1);
-    }, 6000);
+    }, currentDisplayDuration * 1000);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, currentSlide, slides]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -61,6 +62,7 @@ export function HeroBanner() {
           } ${index === currentSlide ? `opacity-100 z-10 ${getTransitionAnimation(slide.transitionEffect)}` : "opacity-0 z-0"}`}
           style={{
             ...(!slide.bgClass && slide.bgColor ? { backgroundColor: slide.bgColor } : {}),
+            ...(index === currentSlide ? { animationDuration: `${slide.transitionDuration || 700}ms` } : {}),
           }}
         >
           {/* Background Image Layer */}

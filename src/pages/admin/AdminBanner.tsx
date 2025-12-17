@@ -25,6 +25,8 @@ interface BannerSlide {
   bg_image_opacity: number | null;
   bg_image_position: string | null;
   transition_effect: string | null;
+  display_duration: number | null;
+  transition_duration: number | null;
   ordem: number;
   ativo: boolean;
 }
@@ -45,6 +47,8 @@ export default function AdminBanner() {
     bg_image_opacity: 1,
     bg_image_position: "center",
     transition_effect: "fade",
+    display_duration: 6,
+    transition_duration: 700,
     ordem: 0,
     ativo: true,
   });
@@ -112,6 +116,8 @@ export default function AdminBanner() {
       bg_image_opacity: 1,
       bg_image_position: "center",
       transition_effect: "fade",
+      display_duration: 6,
+      transition_duration: 700,
       ordem: 0,
       ativo: true,
     });
@@ -132,6 +138,8 @@ export default function AdminBanner() {
       bg_image_opacity: item.bg_image_opacity ?? 1,
       bg_image_position: item.bg_image_position || "center",
       transition_effect: item.transition_effect || "fade",
+      display_duration: item.display_duration ?? 6,
+      transition_duration: item.transition_duration ?? 700,
       ordem: item.ordem,
       ativo: item.ativo,
     });
@@ -309,7 +317,7 @@ export default function AdminBanner() {
                     </select>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label>Efeito de Transição</Label>
                     <select
@@ -325,6 +333,29 @@ export default function AdminBanner() {
                       <option value="flip">Flip (Girar)</option>
                     </select>
                   </div>
+                  <div className="space-y-2">
+                    <Label>Tempo de Exibição (segundos)</Label>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="60"
+                      value={form.display_duration}
+                      onChange={(e) => setForm({ ...form, display_duration: parseInt(e.target.value) || 6 })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Duração da Transição (ms)</Label>
+                    <Input
+                      type="number"
+                      min="100"
+                      max="3000"
+                      step="100"
+                      value={form.transition_duration}
+                      onChange={(e) => setForm({ ...form, transition_duration: parseInt(e.target.value) || 700 })}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Ordem</Label>
                     <Input

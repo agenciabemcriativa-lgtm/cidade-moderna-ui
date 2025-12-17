@@ -86,10 +86,12 @@ export type Database = {
           cta_link: string | null
           cta_texto: string | null
           descricao: string | null
+          display_duration: number | null
           id: string
           ordem: number | null
           subtitulo: string | null
           titulo: string
+          transition_duration: number | null
           transition_effect: string | null
           updated_at: string | null
         }
@@ -104,10 +106,12 @@ export type Database = {
           cta_link?: string | null
           cta_texto?: string | null
           descricao?: string | null
+          display_duration?: number | null
           id?: string
           ordem?: number | null
           subtitulo?: string | null
           titulo: string
+          transition_duration?: number | null
           transition_effect?: string | null
           updated_at?: string | null
         }
@@ -122,10 +126,12 @@ export type Database = {
           cta_link?: string | null
           cta_texto?: string | null
           descricao?: string | null
+          display_duration?: number | null
           id?: string
           ordem?: number | null
           subtitulo?: string | null
           titulo?: string
+          transition_duration?: number | null
           transition_effect?: string | null
           updated_at?: string | null
         }

@@ -13,6 +13,8 @@ interface BannerSlide {
   bgImageOpacity?: number;
   bgImagePosition?: string;
   transitionEffect?: string;
+  displayDuration?: number;
+  transitionDuration?: number;
 }
 
 const fallbackSlides: BannerSlide[] = [
@@ -68,6 +70,8 @@ export function useBannerSlides() {
         bgImageOpacity: item.bg_image_opacity ? Number(item.bg_image_opacity) : 1,
         bgImagePosition: item.bg_image_position || "center",
         transitionEffect: item.transition_effect || "fade",
+        displayDuration: item.display_duration || 6,
+        transitionDuration: item.transition_duration || 700,
       })) as BannerSlide[];
     },
   });
