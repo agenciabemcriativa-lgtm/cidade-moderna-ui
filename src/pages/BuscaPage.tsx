@@ -3,6 +3,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { useNoticias } from "@/hooks/useNoticias";
 import { useLicitacoes, modalidadeLabels, statusLabels, statusColors } from "@/hooks/useLicitacoes";
 import { Calendar, Search, FileText, Newspaper, X } from "lucide-react";
@@ -73,6 +74,13 @@ export default function BuscaPage() {
       <TopBar />
       <Header />
       <main className="flex-1">
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs items={[{ label: "Busca" }]} />
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className="bg-primary py-12">
           <div className="container mx-auto px-4 text-center">

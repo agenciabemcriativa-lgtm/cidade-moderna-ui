@@ -3,6 +3,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { useAtendimentoItem } from "@/hooks/useAtendimentoItens";
 import { MapPin, Phone, Mail, Clock, User, ArrowLeft } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -79,16 +80,21 @@ export default function AtendimentoPage() {
       <Header />
       
       <main>
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs 
+              items={[
+                { label: "Atendimento", href: "/atendimento" },
+                { label: item.titulo }
+              ]} 
+            />
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className={`${getCategoryColor(item.categoria)} py-16`}>
           <div className="container">
-            <Link
-              to="/atendimento"
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Voltar para Atendimento ao Cidadão
-            </Link>
             <Badge className="bg-white/20 text-white mb-4">
               {item.categoria}
               {item.subcategoria && ` • ${item.subcategoria}`}

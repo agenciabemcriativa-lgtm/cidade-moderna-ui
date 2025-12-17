@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -100,14 +101,20 @@ export default function LicitacaoPage() {
       <TopBar />
       <Header />
       
-      <main className="flex-1 py-8">
-        <div className="container">
-          {/* Breadcrumb */}
-          <Link to="/licitacoes" className="inline-flex items-center text-primary hover:underline mb-6">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar para Licitações
-          </Link>
+      <main className="flex-1">
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs 
+              items={[
+                { label: "Licitações", href: "/licitacoes" },
+                { label: licitacao.numero_processo }
+              ]} 
+            />
+          </div>
+        </div>
 
+        <div className="container py-8">
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-wrap items-center gap-2 mb-4">

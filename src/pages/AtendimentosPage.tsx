@@ -3,6 +3,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { useAtendimentoItens } from "@/hooks/useAtendimentoItens";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -81,6 +82,13 @@ export default function AtendimentosPage() {
       <Header />
       
       <main>
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs items={[{ label: "Atendimento ao Cidadão" }]} />
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary via-primary/90 to-secondary py-16">
           <div className="container">
