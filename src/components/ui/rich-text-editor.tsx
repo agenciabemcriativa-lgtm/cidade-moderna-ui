@@ -1,6 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
 import { useEffect } from "react";
 import { Button } from "./button";
 import {
@@ -14,6 +15,7 @@ import {
   Undo,
   Redo,
   Quote,
+  ImageIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +47,13 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
           class: "text-primary underline",
         },
       }),
+      Image.configure({
+        inline: false,
+        allowBase64: true,
+        HTMLAttributes: {
+          class: "max-w-full h-auto rounded-lg my-4",
+        },
+      }),
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -53,7 +62,7 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-none min-h-[200px] p-4 focus:outline-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-a:text-primary [&_p]:mb-4 [&_p:last-child]:mb-0 [&_br]:block [&_br]:content-[''] [&_br]:mt-2",
+          "prose prose-sm max-w-none min-h-[200px] p-4 focus:outline-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-a:text-primary [&_p]:mb-4 [&_p:last-child]:mb-0 [&_br]:block [&_br]:content-[''] [&_br]:mt-2 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:my-4",
       },
     },
   });
@@ -72,6 +81,13 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
     const url = window.prompt("URL do link:");
     if (url) {
       editor.chain().focus().setLink({ href: url }).run();
+    }
+  };
+
+  const addImage = () => {
+    const url = window.prompt("URL da imagem:");
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
     }
   };
 
@@ -153,6 +169,15 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
           title="Link"
         >
           <LinkIcon className="h-4 w-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={addImage}
+          title="Inserir imagem"
+        >
+          <ImageIcon className="h-4 w-4" />
         </Button>
         <div className="w-px h-6 bg-border mx-1" />
         <Button
