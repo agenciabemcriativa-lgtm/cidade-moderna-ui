@@ -3,10 +3,10 @@ import { TopBar } from "@/components/portal/TopBar";
 import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
-  ChevronRight, 
   Building2, 
   Users, 
   Wallet, 
@@ -16,8 +16,7 @@ import {
   HardHat, 
   Wheat,
   Crown,
-  FileText,
-  Download
+  FileText
 } from "lucide-react";
 
 interface OrgNode {
@@ -154,18 +153,15 @@ export default function OrganogramaPage() {
       <Header />
       
       <main>
-        {/* Breadcrumb */}
+        {/* Breadcrumbs */}
         <div className="bg-muted/30 border-b border-border">
-          <div className="container py-4">
-            <nav className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Link to="/" className="hover:text-primary transition-colors">
-                Início
-              </Link>
-              <ChevronRight className="w-4 h-4" />
-              <span>O Governo</span>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-foreground font-medium">Organograma</span>
-            </nav>
+          <div className="container">
+            <Breadcrumbs 
+              items={[
+                { label: "O Governo" },
+                { label: "Organograma" }
+              ]} 
+            />
           </div>
         </div>
 

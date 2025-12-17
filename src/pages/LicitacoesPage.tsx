@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -75,6 +76,13 @@ export default function LicitacoesPage() {
       <Header />
       
       <main className="flex-1">
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs items={[{ label: "Licitações" }]} />
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className="bg-primary text-primary-foreground py-12">
           <div className="container">

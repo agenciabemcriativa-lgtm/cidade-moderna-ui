@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, Send } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -75,6 +76,13 @@ export default function ContatoPage() {
       <Header />
       
       <main className="flex-grow">
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs items={[{ label: "Contato" }]} />
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary via-primary/90 to-secondary py-16">
           <div className="container">

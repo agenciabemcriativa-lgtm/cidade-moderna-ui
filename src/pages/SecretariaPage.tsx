@@ -1,8 +1,9 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { useSecretaria } from "@/hooks/useSecretarias";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -67,16 +68,21 @@ export default function SecretariaPage() {
       <TopBar />
       <Header />
       <main className="flex-1">
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs 
+              items={[
+                { label: "Secretarias", href: "/secretarias" },
+                { label: secretaria.nome }
+              ]} 
+            />
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className="hero-gradient py-12 md:py-20">
           <div className="container">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground mb-6 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Voltar ao Portal
-            </Link>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-primary-foreground">
               {secretaria.nome}
             </h1>

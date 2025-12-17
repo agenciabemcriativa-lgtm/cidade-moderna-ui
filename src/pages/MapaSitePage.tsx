@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { 
   Home, 
   Building2, 
@@ -145,6 +146,13 @@ export default function MapaSitePage() {
       <Header />
       
       <main className="flex-1">
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs items={[{ label: "Mapa do Site" }]} />
+          </div>
+        </div>
+
         {/* Hero Section */}
         <section className="gov-gradient text-primary-foreground py-12">
           <div className="container">

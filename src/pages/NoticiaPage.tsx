@@ -3,6 +3,7 @@ import { ArrowLeft, Calendar, Tag, Share2, Facebook, Twitter } from "lucide-reac
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
+import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNoticia, useNoticias } from "@/hooks/useNoticias";
@@ -82,20 +83,15 @@ export default function NoticiaPage() {
       <Header />
       
       <main className="flex-1">
-        {/* Breadcrumb */}
-        <div className="bg-muted/50 border-b">
-          <div className="container py-4">
-            <div className="flex items-center gap-2 text-sm">
-              <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
-                Início
-              </Link>
-              <span className="text-muted-foreground">/</span>
-              <Link to="/noticias" className="text-muted-foreground hover:text-primary transition-colors">
-                Notícias
-              </Link>
-              <span className="text-muted-foreground">/</span>
-              <span className="text-foreground font-medium truncate max-w-[200px]">{noticia.title}</span>
-            </div>
+        {/* Breadcrumbs */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="container">
+            <Breadcrumbs 
+              items={[
+                { label: "Notícias", href: "/noticias" },
+                { label: noticia.title }
+              ]} 
+            />
           </div>
         </div>
 
