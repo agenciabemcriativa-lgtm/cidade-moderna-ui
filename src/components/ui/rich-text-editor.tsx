@@ -30,6 +30,14 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
         heading: {
           levels: [2, 3],
         },
+        paragraph: {
+          HTMLAttributes: {
+            class: 'mb-4',
+          },
+        },
+        hardBreak: {
+          keepMarks: true,
+        },
       }),
       Link.configure({
         openOnClick: false,
@@ -45,7 +53,7 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-none min-h-[200px] p-4 focus:outline-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-a:text-primary",
+          "prose prose-sm max-w-none min-h-[200px] p-4 focus:outline-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-a:text-primary [&_p]:mb-4 [&_p:last-child]:mb-0 [&_br]:block [&_br]:content-[''] [&_br]:mt-2",
       },
     },
   });
