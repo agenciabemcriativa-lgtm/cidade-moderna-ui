@@ -14,7 +14,8 @@ import {
   X,
   FileText,
   Landmark,
-  MapPin
+  MapPin,
+  Users
 } from "lucide-react";
 import { useState } from "react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
@@ -25,6 +26,7 @@ const menuItems = [
   { icon: Building2, label: "Secretarias", href: "/admin/secretarias" },
   { icon: Landmark, label: "O Governo", href: "/admin/governo" },
   { icon: MapPin, label: "Município", href: "/admin/municipio" },
+  { icon: Users, label: "Atendimento", href: "/admin/atendimento" },
   { icon: FileText, label: "Licitações", href: "/admin/licitacoes" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
   { icon: Wrench, label: "Serviços", href: "/admin/servicos" },

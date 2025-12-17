@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      atendimento_itens: {
+        Row: {
+          ativo: boolean | null
+          categoria: string
+          conteudo: string | null
+          created_at: string | null
+          email: string | null
+          endereco: string | null
+          foto_url: string | null
+          horario: string | null
+          id: string
+          ordem: number | null
+          responsavel_cargo: string | null
+          responsavel_nome: string | null
+          slug: string
+          subcategoria: string | null
+          telefone: string | null
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          categoria: string
+          conteudo?: string | null
+          created_at?: string | null
+          email?: string | null
+          endereco?: string | null
+          foto_url?: string | null
+          horario?: string | null
+          id?: string
+          ordem?: number | null
+          responsavel_cargo?: string | null
+          responsavel_nome?: string | null
+          slug: string
+          subcategoria?: string | null
+          telefone?: string | null
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          categoria?: string
+          conteudo?: string | null
+          created_at?: string | null
+          email?: string | null
+          endereco?: string | null
+          foto_url?: string | null
+          horario?: string | null
+          id?: string
+          ordem?: number | null
+          responsavel_cargo?: string | null
+          responsavel_nome?: string | null
+          slug?: string
+          subcategoria?: string | null
+          telefone?: string | null
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       banner_slides: {
         Row: {
           ativo: boolean | null

@@ -16,6 +16,7 @@ import LicitacaoPage from "./pages/LicitacaoPage";
 import BuscaPage from "./pages/BuscaPage";
 import GovernoPage from "./pages/GovernoPage";
 import MunicipioPage from "./pages/MunicipioPage";
+import AtendimentoPage from "./pages/AtendimentoPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -28,6 +29,7 @@ import AdminConfiguracoes from "./pages/admin/AdminConfiguracoes";
 import AdminLicitacoes from "./pages/admin/AdminLicitacoes";
 import AdminGoverno from "./pages/admin/AdminGoverno";
 import AdminMunicipio from "./pages/admin/AdminMunicipio";
+import AdminAtendimento from "./pages/admin/AdminAtendimento";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +53,7 @@ const App = () => (
             <Route path="/busca" element={<BuscaPage />} />
             <Route path="/governo/:slug" element={<GovernoPage />} />
             <Route path="/municipio/:slug" element={<MunicipioPage />} />
+            <Route path="/atendimento/:slug" element={<AtendimentoPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -64,6 +67,7 @@ const App = () => (
             <Route path="/admin/licitacoes" element={<AdminLicitacoes />} />
             <Route path="/admin/governo" element={<AdminGoverno />} />
             <Route path="/admin/municipio" element={<AdminMunicipio />} />
+            <Route path="/admin/atendimento" element={<AdminAtendimento />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
