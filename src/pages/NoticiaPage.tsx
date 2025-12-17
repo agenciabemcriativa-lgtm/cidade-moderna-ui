@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNoticia, useNoticias } from "@/hooks/useNoticias";
 import { sanitizeHTML } from "@/lib/sanitize";
+import { toast } from "@/hooks/use-toast";
 
 // Mapeamento de cores para garantir que o Tailwind inclua as classes
 const categoryColorMap: Record<string, string> = {
@@ -152,15 +153,19 @@ export default function NoticiaPage() {
               >
                 <Facebook className="w-4 h-4" />
               </a>
-              <a 
-                href={`https://www.instagram.com/`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  toast({
+                    title: "Link copiado!",
+                    description: "Cole o link em sua postagem do Instagram.",
+                  });
+                }}
                 className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 text-white flex items-center justify-center hover:opacity-80 transition-opacity"
-                aria-label="Seguir no Instagram"
+                aria-label="Copiar link para Instagram"
               >
                 <Instagram className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
             {/* Content */}
