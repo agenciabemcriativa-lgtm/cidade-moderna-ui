@@ -78,6 +78,7 @@ export type Database = {
         Row: {
           ativo: boolean | null
           bg_class: string | null
+          bg_color: string | null
           bg_image_opacity: number | null
           bg_image_position: string | null
           bg_image_url: string | null
@@ -94,6 +95,7 @@ export type Database = {
         Insert: {
           ativo?: boolean | null
           bg_class?: string | null
+          bg_color?: string | null
           bg_image_opacity?: number | null
           bg_image_position?: string | null
           bg_image_url?: string | null
@@ -110,6 +112,7 @@ export type Database = {
         Update: {
           ativo?: boolean | null
           bg_class?: string | null
+          bg_color?: string | null
           bg_image_opacity?: number | null
           bg_image_position?: string | null
           bg_image_url?: string | null

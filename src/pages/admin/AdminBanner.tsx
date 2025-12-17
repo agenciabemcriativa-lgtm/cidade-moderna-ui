@@ -20,6 +20,7 @@ interface BannerSlide {
   cta_texto: string | null;
   cta_link: string | null;
   bg_class: string | null;
+  bg_color: string | null;
   bg_image_url: string | null;
   bg_image_opacity: number | null;
   bg_image_position: string | null;
@@ -37,7 +38,8 @@ export default function AdminBanner() {
     descricao: "",
     cta_texto: "Saiba Mais",
     cta_link: "#",
-    bg_class: "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+    bg_class: "",
+    bg_color: "#005EA6",
     bg_image_url: "",
     bg_image_opacity: 1,
     bg_image_position: "center",
@@ -102,7 +104,8 @@ export default function AdminBanner() {
       descricao: "",
       cta_texto: "Saiba Mais",
       cta_link: "#",
-      bg_class: "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+      bg_class: "",
+      bg_color: "#005EA6",
       bg_image_url: "",
       bg_image_opacity: 1,
       bg_image_position: "center",
@@ -120,7 +123,8 @@ export default function AdminBanner() {
       descricao: item.descricao || "",
       cta_texto: item.cta_texto || "Saiba Mais",
       cta_link: item.cta_link || "#",
-      bg_class: item.bg_class || "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+      bg_class: item.bg_class || "",
+      bg_color: item.bg_color || "#005EA6",
       bg_image_url: item.bg_image_url || "",
       bg_image_opacity: item.bg_image_opacity ?? 1,
       bg_image_position: item.bg_image_position || "center",
@@ -198,13 +202,31 @@ export default function AdminBanner() {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label>Classe de Background (cor/gradiente)</Label>
-                  <Input
-                    value={form.bg_class}
-                    onChange={(e) => setForm({ ...form, bg_class: e.target.value })}
-                    placeholder="bg-gradient-to-br from-primary via-primary/90 to-secondary"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Cor de Fundo (Hexadecimal)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="color"
+                        value={form.bg_color}
+                        onChange={(e) => setForm({ ...form, bg_color: e.target.value })}
+                        className="w-16 h-10 p-1 cursor-pointer"
+                      />
+                      <Input
+                        value={form.bg_color}
+                        onChange={(e) => setForm({ ...form, bg_color: e.target.value })}
+                        placeholder="#005EA6"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Classe CSS (opcional, sobrescreve a cor)</Label>
+                    <Input
+                      value={form.bg_class}
+                      onChange={(e) => setForm({ ...form, bg_class: e.target.value })}
+                      placeholder="hero-gradient ou bg-primary"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label>URL da Imagem de Fundo (opcional)</Label>
