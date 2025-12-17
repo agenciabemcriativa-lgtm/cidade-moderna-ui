@@ -4,50 +4,29 @@ import {
   Youtube,
   MapPin,
   Phone,
-  Clock
+  Clock,
+  ExternalLink
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import brasaoIpubiBranco from "@/assets/brasao-ipubi-branco.png";
+import { useSecretarias } from "@/hooks/useSecretarias";
+import { useGovernoItens } from "@/hooks/useGovernoItens";
+import { useMunicipioItens } from "@/hooks/useMunicipioItens";
 
-const footerLinks = {
-  cidade: [
-    { label: "Cultura", href: "#cultura" },
-    { label: "História", href: "#historia" },
-    { label: "Símbolos oficiais", href: "#simbolos" },
-    { label: "Dados demográficos", href: "#dados" },
-    { label: "Fotos", href: "#fotos" },
-  ],
-  governo: [
-    { label: "Gabinete", href: "#gabinete" },
-    { label: "O Prefeito", href: "#prefeito" },
-    { label: "O Vice Prefeito", href: "#vice" },
-    { label: "Obras e Ações", href: "#obras" },
-    { label: "Expediente", href: "#expediente" },
-    { label: "Perguntas Frequentes", href: "#faq" },
-    { label: "Fale Conosco", href: "/contato", isLink: true },
-  ],
-  secretarias: [
-    { label: "Administração", href: "/secretaria/administracao", isLink: true },
-    { label: "Desenvolvimento Rural", href: "/secretaria/desenvolvimento-rural", isLink: true },
-    { label: "Desenvolvimento Social", href: "/secretaria/desenvolvimento-social", isLink: true },
-    { label: "Educação", href: "/secretaria/educacao", isLink: true },
-    { label: "Obras e Urbanismo", href: "/secretaria/obras-urbanismo", isLink: true },
-    { label: "Saúde", href: "/secretaria/saude", isLink: true },
-  ],
-  imprensa: [
-    { label: "Notícias", href: "/noticias", isLink: true },
-    { label: "Galerias de Fotos", href: "#galerias" },
-  ],
-  linksUteis: [
-    { label: "Ouvidoria", href: "#ouvidoria" },
-    { label: "LGPD", href: "#lgpd" },
-    { label: "Política de Privacidade", href: "#privacidade" },
-  ],
-  servicos: [
-    { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
-    { label: "Serviço de Informação ao Cidadão", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
-  ],
-};
+const servicosLinks = [
+  { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
+  { label: "Licitações", href: "/licitacoes", external: false },
+  { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
+  { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },
+  { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
+];
+
+const quickLinks = [
+  { label: "Notícias", href: "/noticias", external: false },
+  { label: "Legislação", href: "/legislacao", external: false },
+  { label: "Publicações", href: "https://www.ipubi.pe.gov.br/publicacoes-oficiais/", external: true },
+  { label: "Contato", href: "/contato", external: false },
+];
 
 const socialLinks = [
   { icon: Facebook, href: "#facebook", label: "Facebook" },
@@ -60,6 +39,31 @@ interface FooterProps {
 }
 
 export function Footer({ id }: FooterProps) {
+  const { data: secretarias = [] } = useSecretarias();
+  const { data: governoItens = [] } = useGovernoItens();
+  const { data: municipioItens = [] } = useMunicipioItens();
+
+  const renderLink = (link: { label: string; href: string; external?: boolean }) => {
+    if (link.external) {
+      return (
+        <a 
+          href={link.href} 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm hover:text-highlight transition-colors flex items-center gap-1"
+        >
+          {link.label}
+          <ExternalLink className="w-3 h-3" />
+        </a>
+      );
+    }
+    return (
+      <Link to={link.href} className="text-sm hover:text-highlight transition-colors">
+        {link.label}
+      </Link>
+    );
+  };
+
   return (
     <footer id={id} className="gov-gradient text-primary-foreground">
       {/* Contact Info Bar */}
@@ -103,35 +107,35 @@ export function Footer({ id }: FooterProps) {
       {/* Main Footer */}
       <div className="container py-10">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {/* Cidade */}
+          {/* O Governo */}
           <div>
-            <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">Cidade</h4>
+            <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">O Governo</h4>
             <ul className="space-y-2">
-              {footerLinks.cidade.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-sm hover:text-highlight transition-colors">
-                    {link.label}
-                  </a>
+              {governoItens.map((item) => (
+                <li key={item.slug}>
+                  <Link 
+                    to={`/governo/${item.slug}`} 
+                    className="text-sm hover:text-highlight transition-colors"
+                  >
+                    {item.titulo}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Governo */}
+          {/* Município */}
           <div>
-            <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">Governo</h4>
+            <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">Município</h4>
             <ul className="space-y-2">
-              {footerLinks.governo.map((link) => (
-                <li key={link.label}>
-                  {link.isLink ? (
-                    <Link to={link.href} className="text-sm hover:text-highlight transition-colors">
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <a href={link.href} className="text-sm hover:text-highlight transition-colors">
-                      {link.label}
-                    </a>
-                  )}
+              {municipioItens.map((item) => (
+                <li key={item.slug}>
+                  <Link 
+                    to={`/municipio/${item.slug}`} 
+                    className="text-sm hover:text-highlight transition-colors"
+                  >
+                    {item.titulo}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -141,67 +145,48 @@ export function Footer({ id }: FooterProps) {
           <div>
             <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">Secretarias</h4>
             <ul className="space-y-2">
-              {footerLinks.secretarias.map((link) => (
-                <li key={link.label}>
-                  {link.isLink ? (
-                    <Link to={link.href} className="text-sm hover:text-highlight transition-colors">
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <a href={link.href} className="text-sm hover:text-highlight transition-colors">
-                      {link.label}
-                    </a>
-                  )}
+              {secretarias.slice(0, 6).map((item) => (
+                <li key={item.slug}>
+                  <Link 
+                    to={`/secretaria/${item.slug}`} 
+                    className="text-sm hover:text-highlight transition-colors"
+                  >
+                    {item.nome}
+                  </Link>
                 </li>
               ))}
+              {secretarias.length > 6 && (
+                <li>
+                  <Link 
+                    to="/secretarias" 
+                    className="text-sm hover:text-highlight transition-colors font-semibold"
+                  >
+                    Ver todas →
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
-          {/* Imprensa */}
-          <div>
-            <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">Imprensa</h4>
-            <ul className="space-y-2">
-              {footerLinks.imprensa.map((link) => (
-                <li key={link.label}>
-                  {link.isLink ? (
-                    <Link to={link.href} className="text-sm hover:text-highlight transition-colors">
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <a href={link.href} className="text-sm hover:text-highlight transition-colors">
-                      {link.label}
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-            
-            <h4 className="font-bold uppercase tracking-wide mb-4 mt-6 text-highlight">Links Úteis</h4>
-            <ul className="space-y-2">
-              {footerLinks.linksUteis.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-sm hover:text-highlight transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Serviços */}
+          {/* Serviços ao Cidadão */}
           <div>
             <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">Serviços</h4>
             <ul className="space-y-2">
-              {footerLinks.servicos.map((link) => (
+              {servicosLinks.map((link) => (
                 <li key={link.label}>
-                  <a 
-                    href={link.href} 
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
-                    className="text-sm hover:text-highlight transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {renderLink(link)}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Links Rápidos */}
+          <div>
+            <h4 className="font-bold uppercase tracking-wide mb-4 text-highlight">Links Rápidos</h4>
+            <ul className="space-y-2">
+              {quickLinks.map((link) => (
+                <li key={link.label}>
+                  {renderLink(link)}
                 </li>
               ))}
             </ul>
