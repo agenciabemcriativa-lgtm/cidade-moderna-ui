@@ -1,7 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
+import ResizeImage from "tiptap-extension-resize-image";
 import { useEffect } from "react";
 import { Button } from "./button";
 import {
@@ -47,12 +47,8 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
           class: "text-primary underline",
         },
       }),
-      Image.configure({
-        inline: false,
+      ResizeImage.configure({
         allowBase64: true,
-        HTMLAttributes: {
-          class: "max-w-full h-auto rounded-lg my-4",
-        },
       }),
     ],
     content,
