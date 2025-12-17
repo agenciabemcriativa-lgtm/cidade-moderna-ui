@@ -1,7 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
-import ResizeImage from "tiptap-extension-resize-image";
+import Image from "@tiptap/extension-image";
 import { useEffect } from "react";
 import { Button } from "./button";
 import {
@@ -16,6 +16,9 @@ import {
   Redo,
   Quote,
   ImageIcon,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +27,31 @@ interface RichTextEditorProps {
   onChange: (content: string) => void;
   className?: string;
 }
+
+// Custom Image extension with alignment support
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      align: {
+        default: 'left',
+        parseHTML: element => element.getAttribute('data-align') || 'left',
+        renderHTML: attributes => {
+          return {
+            'data-align': attributes.align,
+            style: `display: block; ${
+              attributes.align === 'center' 
+                ? 'margin-left: auto; margin-right: auto;' 
+                : attributes.align === 'right' 
+                  ? 'margin-left: auto; margin-right: 0;' 
+                  : 'margin-left: 0; margin-right: auto;'
+            }`,
+          };
+        },
+      },
+    };
+  },
+});
 
 export function RichTextEditor({ content, onChange, className }: RichTextEditorProps) {
   const editor = useEditor({
@@ -47,8 +75,11 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
           class: "text-primary underline",
         },
       }),
-      ResizeImage.configure({
+      CustomImage.configure({
         allowBase64: true,
+        HTMLAttributes: {
+          class: "max-w-full h-auto rounded-lg my-4 cursor-pointer",
+        },
       }),
     ],
     content,
@@ -86,6 +117,14 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
       editor.chain().focus().setImage({ src: url }).run();
     }
   };
+
+  const setImageAlign = (align: 'left' | 'center' | 'right') => {
+    if (editor.isActive('image')) {
+      editor.chain().focus().updateAttributes('image', { align }).run();
+    }
+  };
+
+  const isImageSelected = editor.isActive('image');
 
   return (
     <div className={cn("border rounded-lg overflow-hidden bg-background", className)}>
@@ -175,6 +214,41 @@ export function RichTextEditor({ content, onChange, className }: RichTextEditorP
         >
           <ImageIcon className="h-4 w-4" />
         </Button>
+        
+        {/* Image alignment buttons - only show when image is selected */}
+        {isImageSelected && (
+          <>
+            <div className="w-px h-6 bg-border mx-1" />
+            <Button
+              type="button"
+              variant={editor.getAttributes('image').align === 'left' ? "secondary" : "ghost"}
+              size="sm"
+              onClick={() => setImageAlign('left')}
+              title="Alinhar à esquerda"
+            >
+              <AlignLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              type="button"
+              variant={editor.getAttributes('image').align === 'center' ? "secondary" : "ghost"}
+              size="sm"
+              onClick={() => setImageAlign('center')}
+              title="Centralizar"
+            >
+              <AlignCenter className="h-4 w-4" />
+            </Button>
+            <Button
+              type="button"
+              variant={editor.getAttributes('image').align === 'right' ? "secondary" : "ghost"}
+              size="sm"
+              onClick={() => setImageAlign('right')}
+              title="Alinhar à direita"
+            >
+              <AlignRight className="h-4 w-4" />
+            </Button>
+          </>
+        )}
+        
         <div className="w-px h-6 bg-border mx-1" />
         <Button
           type="button"
