@@ -1,8 +1,9 @@
 import { Phone, Mail, ExternalLink } from "lucide-react";
 
 const quickLinks = [
-  { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/" },
-  { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/" },
+  { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
+  { label: "Licitações", href: "/licitacoes", external: false },
+  { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
 ];
 
 export function TopBar() {
@@ -21,16 +22,26 @@ export function TopBar() {
         </div>
         <nav className="flex items-center gap-1 md:gap-2">
           {quickLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 px-2 py-1 rounded hover:bg-highlight hover:text-highlight-foreground transition-all duration-200 font-medium"
-            >
-              <span>{link.label}</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
+            link.external ? (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-2 py-1 rounded hover:bg-highlight hover:text-highlight-foreground transition-all duration-200 font-medium"
+              >
+                <span>{link.label}</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="flex items-center gap-1 px-2 py-1 rounded hover:bg-highlight hover:text-highlight-foreground transition-all duration-200 font-medium"
+              >
+                <span>{link.label}</span>
+              </a>
+            )
           ))}
         </nav>
       </div>
