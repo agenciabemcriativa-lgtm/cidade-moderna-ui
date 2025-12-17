@@ -45,6 +45,7 @@ export interface Licitacao {
   secretaria_id: string | null;
   secretaria_nome: string | null;
   data_abertura: string;
+  data_abertura_processo: string | null;
   data_encerramento: string | null;
   ano: number;
   status: StatusLicitacao;
