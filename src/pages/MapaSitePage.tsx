@@ -44,6 +44,8 @@ export default function MapaSitePage() {
         { label: "Página Inicial", href: "/" },
         { label: "Busca", href: "/busca" },
         { label: "Contato", href: "/contato" },
+        { label: "Acessibilidade", href: "/acessibilidade" },
+        { label: "Mapa do Site", href: "/mapa-do-site" },
       ],
     },
     {
