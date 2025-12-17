@@ -265,6 +265,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           data_abertura: string
+          data_abertura_processo: string | null
           data_encerramento: string | null
           id: string
           link_sistema_oficial: string | null
@@ -285,6 +286,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           data_abertura: string
+          data_abertura_processo?: string | null
           data_encerramento?: string | null
           id?: string
           link_sistema_oficial?: string | null
@@ -305,6 +307,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           data_abertura?: string
+          data_abertura_processo?: string | null
           data_encerramento?: string | null
           id?: string
           link_sistema_oficial?: string | null

@@ -72,6 +72,7 @@ type LicitacaoFormData = {
   secretaria_id: string | null;
   secretaria_nome: string | null;
   data_abertura: string;
+  data_abertura_processo: string;
   data_encerramento: string;
   ano: number;
   status: StatusLicitacao;
@@ -96,6 +97,7 @@ const initialFormData: LicitacaoFormData = {
   secretaria_id: null,
   secretaria_nome: null,
   data_abertura: "",
+  data_abertura_processo: "",
   data_encerramento: "",
   ano: new Date().getFullYear(),
   status: "aberta",
@@ -149,6 +151,7 @@ export default function AdminLicitacoes() {
       secretaria_id: licitacao.secretaria_id,
       secretaria_nome: licitacao.secretaria_nome,
       data_abertura: licitacao.data_abertura,
+      data_abertura_processo: licitacao.data_abertura_processo || "",
       data_encerramento: licitacao.data_encerramento || "",
       ano: licitacao.ano,
       status: licitacao.status,
@@ -188,6 +191,7 @@ export default function AdminLicitacoes() {
       secretaria_id: null, // We don't have direct ID access, using null
       secretaria_nome: selectedSecretaria?.nome || formData.secretaria_nome || null,
       data_abertura: formData.data_abertura,
+      data_abertura_processo: formData.data_abertura_processo || null,
       data_encerramento: formData.data_encerramento || null,
       ano: formData.ano,
       status: formData.status,
@@ -613,7 +617,7 @@ export default function AdminLicitacoes() {
                 />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-3 gap-4">
                 <div>
                   <Label>Data de Postagem *</Label>
                   <Input
@@ -621,6 +625,14 @@ export default function AdminLicitacoes() {
                     value={formData.data_abertura}
                     onChange={(e) => setFormData({ ...formData, data_abertura: e.target.value })}
                     required
+                  />
+                </div>
+                <div>
+                  <Label>Data de Abertura</Label>
+                  <Input
+                    type="date"
+                    value={formData.data_abertura_processo}
+                    onChange={(e) => setFormData({ ...formData, data_abertura_processo: e.target.value })}
                   />
                 </div>
                 <div>
