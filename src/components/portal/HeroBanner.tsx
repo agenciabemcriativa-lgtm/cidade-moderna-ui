@@ -35,9 +35,9 @@ export function HeroBanner() {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`${slide.bgClass || ""} transition-all duration-700 ease-in-out relative ${
-            index === currentSlide ? "opacity-100" : "opacity-0 absolute inset-0"
-          }`}
+          className={`${slide.bgClass || ""} transition-all duration-700 ease-in-out ${
+            index === 0 ? "relative" : "absolute inset-0"
+          } ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"}`}
           style={!slide.bgClass && slide.bgColor ? { backgroundColor: slide.bgColor } : undefined}
         >
           {/* Background Image Layer */}
