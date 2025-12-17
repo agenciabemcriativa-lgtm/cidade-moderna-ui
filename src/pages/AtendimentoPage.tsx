@@ -44,11 +44,11 @@ export default function AtendimentoPage() {
               O serviço que você está procurando não existe ou foi removido.
             </p>
             <Link
-              to="/"
+              to="/atendimento"
               className="inline-flex items-center gap-2 text-primary hover:underline"
             >
               <ArrowLeft className="w-4 h-4" />
-              Voltar à página inicial
+              Ver todos os serviços
             </Link>
           </div>
         </main>
@@ -83,11 +83,11 @@ export default function AtendimentoPage() {
         <section className={`${getCategoryColor(item.categoria)} py-16`}>
           <div className="container">
             <Link
-              to="/"
+              to="/atendimento"
               className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              Voltar
+              Voltar para Atendimento ao Cidadão
             </Link>
             <Badge className="bg-white/20 text-white mb-4">
               {item.categoria}

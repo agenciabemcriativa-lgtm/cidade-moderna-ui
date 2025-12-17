@@ -17,6 +17,7 @@ import BuscaPage from "./pages/BuscaPage";
 import GovernoPage from "./pages/GovernoPage";
 import MunicipioPage from "./pages/MunicipioPage";
 import AtendimentoPage from "./pages/AtendimentoPage";
+import AtendimentosPage from "./pages/AtendimentosPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/busca" element={<BuscaPage />} />
             <Route path="/governo/:slug" element={<GovernoPage />} />
             <Route path="/municipio/:slug" element={<MunicipioPage />} />
+            <Route path="/atendimento" element={<AtendimentosPage />} />
             <Route path="/atendimento/:slug" element={<AtendimentoPage />} />
             
             {/* Admin Routes */}
