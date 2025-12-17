@@ -254,7 +254,7 @@ export default function BuscaPage() {
                                   )}
                                 </div>
                                 <div className="text-right text-sm text-muted-foreground">
-                                  <p>Abertura: {format(new Date(licitacao.data_abertura), "dd/MM/yyyy", { locale: ptBR })}</p>
+                                  <p>Postagem: {format(new Date(licitacao.data_abertura), "dd/MM/yyyy", { locale: ptBR })}</p>
                                   {licitacao.valor_estimado && (
                                     <p className="font-semibold text-foreground">
                                       R$ {licitacao.valor_estimado.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
