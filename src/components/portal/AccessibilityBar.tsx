@@ -6,7 +6,6 @@ const skipLinks = [
   { label: "Ir para Menu", shortcut: "1", href: "#menu-principal" },
   { label: "Ir para Buscador", shortcut: "2", href: "#buscador" },
   { label: "Ir para Rodapé", shortcut: "3", href: "#rodape" },
-  { label: "Ir para o Mapa do Site", shortcut: "4", href: "#mapa-site" },
 ];
 
 export function AccessibilityBar() {
