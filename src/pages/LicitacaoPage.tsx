@@ -166,7 +166,7 @@ export default function LicitacaoPage() {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Data de Abertura</p>
+                      <p className="text-sm text-muted-foreground">Data de Postagem</p>
                       <p className="font-medium">
                         {format(parseISO(licitacao.data_abertura), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                       </p>

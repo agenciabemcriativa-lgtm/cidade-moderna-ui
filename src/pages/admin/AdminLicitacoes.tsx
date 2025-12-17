@@ -324,7 +324,7 @@ export default function AdminLicitacoes() {
                       <TableHead className="hidden md:table-cell">Modalidade</TableHead>
                       <TableHead>Objeto</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead className="hidden md:table-cell">Data Abertura</TableHead>
+                      <TableHead className="hidden md:table-cell">Data Postagem</TableHead>
                       <TableHead className="text-right">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -615,7 +615,7 @@ export default function AdminLicitacoes() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Data de Abertura *</Label>
+                  <Label>Data de Postagem *</Label>
                   <Input
                     type="date"
                     value={formData.data_abertura}
