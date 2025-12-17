@@ -19,6 +19,7 @@ const servicosLinks = [
   { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
   { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },
   { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
+  { label: "Perguntas Frequentes", href: "/perguntas-frequentes", external: false },
 ];
 
 const quickLinks = [
