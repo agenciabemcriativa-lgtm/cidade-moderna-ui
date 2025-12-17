@@ -6,6 +6,7 @@ import { Footer } from "@/components/portal/Footer";
 import { Button } from "@/components/ui/button";
 import { useSecretaria } from "@/hooks/useSecretarias";
 import { Skeleton } from "@/components/ui/skeleton";
+import { sanitizeHTML } from "@/lib/sanitize";
 
 export default function SecretariaPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -110,9 +111,16 @@ export default function SecretariaPage() {
                       <h3 className="text-2xl font-bold text-primary mb-3">
                         {secretaria.secretario.nome || "A definir"}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        {secretaria.secretario.biografia || "Biografia não disponível."}
-                      </p>
+                      {secretaria.secretario.biografia ? (
+                        <div 
+                          className="text-muted-foreground leading-relaxed prose prose-sm max-w-none"
+                          dangerouslySetInnerHTML={{ __html: sanitizeHTML(secretaria.secretario.biografia) }}
+                        />
+                      ) : (
+                        <p className="text-muted-foreground leading-relaxed">
+                          Biografia não disponível.
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
