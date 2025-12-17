@@ -5,7 +5,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -220,10 +220,9 @@ export default function AdminSecretarias() {
                   </div>
                   <div className="space-y-2 mt-4">
                     <Label>Biografia</Label>
-                    <Textarea
-                      value={form.secretario_biografia}
-                      onChange={(e) => setForm({ ...form, secretario_biografia: e.target.value })}
-                      rows={3}
+                    <RichTextEditor
+                      content={form.secretario_biografia}
+                      onChange={(content) => setForm({ ...form, secretario_biografia: content })}
                     />
                   </div>
                 </div>
