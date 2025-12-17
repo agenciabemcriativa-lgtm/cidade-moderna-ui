@@ -20,7 +20,6 @@ interface FooterConfig {
   whatsapp?: string;
   facebook?: string;
   instagram?: string;
-  youtube?: string;
 }
 
 interface Configuracao {
@@ -40,7 +39,6 @@ export default function AdminConfiguracoes() {
     whatsapp: "",
     facebook: "",
     instagram: "",
-    youtube: "",
   });
 
   const { data: configs, isLoading } = useQuery({
@@ -214,14 +212,6 @@ export default function AdminConfiguracoes() {
                         value={footerForm.instagram}
                         onChange={(e) => setFooterForm({ ...footerForm, instagram: e.target.value })}
                         placeholder="https://instagram.com/..."
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>YouTube</Label>
-                      <Input
-                        value={footerForm.youtube}
-                        onChange={(e) => setFooterForm({ ...footerForm, youtube: e.target.value })}
-                        placeholder="https://youtube.com/..."
                       />
                     </div>
                   </div>
