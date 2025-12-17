@@ -307,7 +307,9 @@ export default function AdminBanner() {
                     >
                       <option value="center">Centro</option>
                       <option value="top">Superior</option>
+                      <option value="top center">Superior Centro</option>
                       <option value="bottom">Inferior</option>
+                      <option value="bottom center">Inferior Centro</option>
                       <option value="left">Esquerda</option>
                       <option value="right">Direita</option>
                       <option value="top left">Superior Esquerda</option>
