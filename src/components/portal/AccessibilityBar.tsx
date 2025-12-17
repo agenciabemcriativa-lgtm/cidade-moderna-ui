@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Moon, BookOpen, Accessibility } from "lucide-react";
+import { toast } from "sonner";
 
 const skipLinks = [
   { label: "Ir para Menu", shortcut: "1", href: "#menu-principal" },
@@ -43,6 +44,33 @@ export function AccessibilityBar() {
     localStorage.setItem("accessibility-reading-mode", readingMode.toString());
   }, [readingMode]);
 
+  // Keyboard shortcuts handler
+  const handleKeyboardShortcuts = useCallback((event: KeyboardEvent) => {
+    // Only trigger with Alt key
+    if (!event.altKey) return;
+
+    const shortcut = skipLinks.find(link => link.shortcut === event.key);
+    if (shortcut) {
+      event.preventDefault();
+      const element = document.querySelector(shortcut.href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        // Focus the element if it's focusable
+        if (element instanceof HTMLElement) {
+          element.focus();
+        }
+        toast.info(`Navegando para: ${shortcut.label.replace("Ir para ", "")}`);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyboardShortcuts);
+    return () => {
+      document.removeEventListener("keydown", handleKeyboardShortcuts);
+    };
+  }, [handleKeyboardShortcuts]);
+
   const increaseFontSize = () => {
     setFontSize((prev) => Math.min(prev + 10, 150));
   };
@@ -73,10 +101,11 @@ export function AccessibilityBar() {
               key={link.href}
               href={link.href}
               className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-white/10 transition-colors"
+              title={`Atalho: Alt + ${link.shortcut}`}
             >
               <span>{link.label}</span>
-              <span className="inline-flex items-center justify-center w-5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded">
-                {link.shortcut}
+              <span className="inline-flex items-center justify-center px-1.5 h-5 bg-primary text-primary-foreground text-[10px] font-bold rounded">
+                Alt+{link.shortcut}
               </span>
             </a>
           ))}
