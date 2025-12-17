@@ -143,15 +143,25 @@ export function AccessibilityBar() {
             </button>
           </div>
 
-          {/* Accessibility Link */}
-          <a
-            href="/acessibilidade"
-            className="flex items-center gap-1.5 px-3 py-1 rounded hover:bg-white/10 transition-colors border-l border-white/20 ml-1 pl-3"
-            aria-label="Informações de acessibilidade"
-          >
-            <Accessibility className="w-4 h-4" />
-            <span className="hidden sm:inline">Acessibilidade</span>
-          </a>
+          {/* Page Links */}
+          <div className="flex items-center gap-1 border-l border-white/20 ml-1 pl-3">
+            <a
+              href="/mapa-do-site"
+              className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-white/10 transition-colors"
+              aria-label="Mapa do site"
+            >
+              <span className="hidden sm:inline">Mapa do Site</span>
+              <span className="sm:hidden">Mapa</span>
+            </a>
+            <a
+              href="/acessibilidade"
+              className="flex items-center gap-1.5 px-2 py-1 rounded hover:bg-white/10 transition-colors"
+              aria-label="Informações de acessibilidade"
+            >
+              <Accessibility className="w-4 h-4" />
+              <span className="hidden sm:inline">Acessibilidade</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
