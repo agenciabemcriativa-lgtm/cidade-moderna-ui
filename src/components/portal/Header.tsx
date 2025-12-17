@@ -56,6 +56,7 @@ const servicosCidadao: { category: string; items: ServicoItem[] }[] = [
       },
       { label: "Educação", href: "/atendimento/educacao" },
       { label: "Programas e Serviços", href: "/atendimento/programas-servicos" },
+      { label: "Perguntas Frequentes", href: "/perguntas-frequentes" },
     ]
   }
 ];
