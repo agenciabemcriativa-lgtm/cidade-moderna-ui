@@ -8,6 +8,7 @@ interface BannerSlide {
   cta: string;
   ctaLink: string;
   bgClass: string;
+  bgColor?: string;
   bgImageUrl?: string;
   bgImageOpacity?: number;
   bgImagePosition?: string;
@@ -61,6 +62,7 @@ export function useBannerSlides() {
         cta: item.cta_texto || "Saiba Mais",
         ctaLink: item.cta_link || "#",
         bgClass: item.bg_class || "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+        bgColor: item.bg_color || undefined,
         bgImageUrl: item.bg_image_url || undefined,
         bgImageOpacity: item.bg_image_opacity ? Number(item.bg_image_opacity) : 1,
         bgImagePosition: item.bg_image_position || "center",
