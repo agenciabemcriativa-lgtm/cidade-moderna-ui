@@ -4,7 +4,8 @@ import {
   MapPin,
   Phone,
   Clock,
-  ExternalLink
+  ExternalLink,
+  Mail
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import brasaoIpubiBranco from "@/assets/brasao-ipubi-branco.png";
@@ -213,6 +214,19 @@ export function Footer({ id }: FooterProps) {
                 </a>
               ))}
             </div>
+            {/* Webmail */}
+            <a
+              href="https://webmail.ipubi.pe.gov.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 mt-4 text-sm hover:text-highlight transition-colors"
+              aria-label="Webmail"
+            >
+              <div className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-highlight hover:text-highlight-foreground flex items-center justify-center transition-all duration-200">
+                <Mail className="w-4 h-4" />
+              </div>
+              <span>Webmail</span>
+            </a>
           </div>
         </div>
       </div>
