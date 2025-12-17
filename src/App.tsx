@@ -18,6 +18,7 @@ import GovernoPage from "./pages/GovernoPage";
 import MunicipioPage from "./pages/MunicipioPage";
 import AtendimentoPage from "./pages/AtendimentoPage";
 import AtendimentosPage from "./pages/AtendimentosPage";
+import EstruturaOrganizacionalPage from "./pages/EstruturaOrganizacionalPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/licitacoes" element={<LicitacoesPage />} />
             <Route path="/licitacao/:id" element={<LicitacaoPage />} />
             <Route path="/busca" element={<BuscaPage />} />
+            <Route path="/governo/estrutura-organizacional" element={<EstruturaOrganizacionalPage />} />
             <Route path="/governo/:slug" element={<GovernoPage />} />
             <Route path="/municipio/:slug" element={<MunicipioPage />} />
             <Route path="/atendimento" element={<AtendimentosPage />} />
