@@ -19,6 +19,7 @@ interface BannerSlide {
   descricao: string | null;
   cta_texto: string | null;
   cta_link: string | null;
+  cta_nova_aba: boolean | null;
   bg_class: string | null;
   bg_color: string | null;
   bg_image_url: string | null;
@@ -41,6 +42,7 @@ export default function AdminBanner() {
     descricao: "",
     cta_texto: "Saiba Mais",
     cta_link: "#",
+    cta_nova_aba: true,
     bg_class: "",
     bg_color: "#005EA6",
     bg_image_url: "",
@@ -110,6 +112,7 @@ export default function AdminBanner() {
       descricao: "",
       cta_texto: "Saiba Mais",
       cta_link: "#",
+      cta_nova_aba: true,
       bg_class: "",
       bg_color: "#005EA6",
       bg_image_url: "",
@@ -132,6 +135,7 @@ export default function AdminBanner() {
       descricao: item.descricao || "",
       cta_texto: item.cta_texto || "Saiba Mais",
       cta_link: item.cta_link || "#",
+      cta_nova_aba: item.cta_nova_aba ?? true,
       bg_class: item.bg_class || "",
       bg_color: item.bg_color || "#005EA6",
       bg_image_url: item.bg_image_url || "",
@@ -251,6 +255,13 @@ export default function AdminBanner() {
                       onChange={(e) => setForm({ ...form, cta_link: e.target.value })}
                     />
                   </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={form.cta_nova_aba}
+                    onCheckedChange={(checked) => setForm({ ...form, cta_nova_aba: checked })}
+                  />
+                  <Label>Abrir link em nova aba</Label>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">

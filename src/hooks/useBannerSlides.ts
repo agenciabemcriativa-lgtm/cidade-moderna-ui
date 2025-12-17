@@ -7,6 +7,7 @@ interface BannerSlide {
   description: string;
   cta: string;
   ctaLink: string;
+  ctaNovaAba: boolean;
   bgClass: string;
   bgColor?: string;
   bgImageUrl?: string;
@@ -24,6 +25,7 @@ const fallbackSlides: BannerSlide[] = [
     description: "Acesse serviços, notícias e informações sobre nossa cidade. Transparência e eficiência a serviço do cidadão.",
     cta: "Conheça Nossos Serviços",
     ctaLink: "#servicos",
+    ctaNovaAba: false,
     bgClass: "bg-gradient-to-br from-primary via-primary/90 to-secondary"
   },
   {
@@ -32,6 +34,7 @@ const fallbackSlides: BannerSlide[] = [
     description: "Acompanhe as contas públicas, licitações e contratos. Acesso à informação é um direito do cidadão.",
     cta: "Acessar Portal",
     ctaLink: "#transparencia",
+    ctaNovaAba: false,
     bgClass: "bg-gradient-to-br from-secondary via-secondary/90 to-primary"
   },
   {
@@ -40,6 +43,7 @@ const fallbackSlides: BannerSlide[] = [
     description: "Solicite documentos, agende atendimentos e acompanhe processos sem sair de casa.",
     cta: "Ver Serviços",
     ctaLink: "#servicos",
+    ctaNovaAba: false,
     bgClass: "bg-gradient-to-br from-primary/80 via-secondary/70 to-primary"
   }
 ];
@@ -64,6 +68,7 @@ export function useBannerSlides() {
         description: item.descricao || "",
         cta: item.cta_texto || "Saiba Mais",
         ctaLink: item.cta_link || "#",
+        ctaNovaAba: item.cta_nova_aba ?? true,
         bgClass: item.bg_class || "",
         bgColor: item.bg_color || undefined,
         bgImageUrl: item.bg_image_url || undefined,

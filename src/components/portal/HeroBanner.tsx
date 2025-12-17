@@ -93,7 +93,11 @@ export function HeroBanner() {
                 {slide.description}
               </p>
               {slide.ctaLink && slide.ctaLink !== "#" ? (
-                <a href={slide.ctaLink} target="_blank" rel="noopener noreferrer">
+                <a 
+                  href={slide.ctaLink} 
+                  target={slide.ctaNovaAba ? "_blank" : "_self"} 
+                  rel={slide.ctaNovaAba ? "noopener noreferrer" : undefined}
+                >
                   <Button variant="hero" className="animate-scale-in" style={{ animationDelay: "400ms" }}>
                     {slide.cta}
                   </Button>
