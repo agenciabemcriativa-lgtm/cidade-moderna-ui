@@ -64,7 +64,7 @@ export function useBannerSlides() {
         description: item.descricao || "",
         cta: item.cta_texto || "Saiba Mais",
         ctaLink: item.cta_link || "#",
-        bgClass: item.bg_class || "bg-gradient-to-br from-primary via-primary/90 to-secondary",
+        bgClass: item.bg_class || "",
         bgColor: item.bg_color || undefined,
         bgImageUrl: item.bg_image_url || undefined,
         bgImageOpacity: item.bg_image_opacity ? Number(item.bg_image_opacity) : 1,
