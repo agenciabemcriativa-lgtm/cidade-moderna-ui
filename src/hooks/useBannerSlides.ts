@@ -12,6 +12,7 @@ interface BannerSlide {
   bgImageUrl?: string;
   bgImageOpacity?: number;
   bgImagePosition?: string;
+  transitionEffect?: string;
 }
 
 const fallbackSlides: BannerSlide[] = [
@@ -66,6 +67,7 @@ export function useBannerSlides() {
         bgImageUrl: item.bg_image_url || undefined,
         bgImageOpacity: item.bg_image_opacity ? Number(item.bg_image_opacity) : 1,
         bgImagePosition: item.bg_image_position || "center",
+        transitionEffect: item.transition_effect || "fade",
       })) as BannerSlide[];
     },
   });
