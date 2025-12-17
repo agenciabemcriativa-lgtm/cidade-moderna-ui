@@ -35,10 +35,22 @@ export function HeroBanner() {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`${slide.bgClass || "hero-gradient"} transition-all duration-700 ease-in-out ${
+          className={`${slide.bgClass || "hero-gradient"} transition-all duration-700 ease-in-out relative ${
             index === currentSlide ? "opacity-100" : "opacity-0 absolute inset-0"
           }`}
         >
+          {/* Background Image Layer */}
+          {slide.bgImageUrl && (
+            <div 
+              className="absolute inset-0 bg-cover bg-no-repeat"
+              style={{
+                backgroundImage: `url(${slide.bgImageUrl})`,
+                backgroundPosition: slide.bgImagePosition || "center",
+                opacity: slide.bgImageOpacity ?? 1,
+              }}
+            />
+          )}
+          
           <div className="container py-16 md:py-24 lg:py-32 relative">
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-highlight/10 rounded-full blur-3xl" />
