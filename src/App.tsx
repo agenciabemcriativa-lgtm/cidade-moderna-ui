@@ -14,6 +14,8 @@ import ContatoPage from "./pages/ContatoPage";
 import LicitacoesPage from "./pages/LicitacoesPage";
 import LicitacaoPage from "./pages/LicitacaoPage";
 import BuscaPage from "./pages/BuscaPage";
+import GovernoPage from "./pages/GovernoPage";
+import MunicipioPage from "./pages/MunicipioPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -47,6 +49,8 @@ const App = () => (
             <Route path="/licitacoes" element={<LicitacoesPage />} />
             <Route path="/licitacao/:id" element={<LicitacaoPage />} />
             <Route path="/busca" element={<BuscaPage />} />
+            <Route path="/governo/:slug" element={<GovernoPage />} />
+            <Route path="/municipio/:slug" element={<MunicipioPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
