@@ -20,6 +20,7 @@ import AtendimentoPage from "./pages/AtendimentoPage";
 import AtendimentosPage from "./pages/AtendimentosPage";
 import EstruturaOrganizacionalPage from "./pages/EstruturaOrganizacionalPage";
 import OrganogramaPage from "./pages/OrganogramaPage";
+import MapaSitePage from "./pages/MapaSitePage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -60,6 +61,7 @@ const App = () => (
             <Route path="/municipio/:slug" element={<MunicipioPage />} />
             <Route path="/atendimento" element={<AtendimentosPage />} />
             <Route path="/atendimento/:slug" element={<AtendimentoPage />} />
+            <Route path="/mapa-do-site" element={<MapaSitePage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
