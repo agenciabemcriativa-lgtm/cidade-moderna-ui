@@ -127,28 +127,49 @@ export type Database = {
       governo_itens: {
         Row: {
           ativo: boolean | null
+          cargo: string | null
+          conteudo: string | null
           created_at: string | null
+          email: string | null
+          endereco: string | null
+          foto_url: string | null
           id: string
+          nome_autoridade: string | null
           ordem: number | null
           slug: string
+          telefone: string | null
           titulo: string
           updated_at: string | null
         }
         Insert: {
           ativo?: boolean | null
+          cargo?: string | null
+          conteudo?: string | null
           created_at?: string | null
+          email?: string | null
+          endereco?: string | null
+          foto_url?: string | null
           id?: string
+          nome_autoridade?: string | null
           ordem?: number | null
           slug: string
+          telefone?: string | null
           titulo: string
           updated_at?: string | null
         }
         Update: {
           ativo?: boolean | null
+          cargo?: string | null
+          conteudo?: string | null
           created_at?: string | null
+          email?: string | null
+          endereco?: string | null
+          foto_url?: string | null
           id?: string
+          nome_autoridade?: string | null
           ordem?: number | null
           slug?: string
+          telefone?: string | null
           titulo?: string
           updated_at?: string | null
         }
