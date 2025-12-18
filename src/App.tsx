@@ -60,6 +60,11 @@ import AdminPublicacoesOficiais from "./pages/admin/AdminPublicacoesOficiais";
 import AdminLegislacao from "./pages/admin/AdminLegislacao";
 import AdminTransparencia from "./pages/admin/AdminTransparencia";
 import AdminRelatoriosFiscais from "./pages/admin/AdminRelatoriosFiscais";
+import AdminObrasPublicas from "./pages/admin/AdminObrasPublicas";
+import AdminRemuneracaoAgentes from "./pages/admin/AdminRemuneracaoAgentes";
+import AdminDiariasPassagens from "./pages/admin/AdminDiariasPassagens";
+import AdminPatrimonioPublico from "./pages/admin/AdminPatrimonioPublico";
+import AdminDadosAbertos from "./pages/admin/AdminDadosAbertos";
 
 const queryClient = new QueryClient();
 
@@ -128,6 +133,11 @@ const App = () => (
             <Route path="/admin/legislacao" element={<AdminLegislacao />} />
             <Route path="/admin/transparencia" element={<AdminTransparencia />} />
             <Route path="/admin/relatorios-fiscais" element={<AdminRelatoriosFiscais />} />
+            <Route path="/admin/obras" element={<AdminObrasPublicas />} />
+            <Route path="/admin/remuneracao-agentes" element={<AdminRemuneracaoAgentes />} />
+            <Route path="/admin/diarias-passagens" element={<AdminDiariasPassagens />} />
+            <Route path="/admin/patrimonio" element={<AdminPatrimonioPublico />} />
+            <Route path="/admin/dados-abertos" element={<AdminDadosAbertos />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
