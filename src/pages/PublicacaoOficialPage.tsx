@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { FileText, Calendar, Building2, Download, ArrowLeft, Scale, Info, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
@@ -30,6 +31,7 @@ export default function PublicacaoOficialPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
+        <TopBar />
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
           <Skeleton className="h-8 w-64 mb-4" />
@@ -44,6 +46,7 @@ export default function PublicacaoOficialPage() {
   if (error || !publicacao) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
+        <TopBar />
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
           <Card className="max-w-2xl mx-auto">
@@ -69,6 +72,7 @@ export default function PublicacaoOficialPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <TopBar />
       <Header />
 
       <main className="flex-1">
