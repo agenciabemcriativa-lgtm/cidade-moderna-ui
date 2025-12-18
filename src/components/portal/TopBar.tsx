@@ -39,44 +39,50 @@ export function TopBar() {
     <div className="bg-primary text-primary-foreground">
       <div className="container flex flex-col md:flex-row items-center justify-between py-2 text-xs md:text-sm">
         <div className="flex items-center gap-4 mb-2 md:mb-0">
-          <a href="tel:+558738811156" className="flex items-center gap-1 hover:text-highlight transition-colors">
+          <a href="tel:+558738811156" className="flex items-center gap-1.5 hover:text-highlight transition-colors">
             <Phone className="w-3 h-3" />
             <span>(87) 3881-1156</span>
           </a>
-          <a href="mailto:contato@ipubi.pe.gov.br" className="flex items-center gap-1 hover:text-highlight transition-colors">
+          <a href="mailto:contato@ipubi.pe.gov.br" className="flex items-center gap-1.5 hover:text-highlight transition-colors">
             <Mail className="w-3 h-3" />
             <span>contato@ipubi.pe.gov.br</span>
           </a>
         </div>
-        <nav className="flex items-center gap-1 md:gap-2">
-          {quickLinks.map((link) => (
-            link.external ? (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 px-2 py-1 rounded hover:bg-highlight hover:text-highlight-foreground transition-all duration-200 font-medium"
-              >
-                <span>{link.label}</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            ) : (
-              <Link
-                key={link.label}
-                to={link.href}
-                className="flex items-center gap-1 px-2 py-1 rounded hover:bg-highlight hover:text-highlight-foreground transition-all duration-200 font-medium"
-              >
-                <span>{link.label}</span>
-              </Link>
-            )
+        <nav className="flex items-center flex-wrap justify-center gap-1">
+          {quickLinks.map((link, index) => (
+            <div key={link.label} className="flex items-center">
+              {index > 0 && (
+                <span className="text-primary-foreground/40 mx-1 hidden md:inline">|</span>
+              )}
+              {link.external ? (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-all duration-200 font-medium whitespace-nowrap"
+                >
+                  <span>{link.label}</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              ) : (
+                <Link
+                  to={link.href}
+                  className="flex items-center gap-1 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-all duration-200 font-medium whitespace-nowrap"
+                >
+                  <span>{link.label}</span>
+                </Link>
+              )}
+            </div>
           ))}
+          
+          {/* Separador */}
+          <span className="text-primary-foreground/40 mx-1 hidden md:inline">|</span>
           
           {/* Publicações Oficiais Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-1 px-2 py-1 rounded hover:bg-highlight hover:text-highlight-foreground transition-all duration-200 font-medium"
+              className="flex items-center gap-1 px-2 py-1 rounded hover:bg-primary-foreground/10 transition-all duration-200 font-medium whitespace-nowrap"
             >
               <span>Publicações Oficiais</span>
               <ChevronDown className={`w-3 h-3 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
