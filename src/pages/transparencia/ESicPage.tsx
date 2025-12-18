@@ -1,4 +1,4 @@
-import { ExternalLink, FileText, Clock, AlertTriangle, Phone, Mail, MapPin, HelpCircle, CheckCircle, ArrowRight, Shield, Users, Search, MessageSquare, Calendar, Scale } from 'lucide-react';
+import { ExternalLink, FileText, Clock, AlertTriangle, Phone, Mail, MapPin, HelpCircle, CheckCircle, ArrowRight, Shield, Users, Search, MessageSquare, Calendar, Scale, BarChart3, TrendingUp, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { useESicEstatisticasPublicas } from '@/hooks/useESic';
 
 
 const passoASolicitacao = [
@@ -108,6 +109,8 @@ const hipotesesNegativa = [
 ];
 
 export default function ESicPage() {
+  const { data: estatisticas, isLoading: loadingStats } = useESicEstatisticasPublicas();
+
   return (
     <TransparenciaLayout 
       title="e-SIC - Serviço de Informação ao Cidadão"
@@ -171,6 +174,73 @@ export default function ESicPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Estatísticas Públicas */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-3">
+                <BarChart3 className="w-6 h-6 text-blue-600" />
+              </div>
+              {loadingStats ? (
+                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+              ) : (
+                <p className="text-3xl font-bold text-blue-700">{estatisticas?.total || 0}</p>
+              )}
+              <p className="text-sm text-blue-600 font-medium">Total de Solicitações</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-green-50 to-green-100/50 border-green-200">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
+              {loadingStats ? (
+                <Loader2 className="w-6 h-6 animate-spin text-green-600" />
+              ) : (
+                <p className="text-3xl font-bold text-green-700">{estatisticas?.respondidas || 0}</p>
+              )}
+              <p className="text-sm text-green-600 font-medium">Respondidas</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-amber-50 to-amber-100/50 border-amber-200">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-3">
+                <Clock className="w-6 h-6 text-amber-600" />
+              </div>
+              {loadingStats ? (
+                <Loader2 className="w-6 h-6 animate-spin text-amber-600" />
+              ) : (
+                <p className="text-3xl font-bold text-amber-700">{estatisticas?.emAndamento || 0}</p>
+              )}
+              <p className="text-sm text-amber-600 font-medium">Em Andamento</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100/50 border-purple-200">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-3">
+                <TrendingUp className="w-6 h-6 text-purple-600" />
+              </div>
+              {loadingStats ? (
+                <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+              ) : (
+                <p className="text-3xl font-bold text-purple-700">{estatisticas?.taxaResposta || 0}%</p>
+              )}
+              <p className="text-sm text-purple-600 font-medium">Taxa de Resposta</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Alerta Importante */}

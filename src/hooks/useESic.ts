@@ -496,6 +496,32 @@ export function useESicEstatisticas() {
   });
 }
 
+// Hook para estatísticas públicas (visíveis para todos)
+export function useESicEstatisticasPublicas() {
+  return useQuery({
+    queryKey: ['esic-estatisticas-publicas'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('esic_solicitacoes')
+        .select('status, data_resposta');
+
+      if (error) throw error;
+
+      const total = data.length;
+      const respondidas = data.filter(s => s.status === 'respondida' || s.data_resposta).length;
+      const emAndamento = data.filter(s => s.status === 'pendente' || s.status === 'em_andamento' || s.status === 'prorrogada').length;
+      const taxaResposta = total > 0 ? Math.round((respondidas / total) * 100) : 0;
+
+      return {
+        total,
+        respondidas,
+        emAndamento,
+        taxaResposta,
+      };
+    },
+  });
+}
+
 // Hook para criar recurso
 export function useCreateRecurso() {
   const queryClient = useQueryClient();
