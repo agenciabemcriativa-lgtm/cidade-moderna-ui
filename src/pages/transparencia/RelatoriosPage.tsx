@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AlertCircle, Download, FileText, Calendar, Filter } from 'lucide-react';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
 import { FilterBar, YearFilter, TypeFilter } from '@/components/transparencia/FilterBar';
@@ -34,9 +35,18 @@ const tipoCardStyles: Record<TipoRelatorioFiscal, { bg: string; border: string; 
 };
 
 export default function RelatoriosPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState('');
   const [ano, setAno] = useState<string>('all');
   const [tipo, setTipo] = useState<string>('all');
+
+  // Lê o parâmetro 'tipo' da URL quando a página carrega
+  useEffect(() => {
+    const tipoParam = searchParams.get('tipo');
+    if (tipoParam && Object.keys(tipoRelatorioLabels).includes(tipoParam)) {
+      setTipo(tipoParam);
+    }
+  }, [searchParams]);
 
   const { data: relatorios, isLoading } = useRelatoriosFiscais(
     tipo !== 'all' ? (tipo as TipoRelatorioFiscal) : undefined,
