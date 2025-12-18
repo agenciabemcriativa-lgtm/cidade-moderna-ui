@@ -185,7 +185,7 @@ export default function TransparenciaPage() {
           </CardHeader>
           <CardContent className="pt-0">
             <Separator className="mb-3 bg-gray-200" />
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {category.itens.map((item) => (
                 <li key={item.id}>
                   {item.externo ? (
@@ -193,17 +193,17 @@ export default function TransparenciaPage() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between text-sm text-gray-700 hover:text-primary transition-colors group"
+                      className="flex items-center justify-between text-sm text-primary hover:text-primary/80 hover:underline transition-colors group py-1 px-2 -mx-2 rounded hover:bg-primary/5"
                     >
-                      <span>{item.titulo}</span>
-                      <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <span className="font-medium">→ {item.titulo}</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary" />
                     </a>
                   ) : (
                     <Link
                       to={item.url}
-                      className="flex items-center text-sm text-gray-700 hover:text-primary transition-colors"
+                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
                     >
-                      <span>{item.titulo}</span>
+                      <span className="font-medium">→ {item.titulo}</span>
                     </Link>
                   )}
                 </li>
@@ -339,37 +339,37 @@ export default function TransparenciaPage() {
                   ))}
                 </div>
               ) : (
-                <ul className="space-y-2">
+                <ul className="space-y-1.5">
                   <li>
                     <Link
                       to="/transparencia/relatorios?tipo=rreo"
-                      className="flex items-center text-sm text-gray-700 hover:text-primary transition-colors"
+                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
                     >
-                      <span>RREO - Relatório Resumido</span>
+                      <span className="font-medium">→ RREO - Relatório Resumido</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       to="/transparencia/relatorios?tipo=rgf"
-                      className="flex items-center text-sm text-gray-700 hover:text-primary transition-colors"
+                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
                     >
-                      <span>RGF - Relatório de Gestão Fiscal</span>
+                      <span className="font-medium">→ RGF - Relatório de Gestão Fiscal</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       to="/transparencia/relatorios?tipo=parecer_tce"
-                      className="flex items-center text-sm text-gray-700 hover:text-primary transition-colors"
+                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
                     >
-                      <span>Pareceres do TCE</span>
+                      <span className="font-medium">→ Pareceres do TCE</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       to="/transparencia/relatorios?tipo=prestacao_contas"
-                      className="flex items-center text-sm text-gray-700 hover:text-primary transition-colors"
+                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
                     >
-                      <span>Prestação de Contas</span>
+                      <span className="font-medium">→ Prestação de Contas</span>
                     </Link>
                   </li>
                 </ul>
