@@ -12,6 +12,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import { usePublicacoesOficiais, tipoLabels, situacaoLabels, situacaoColors } from "@/hooks/usePublicacoesOficiais";
 
 const tipoIcons: Record<string, string> = {
@@ -73,6 +74,13 @@ export function PublicacoesCarousel() {
               align: "start",
               loop: true,
             }}
+            plugins={[
+              Autoplay({
+                delay: 4000,
+                stopOnInteraction: false,
+                stopOnMouseEnter: true,
+              }),
+            ]}
             className="w-full"
           >
             <CarouselContent className="-ml-3 md:-ml-4">
