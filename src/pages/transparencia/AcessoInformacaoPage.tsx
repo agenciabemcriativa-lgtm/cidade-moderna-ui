@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { ExternalLink, AlertCircle, MessageSquare, Search, HelpCircle, Phone, Mail } from 'lucide-react';
+import { ExternalLink, AlertCircle, MessageSquare, Search, HelpCircle, Phone, Mail, ArrowRight, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
 
 const faqItems = [
   {
@@ -48,13 +48,46 @@ export default function AcessoInformacaoPage() {
       title="Acesso à Informação"
       description="e-SIC, Ouvidoria e informações sobre a Lei de Acesso à Informação"
     >
+      {/* Destaque e-SIC */}
+      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-xl p-6 mb-8">
+        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+          <div className="flex-1">
+            <Badge className="mb-3 bg-primary/20 text-primary">
+              <Shield className="w-3 h-3 mr-1" />
+              Lei nº 12.527/2011
+            </Badge>
+            <h2 className="text-xl font-bold text-foreground mb-2">
+              Serviço de Informação ao Cidadão (e-SIC)
+            </h2>
+            <p className="text-muted-foreground mb-4">
+              Solicite informações públicas. Acesso gratuito, sem necessidade de justificativa. Resposta em até 20 dias.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/transparencia/esic">
+                <Button className="gap-2">
+                  <Search className="w-4 h-4" />
+                  Acessar Módulo e-SIC
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <a 
+                href="https://www.ipubi.pe.gov.br/esic/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline" className="gap-2">
+                  Sistema e-SIC
+                  <ExternalLink className="w-4 h-4" />
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Cards principais */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <a 
-          href="https://www.ipubi.pe.gov.br/esic/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link to="/transparencia/esic">
           <Card className="bg-primary/5 border-primary/20 hover:shadow-lg transition-all cursor-pointer h-full">
             <CardHeader>
               <div className="flex items-center gap-3">
@@ -62,23 +95,23 @@ export default function AcessoInformacaoPage() {
                   <Search className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-lg">e-SIC</CardTitle>
+                  <CardTitle className="text-lg">e-SIC Completo</CardTitle>
                   <CardDescription>Sistema Eletrônico do Serviço de Informação ao Cidadão</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                Solicite informações públicas que não estão disponíveis no Portal da Transparência. 
-                Acompanhe suas solicitações e receba respostas dentro do prazo legal.
+              <p className="text-sm text-muted-foreground mb-4">
+                Saiba como solicitar informações, prazos legais, recursos administrativos, 
+                FAQ completo e todas as orientações sobre a Lei de Acesso à Informação.
               </p>
-              <Button className="w-full">
-                Acessar e-SIC
-                <ExternalLink className="w-4 h-4 ml-2" />
+              <Button className="w-full gap-2">
+                Ver Módulo Completo
+                <ArrowRight className="w-4 h-4" />
               </Button>
             </CardContent>
           </Card>
-        </a>
+        </Link>
 
         <Link to="/contato">
           <Card className="bg-green-50 border-green-200 hover:shadow-lg transition-all cursor-pointer h-full">
@@ -94,7 +127,7 @@ export default function AcessoInformacaoPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 A Ouvidoria é o canal de comunicação entre o cidadão e a administração pública. 
                 Registre manifestações, acompanhe respostas e contribua para a melhoria dos serviços.
               </p>
