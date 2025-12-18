@@ -9,7 +9,8 @@ export type TipoPublicacao =
   | 'instrucao_normativa'
   | 'ato_administrativo'
   | 'edital'
-  | 'comunicado';
+  | 'comunicado'
+  | 'outros';
 
 export type SituacaoPublicacao = 'vigente' | 'revogado' | 'alterado';
 
@@ -43,6 +44,7 @@ export const tipoLabels: Record<TipoPublicacao, string> = {
   ato_administrativo: 'Ato Administrativo',
   edital: 'Edital',
   comunicado: 'Comunicado',
+  outros: 'Outros',
 };
 
 export const situacaoLabels: Record<SituacaoPublicacao, string> = {
