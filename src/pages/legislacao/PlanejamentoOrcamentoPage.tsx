@@ -82,7 +82,7 @@ function DocumentoCard({ documento, tipo }: { documento?: DocumentoLegislacao; t
 
 function HistoricoList({ documentos, tipo, isLoading }: { documentos?: DocumentoLegislacao[]; tipo: string; isLoading: boolean }) {
   const historico = documentos?.filter(d => !d.vigente) || [];
-  const anos = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4];
+  
 
   if (isLoading) {
     return (
@@ -116,18 +116,10 @@ function HistoricoList({ documentos, tipo, isLoading }: { documentos?: Documento
   }
 
   return (
-    <div className="space-y-2">
-      {anos.map((ano) => (
-        <div key={ano} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-          <span className="text-sm">{tipo} {ano}</span>
-          <Link to={`/publicacoes-oficiais?search=${tipo}%20${ano}`}>
-            <Button variant="ghost" size="sm" className="gap-1 h-8">
-              <FileText className="h-3 w-3" />
-              Ver
-            </Button>
-          </Link>
-        </div>
-      ))}
+    <div className="p-4 bg-muted/50 rounded-lg border border-border">
+      <p className="text-sm text-muted-foreground">
+        Nenhum documento histórico cadastrado no sistema.
+      </p>
     </div>
   );
 }
