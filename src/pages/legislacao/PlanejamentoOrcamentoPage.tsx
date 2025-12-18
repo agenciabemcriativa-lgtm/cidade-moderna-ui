@@ -75,12 +75,6 @@ function DocumentoCard({ documento, tipo }: { documento?: DocumentoLegislacao; t
             Baixar PDF
           </Button>
         </a>
-        <Link to={`/publicacoes-oficiais?search=${tipo}%20${documento.ano}`}>
-          <Button variant="outline" size="sm" className="gap-2">
-            <FileText className="h-4 w-4" />
-            Ver Publicação
-          </Button>
-        </Link>
       </div>
     </div>
   );
