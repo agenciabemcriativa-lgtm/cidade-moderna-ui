@@ -159,31 +159,3 @@ export function useDeleteDocumentoLegislacao() {
     },
   });
 }
-
-export async function uploadArquivoLegislacao(file: File): Promise<{ url: string; nome: string }> {
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-  const filePath = `documentos/${fileName}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from('legislacao')
-    .upload(filePath, file);
-
-  if (uploadError) throw uploadError;
-
-  const { data } = supabase.storage
-    .from('legislacao')
-    .getPublicUrl(filePath);
-
-  return {
-    url: data.publicUrl,
-    nome: file.name,
-  };
-}
-
-export async function deleteArquivoLegislacao(url: string): Promise<void> {
-  const path = url.split('/legislacao/')[1];
-  if (path) {
-    await supabase.storage.from('legislacao').remove([path]);
-  }
-}

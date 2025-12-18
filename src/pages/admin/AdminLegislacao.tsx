@@ -34,12 +34,12 @@ import {
   Plus, 
   Pencil, 
   Trash2, 
-  Upload, 
   FileText, 
   ExternalLink,
   Search,
   Filter,
-  BookOpen
+  BookOpen,
+  Link as LinkIcon
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
@@ -49,8 +49,6 @@ import {
   useCreateDocumentoLegislacao,
   useUpdateDocumentoLegislacao,
   useDeleteDocumentoLegislacao,
-  uploadArquivoLegislacao,
-  deleteArquivoLegislacao,
   tipoDocumentoLabels,
   TipoDocumentoLegislacao,
   DocumentoLegislacao,
@@ -66,7 +64,7 @@ const tiposDocumento: { value: TipoDocumentoLegislacao; label: string }[] = [
 ];
 
 const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 20 }, (_, i) => currentYear - i);
+const years = Array.from({ length: 30 }, (_, i) => currentYear - i);
 
 export default function AdminLegislacao() {
   const { toast } = useToast();
@@ -74,8 +72,7 @@ export default function AdminLegislacao() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingDocumento, setEditingDocumento] = useState<DocumentoLegislacao | null>(null);
   const [documentoToDelete, setDocumentoToDelete] = useState<DocumentoLegislacao | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   
   // Filters
   const [filterTipo, setFilterTipo] = useState<string>("all");
@@ -92,7 +89,6 @@ export default function AdminLegislacao() {
     vigente: true,
     observacoes: "",
     arquivo_url: "",
-    arquivo_nome: "",
   });
 
   const { data: documentos, isLoading } = useDocumentosLegislacao({
@@ -109,29 +105,6 @@ export default function AdminLegislacao() {
     doc.descricao?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.type !== 'application/pdf') {
-        toast({
-          title: "Erro",
-          description: "Apenas arquivos PDF são permitidos",
-          variant: "destructive",
-        });
-        return;
-      }
-      if (file.size > 20 * 1024 * 1024) {
-        toast({
-          title: "Erro",
-          description: "O arquivo deve ter no máximo 20MB",
-          variant: "destructive",
-        });
-        return;
-      }
-      setSelectedFile(file);
-    }
-  };
-
   const handleOpenDialog = (documento?: DocumentoLegislacao) => {
     if (documento) {
       setEditingDocumento(documento);
@@ -144,7 +117,6 @@ export default function AdminLegislacao() {
         vigente: documento.vigente,
         observacoes: documento.observacoes || "",
         arquivo_url: documento.arquivo_url,
-        arquivo_nome: documento.arquivo_nome,
       });
     } else {
       setEditingDocumento(null);
@@ -157,10 +129,8 @@ export default function AdminLegislacao() {
         vigente: true,
         observacoes: "",
         arquivo_url: "",
-        arquivo_nome: "",
       });
     }
-    setSelectedFile(null);
     setIsDialogOpen(true);
   };
 
@@ -174,26 +144,21 @@ export default function AdminLegislacao() {
       return;
     }
 
-    if (!selectedFile && !formData.arquivo_url) {
+    if (!formData.arquivo_url.trim()) {
       toast({
         title: "Erro",
-        description: "É necessário fazer upload de um arquivo PDF",
+        description: "O link do PDF é obrigatório",
         variant: "destructive",
       });
       return;
     }
 
-    setIsUploading(true);
+    setIsSaving(true);
 
     try {
-      let arquivo_url = formData.arquivo_url;
-      let arquivo_nome = formData.arquivo_nome;
-
-      if (selectedFile) {
-        const result = await uploadArquivoLegislacao(selectedFile);
-        arquivo_url = result.url;
-        arquivo_nome = result.nome;
-      }
+      // Extrair nome do arquivo da URL
+      const urlParts = formData.arquivo_url.split('/');
+      const arquivo_nome = urlParts[urlParts.length - 1] || 'documento.pdf';
 
       const documentoData = {
         titulo: formData.titulo,
@@ -203,7 +168,7 @@ export default function AdminLegislacao() {
         data_publicacao: formData.data_publicacao,
         vigente: formData.vigente,
         observacoes: formData.observacoes || null,
-        arquivo_url,
+        arquivo_url: formData.arquivo_url,
         arquivo_nome,
       };
 
@@ -229,7 +194,7 @@ export default function AdminLegislacao() {
         variant: "destructive",
       });
     } finally {
-      setIsUploading(false);
+      setIsSaving(false);
     }
   };
 
@@ -237,11 +202,6 @@ export default function AdminLegislacao() {
     if (!documentoToDelete) return;
 
     try {
-      // Delete file from storage
-      if (documentoToDelete.arquivo_url) {
-        await deleteArquivoLegislacao(documentoToDelete.arquivo_url);
-      }
-      
       await deleteMutation.mutateAsync(documentoToDelete.id);
       toast({
         title: "Sucesso",
@@ -498,6 +458,31 @@ export default function AdminLegislacao() {
                 </div>
 
                 <div className="col-span-2">
+                  <Label htmlFor="arquivo_url">Link do PDF *</Label>
+                  <div className="relative mt-1">
+                    <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="arquivo_url"
+                      value={formData.arquivo_url}
+                      onChange={(e) => setFormData({ ...formData, arquivo_url: e.target.value })}
+                      placeholder="https://exemplo.com/documento.pdf"
+                      className="pl-9"
+                    />
+                  </div>
+                  {formData.arquivo_url && (
+                    <a
+                      href={formData.arquivo_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-primary hover:underline text-sm mt-2"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                      Visualizar PDF
+                    </a>
+                  )}
+                </div>
+
+                <div className="col-span-2">
                   <Label htmlFor="descricao">Descrição</Label>
                   <Textarea
                     id="descricao"
@@ -518,61 +503,6 @@ export default function AdminLegislacao() {
                     rows={2}
                   />
                 </div>
-
-                <div className="col-span-2">
-                  <Label htmlFor="arquivo">Arquivo PDF *</Label>
-                  <div className="mt-2">
-                    {formData.arquivo_url && !selectedFile && (
-                      <div className="flex items-center gap-2 mb-2 p-2 bg-muted rounded-lg">
-                        <FileText className="h-4 w-4 text-primary" />
-                        <span className="text-sm truncate flex-1">{formData.arquivo_nome}</span>
-                        <a
-                          href={formData.arquivo_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline text-sm"
-                        >
-                          Ver
-                        </a>
-                      </div>
-                    )}
-                    {selectedFile && (
-                      <div className="flex items-center gap-2 mb-2 p-2 bg-green-50 dark:bg-green-950/20 rounded-lg">
-                        <FileText className="h-4 w-4 text-green-600" />
-                        <span className="text-sm truncate flex-1">{selectedFile.name}</span>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setSelectedFile(null)}
-                        >
-                          Remover
-                        </Button>
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2">
-                      <Input
-                        id="arquivo"
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => document.getElementById('arquivo')?.click()}
-                        className="gap-2"
-                      >
-                        <Upload className="h-4 w-4" />
-                        {formData.arquivo_url ? "Substituir arquivo" : "Selecionar arquivo"}
-                      </Button>
-                      <span className="text-xs text-muted-foreground">
-                        Apenas PDF, máx. 20MB
-                      </span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -580,8 +510,8 @@ export default function AdminLegislacao() {
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                 Cancelar
               </Button>
-              <Button onClick={handleSubmit} disabled={isUploading}>
-                {isUploading ? "Salvando..." : editingDocumento ? "Salvar" : "Cadastrar"}
+              <Button onClick={handleSubmit} disabled={isSaving}>
+                {isSaving ? "Salvando..." : editingDocumento ? "Salvar" : "Cadastrar"}
               </Button>
             </DialogFooter>
           </DialogContent>
