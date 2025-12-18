@@ -272,26 +272,15 @@ export default function TransparenciaPage() {
               </p>
             </div>
             
-            <div className="flex flex-col gap-2">
-              <a
-                href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <ExternalLink className="w-5 h-5" />
-                Acessar Sistema de Transparência
-              </a>
-              <a
-                href="https://www.ipubi.pe.gov.br/esic/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-white/20 text-white font-medium px-6 py-3 rounded-lg hover:bg-white/30 transition-colors border border-white/30"
-              >
-                <Search className="w-5 h-5" />
-                Solicitar Informação (e-SIC)
-              </a>
-            </div>
+            <a
+              href="https://www.ipubi.pe.gov.br/esic/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+              Solicitar Informação (e-SIC)
+            </a>
           </div>
         </div>
       </section>
@@ -435,16 +424,6 @@ export default function TransparenciaPage() {
                   <Link to="/" className="hover:text-white transition-colors">
                     Portal Institucional
                   </Link>
-                </li>
-                <li>
-                  <a 
-                    href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-white transition-colors"
-                  >
-                    Sistema de Transparência
-                  </a>
                 </li>
                 <li>
                   <a 
