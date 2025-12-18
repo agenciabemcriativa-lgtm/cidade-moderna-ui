@@ -48,9 +48,16 @@ export default function RelatoriosPage() {
     }
   }, [searchParams]);
 
-  const { data: relatorios, isLoading } = useRelatoriosFiscais(
-    tipo !== 'all' ? (tipo as TipoRelatorioFiscal) : undefined,
-    ano !== 'all' ? Number(ano) : undefined
+  const anoFilter = ano !== 'all' ? Number(ano) : undefined;
+  const tipoFilter = tipo !== 'all' ? (tipo as TipoRelatorioFiscal) : undefined;
+
+  // Lista (respeita filtros)
+  const { data: relatorios, isLoading } = useRelatoriosFiscais(tipoFilter, anoFilter);
+
+  // Contagem por tipo (NÃO deve depender do filtro de tipo, senão zera os demais cards)
+  const { data: relatoriosForCounts, isLoading: isLoadingCounts } = useRelatoriosFiscais(
+    undefined,
+    anoFilter
   );
 
   const filteredRelatorios = relatorios?.filter((r) =>
@@ -76,14 +83,15 @@ export default function RelatoriosPage() {
     return null;
   };
 
-  // Group by type for summary cards
-  const countByType = relatorios?.reduce(
-    (acc, r) => {
-      acc[r.tipo] = (acc[r.tipo] || 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>
-  ) || {};
+  // Group by type for summary cards (sempre baseado no conjunto completo)
+  const countByType =
+    relatoriosForCounts?.reduce(
+      (acc, r) => {
+        acc[r.tipo] = (acc[r.tipo] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ) || {};
 
   return (
     <TransparenciaLayout 
@@ -111,9 +119,13 @@ export default function RelatoriosPage() {
               <CardContent>
                 <p className={`text-xs ${styles.icon}`}>{label}</p>
                 <div className="flex items-center gap-2 mt-2">
-                  <Badge variant="secondary" className="text-xs">
-                    {count} {count === 1 ? 'documento' : 'documentos'}
-                  </Badge>
+                  {isLoadingCounts ? (
+                    <Skeleton className="h-5 w-24" />
+                  ) : (
+                    <Badge variant="secondary" className="text-xs">
+                      {count} {count === 1 ? 'documento' : 'documentos'}
+                    </Badge>
+                  )}
                 </div>
               </CardContent>
             </Card>
