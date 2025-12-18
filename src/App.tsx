@@ -22,6 +22,8 @@ import EstruturaOrganizacionalPage from "./pages/EstruturaOrganizacionalPage";
 import OrganogramaPage from "./pages/OrganogramaPage";
 import MapaSitePage from "./pages/MapaSitePage";
 import AcessibilidadePage from "./pages/AcessibilidadePage";
+import PublicacoesOficiaisPage from "./pages/PublicacoesOficiaisPage";
+import PublicacaoOficialPage from "./pages/PublicacaoOficialPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -35,6 +37,7 @@ import AdminLicitacoes from "./pages/admin/AdminLicitacoes";
 import AdminGoverno from "./pages/admin/AdminGoverno";
 import AdminMunicipio from "./pages/admin/AdminMunicipio";
 import AdminAtendimento from "./pages/admin/AdminAtendimento";
+import AdminPublicacoesOficiais from "./pages/admin/AdminPublicacoesOficiais";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +65,8 @@ const App = () => (
             <Route path="/municipio/:slug" element={<MunicipioPage />} />
             <Route path="/atendimento" element={<AtendimentosPage />} />
             <Route path="/atendimento/:slug" element={<AtendimentoPage />} />
+            <Route path="/publicacoes-oficiais" element={<PublicacoesOficiaisPage />} />
+            <Route path="/publicacao/:id" element={<PublicacaoOficialPage />} />
             <Route path="/mapa-do-site" element={<MapaSitePage />} />
             <Route path="/acessibilidade" element={<AcessibilidadePage />} />
             
@@ -78,6 +83,7 @@ const App = () => (
             <Route path="/admin/governo" element={<AdminGoverno />} />
             <Route path="/admin/municipio" element={<AdminMunicipio />} />
             <Route path="/admin/atendimento" element={<AdminAtendimento />} />
+            <Route path="/admin/publicacoes-oficiais" element={<AdminPublicacoesOficiais />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
