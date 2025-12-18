@@ -31,6 +31,12 @@ import LeiAcessoInformacaoPage from "./pages/legislacao/LeiAcessoInformacaoPage"
 import LeiOrganicaPage from "./pages/legislacao/LeiOrganicaPage";
 import PlanejamentoOrcamentoPage from "./pages/legislacao/PlanejamentoOrcamentoPage";
 import TransparenciaPage from "./pages/TransparenciaPage";
+import DespesasPage from "./pages/transparencia/DespesasPage";
+import ReceitasPage from "./pages/transparencia/ReceitasPage";
+import ServidoresPage from "./pages/transparencia/ServidoresPage";
+import ConveniosPage from "./pages/transparencia/ConveniosPage";
+import RelatoriosPage from "./pages/transparencia/RelatoriosPage";
+import AcessoInformacaoPage from "./pages/transparencia/AcessoInformacaoPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -84,6 +90,12 @@ const App = () => (
             <Route path="/mapa-do-site" element={<MapaSitePage />} />
             <Route path="/acessibilidade" element={<AcessibilidadePage />} />
             <Route path="/transparencia" element={<TransparenciaPage />} />
+            <Route path="/transparencia/despesas" element={<DespesasPage />} />
+            <Route path="/transparencia/receitas" element={<ReceitasPage />} />
+            <Route path="/transparencia/servidores" element={<ServidoresPage />} />
+            <Route path="/transparencia/convenios" element={<ConveniosPage />} />
+            <Route path="/transparencia/relatorios" element={<RelatoriosPage />} />
+            <Route path="/transparencia/acesso-informacao" element={<AcessoInformacaoPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
