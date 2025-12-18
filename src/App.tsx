@@ -38,6 +38,11 @@ import ServidoresPage from "./pages/transparencia/ServidoresPage";
 import ConveniosPage from "./pages/transparencia/ConveniosPage";
 import RelatoriosPage from "./pages/transparencia/RelatoriosPage";
 import AcessoInformacaoPage from "./pages/transparencia/AcessoInformacaoPage";
+import ObrasPublicasPage from "./pages/transparencia/ObrasPublicasPage";
+import RemuneracaoAgentesPage from "./pages/transparencia/RemuneracaoAgentesPage";
+import DiariasPassagensPage from "./pages/transparencia/DiariasPassagensPage";
+import PatrimonioPublicoPage from "./pages/transparencia/PatrimonioPublicoPage";
+import DadosAbertosPage from "./pages/transparencia/DadosAbertosPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -100,6 +105,11 @@ const App = () => (
             <Route path="/transparencia/convenios" element={<ConveniosPage />} />
             <Route path="/transparencia/relatorios" element={<RelatoriosPage />} />
             <Route path="/transparencia/acesso-informacao" element={<AcessoInformacaoPage />} />
+            <Route path="/transparencia/obras" element={<ObrasPublicasPage />} />
+            <Route path="/transparencia/remuneracao-agentes" element={<RemuneracaoAgentesPage />} />
+            <Route path="/transparencia/diarias-passagens" element={<DiariasPassagensPage />} />
+            <Route path="/transparencia/patrimonio" element={<PatrimonioPublicoPage />} />
+            <Route path="/transparencia/dados-abertos" element={<DadosAbertosPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />

@@ -161,6 +161,144 @@ export type Database = {
         }
         Relationships: []
       }
+      dados_abertos: {
+        Row: {
+          arquivo_nome: string
+          arquivo_url: string
+          categoria: Database["public"]["Enums"]["categoria_dados_abertos"]
+          created_at: string | null
+          data_referencia: string | null
+          descricao: string | null
+          fonte: string | null
+          formato: Database["public"]["Enums"]["formato_arquivo"]
+          id: string
+          link_sistema_origem: string | null
+          observacoes: string | null
+          ordem: number | null
+          periodicidade: string | null
+          publicado: boolean | null
+          quantidade_registros: number | null
+          tamanho_bytes: number | null
+          titulo: string
+          ultima_atualizacao: string
+          updated_at: string | null
+        }
+        Insert: {
+          arquivo_nome: string
+          arquivo_url: string
+          categoria: Database["public"]["Enums"]["categoria_dados_abertos"]
+          created_at?: string | null
+          data_referencia?: string | null
+          descricao?: string | null
+          fonte?: string | null
+          formato: Database["public"]["Enums"]["formato_arquivo"]
+          id?: string
+          link_sistema_origem?: string | null
+          observacoes?: string | null
+          ordem?: number | null
+          periodicidade?: string | null
+          publicado?: boolean | null
+          quantidade_registros?: number | null
+          tamanho_bytes?: number | null
+          titulo: string
+          ultima_atualizacao?: string
+          updated_at?: string | null
+        }
+        Update: {
+          arquivo_nome?: string
+          arquivo_url?: string
+          categoria?: Database["public"]["Enums"]["categoria_dados_abertos"]
+          created_at?: string | null
+          data_referencia?: string | null
+          descricao?: string | null
+          fonte?: string | null
+          formato?: Database["public"]["Enums"]["formato_arquivo"]
+          id?: string
+          link_sistema_origem?: string | null
+          observacoes?: string | null
+          ordem?: number | null
+          periodicidade?: string | null
+          publicado?: boolean | null
+          quantidade_registros?: number | null
+          tamanho_bytes?: number | null
+          titulo?: string
+          ultima_atualizacao?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      diarias_passagens: {
+        Row: {
+          ano_referencia: number
+          beneficiario_cargo: string | null
+          beneficiario_matricula: string | null
+          beneficiario_nome: string
+          created_at: string | null
+          data_fim: string
+          data_inicio: string
+          destino: string
+          finalidade: string
+          id: string
+          link_sistema_oficial: string | null
+          mes_referencia: number
+          numero_portaria: string | null
+          observacoes: string | null
+          publicado: boolean | null
+          quantidade_dias: number | null
+          secretaria: string | null
+          tipo: string
+          updated_at: string | null
+          valor_total: number
+          valor_unitario: number | null
+        }
+        Insert: {
+          ano_referencia: number
+          beneficiario_cargo?: string | null
+          beneficiario_matricula?: string | null
+          beneficiario_nome: string
+          created_at?: string | null
+          data_fim: string
+          data_inicio: string
+          destino: string
+          finalidade: string
+          id?: string
+          link_sistema_oficial?: string | null
+          mes_referencia: number
+          numero_portaria?: string | null
+          observacoes?: string | null
+          publicado?: boolean | null
+          quantidade_dias?: number | null
+          secretaria?: string | null
+          tipo: string
+          updated_at?: string | null
+          valor_total: number
+          valor_unitario?: number | null
+        }
+        Update: {
+          ano_referencia?: number
+          beneficiario_cargo?: string | null
+          beneficiario_matricula?: string | null
+          beneficiario_nome?: string
+          created_at?: string | null
+          data_fim?: string
+          data_inicio?: string
+          destino?: string
+          finalidade?: string
+          id?: string
+          link_sistema_oficial?: string | null
+          mes_referencia?: number
+          numero_portaria?: string | null
+          observacoes?: string | null
+          publicado?: boolean | null
+          quantidade_dias?: number | null
+          secretaria?: string | null
+          tipo?: string
+          updated_at?: string | null
+          valor_total?: number
+          valor_unitario?: number | null
+        }
+        Relationships: []
+      }
       documentos_legislacao: {
         Row: {
           ano: number
@@ -480,6 +618,183 @@ export type Database = {
         }
         Relationships: []
       }
+      obras_publicas: {
+        Row: {
+          cnpj_empresa: string | null
+          created_at: string | null
+          created_by: string | null
+          data_conclusao: string | null
+          data_inicio: string | null
+          data_previsao_termino: string | null
+          descricao: string | null
+          empresa_executora: string | null
+          fiscal_obra: string | null
+          fonte_recurso:
+            | Database["public"]["Enums"]["fonte_recurso_obra"]
+            | null
+          fonte_recurso_descricao: string | null
+          foto_url: string | null
+          id: string
+          link_sistema_oficial: string | null
+          localizacao: string | null
+          numero_contrato: string | null
+          objeto: string
+          observacoes: string | null
+          percentual_execucao: number | null
+          prazo_execucao_dias: number | null
+          publicado: boolean | null
+          secretaria_responsavel: string | null
+          status: Database["public"]["Enums"]["status_obra"] | null
+          titulo: string
+          updated_at: string | null
+          updated_by: string | null
+          valor_contratado: number | null
+          valor_executado: number | null
+        }
+        Insert: {
+          cnpj_empresa?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          data_conclusao?: string | null
+          data_inicio?: string | null
+          data_previsao_termino?: string | null
+          descricao?: string | null
+          empresa_executora?: string | null
+          fiscal_obra?: string | null
+          fonte_recurso?:
+            | Database["public"]["Enums"]["fonte_recurso_obra"]
+            | null
+          fonte_recurso_descricao?: string | null
+          foto_url?: string | null
+          id?: string
+          link_sistema_oficial?: string | null
+          localizacao?: string | null
+          numero_contrato?: string | null
+          objeto: string
+          observacoes?: string | null
+          percentual_execucao?: number | null
+          prazo_execucao_dias?: number | null
+          publicado?: boolean | null
+          secretaria_responsavel?: string | null
+          status?: Database["public"]["Enums"]["status_obra"] | null
+          titulo: string
+          updated_at?: string | null
+          updated_by?: string | null
+          valor_contratado?: number | null
+          valor_executado?: number | null
+        }
+        Update: {
+          cnpj_empresa?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          data_conclusao?: string | null
+          data_inicio?: string | null
+          data_previsao_termino?: string | null
+          descricao?: string | null
+          empresa_executora?: string | null
+          fiscal_obra?: string | null
+          fonte_recurso?:
+            | Database["public"]["Enums"]["fonte_recurso_obra"]
+            | null
+          fonte_recurso_descricao?: string | null
+          foto_url?: string | null
+          id?: string
+          link_sistema_oficial?: string | null
+          localizacao?: string | null
+          numero_contrato?: string | null
+          objeto?: string
+          observacoes?: string | null
+          percentual_execucao?: number | null
+          prazo_execucao_dias?: number | null
+          publicado?: boolean | null
+          secretaria_responsavel?: string | null
+          status?: Database["public"]["Enums"]["status_obra"] | null
+          titulo?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          valor_contratado?: number | null
+          valor_executado?: number | null
+        }
+        Relationships: []
+      }
+      patrimonio_publico: {
+        Row: {
+          ano_fabricacao: number | null
+          area_m2: number | null
+          chassi: string | null
+          created_at: string | null
+          data_aquisicao: string | null
+          descricao: string
+          endereco: string | null
+          foto_url: string | null
+          id: string
+          localizacao_atual: string | null
+          marca_modelo: string | null
+          matricula_cartorio: string | null
+          numero_patrimonio: string | null
+          observacoes: string | null
+          placa: string | null
+          publicado: boolean | null
+          renavam: string | null
+          secretaria_responsavel: string | null
+          situacao: Database["public"]["Enums"]["situacao_bem"] | null
+          tipo: Database["public"]["Enums"]["tipo_bem_publico"]
+          updated_at: string | null
+          valor_aquisicao: number | null
+          valor_atual: number | null
+        }
+        Insert: {
+          ano_fabricacao?: number | null
+          area_m2?: number | null
+          chassi?: string | null
+          created_at?: string | null
+          data_aquisicao?: string | null
+          descricao: string
+          endereco?: string | null
+          foto_url?: string | null
+          id?: string
+          localizacao_atual?: string | null
+          marca_modelo?: string | null
+          matricula_cartorio?: string | null
+          numero_patrimonio?: string | null
+          observacoes?: string | null
+          placa?: string | null
+          publicado?: boolean | null
+          renavam?: string | null
+          secretaria_responsavel?: string | null
+          situacao?: Database["public"]["Enums"]["situacao_bem"] | null
+          tipo: Database["public"]["Enums"]["tipo_bem_publico"]
+          updated_at?: string | null
+          valor_aquisicao?: number | null
+          valor_atual?: number | null
+        }
+        Update: {
+          ano_fabricacao?: number | null
+          area_m2?: number | null
+          chassi?: string | null
+          created_at?: string | null
+          data_aquisicao?: string | null
+          descricao?: string
+          endereco?: string | null
+          foto_url?: string | null
+          id?: string
+          localizacao_atual?: string | null
+          marca_modelo?: string | null
+          matricula_cartorio?: string | null
+          numero_patrimonio?: string | null
+          observacoes?: string | null
+          placa?: string | null
+          publicado?: boolean | null
+          renavam?: string | null
+          secretaria_responsavel?: string | null
+          situacao?: Database["public"]["Enums"]["situacao_bem"] | null
+          tipo?: Database["public"]["Enums"]["tipo_bem_publico"]
+          updated_at?: string | null
+          valor_aquisicao?: number | null
+          valor_atual?: number | null
+        }
+        Relationships: []
+      }
       publicacoes_historico: {
         Row: {
           alterado_em: string
@@ -653,6 +968,69 @@ export type Database = {
           titulo?: string
           updated_at?: string | null
           updated_by?: string | null
+        }
+        Relationships: []
+      }
+      remuneracao_agentes: {
+        Row: {
+          ano_referencia: number
+          ativo: boolean | null
+          cargo: Database["public"]["Enums"]["cargo_agente_politico"]
+          cargo_descricao: string | null
+          created_at: string | null
+          foto_url: string | null
+          id: string
+          mes_referencia: number
+          nome: string
+          observacoes: string | null
+          ordem: number | null
+          outros_valores: number | null
+          publicado: boolean | null
+          secretaria: string | null
+          subsidio_mensal: number
+          total_bruto: number | null
+          updated_at: string | null
+          verba_representacao: number | null
+        }
+        Insert: {
+          ano_referencia: number
+          ativo?: boolean | null
+          cargo: Database["public"]["Enums"]["cargo_agente_politico"]
+          cargo_descricao?: string | null
+          created_at?: string | null
+          foto_url?: string | null
+          id?: string
+          mes_referencia: number
+          nome: string
+          observacoes?: string | null
+          ordem?: number | null
+          outros_valores?: number | null
+          publicado?: boolean | null
+          secretaria?: string | null
+          subsidio_mensal: number
+          total_bruto?: number | null
+          updated_at?: string | null
+          verba_representacao?: number | null
+        }
+        Update: {
+          ano_referencia?: number
+          ativo?: boolean | null
+          cargo?: Database["public"]["Enums"]["cargo_agente_politico"]
+          cargo_descricao?: string | null
+          created_at?: string | null
+          foto_url?: string | null
+          id?: string
+          mes_referencia?: number
+          nome?: string
+          observacoes?: string | null
+          ordem?: number | null
+          outros_valores?: number | null
+          publicado?: boolean | null
+          secretaria?: string | null
+          subsidio_mensal?: number
+          total_bruto?: number | null
+          updated_at?: string | null
+          verba_representacao?: number | null
         }
         Relationships: []
       }
@@ -899,6 +1277,35 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "editor"
+      cargo_agente_politico:
+        | "prefeito"
+        | "vice_prefeito"
+        | "secretario"
+        | "outros"
+      categoria_dados_abertos:
+        | "receitas"
+        | "despesas"
+        | "licitacoes"
+        | "contratos"
+        | "servidores"
+        | "obras"
+        | "patrimonio"
+        | "outros"
+      fonte_recurso_obra:
+        | "proprio"
+        | "federal"
+        | "estadual"
+        | "convenio"
+        | "financiamento"
+        | "outros"
+      formato_arquivo:
+        | "csv"
+        | "xls"
+        | "xlsx"
+        | "pdf"
+        | "json"
+        | "xml"
+        | "outros"
       modalidade_licitacao:
         | "pregao_eletronico"
         | "pregao_presencial"
@@ -911,6 +1318,7 @@ export type Database = {
         | "dispensa"
         | "inexigibilidade"
         | "chamada_publica"
+      situacao_bem: "bom" | "regular" | "ruim" | "inservivel" | "alienado"
       situacao_publicacao: "vigente" | "revogado" | "alterado"
       status_licitacao:
         | "aberta"
@@ -920,6 +1328,13 @@ export type Database = {
         | "suspensa"
         | "deserta"
         | "fracassada"
+      status_obra: "em_andamento" | "concluida" | "paralisada" | "planejada"
+      tipo_bem_publico:
+        | "imovel"
+        | "veiculo"
+        | "equipamento"
+        | "mobiliario"
+        | "outros"
       tipo_documento_legislacao:
         | "lei_organica"
         | "ppa"
@@ -1078,6 +1493,31 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor"],
+      cargo_agente_politico: [
+        "prefeito",
+        "vice_prefeito",
+        "secretario",
+        "outros",
+      ],
+      categoria_dados_abertos: [
+        "receitas",
+        "despesas",
+        "licitacoes",
+        "contratos",
+        "servidores",
+        "obras",
+        "patrimonio",
+        "outros",
+      ],
+      fonte_recurso_obra: [
+        "proprio",
+        "federal",
+        "estadual",
+        "convenio",
+        "financiamento",
+        "outros",
+      ],
+      formato_arquivo: ["csv", "xls", "xlsx", "pdf", "json", "xml", "outros"],
       modalidade_licitacao: [
         "pregao_eletronico",
         "pregao_presencial",
@@ -1091,6 +1531,7 @@ export const Constants = {
         "inexigibilidade",
         "chamada_publica",
       ],
+      situacao_bem: ["bom", "regular", "ruim", "inservivel", "alienado"],
       situacao_publicacao: ["vigente", "revogado", "alterado"],
       status_licitacao: [
         "aberta",
@@ -1100,6 +1541,14 @@ export const Constants = {
         "suspensa",
         "deserta",
         "fracassada",
+      ],
+      status_obra: ["em_andamento", "concluida", "paralisada", "planejada"],
+      tipo_bem_publico: [
+        "imovel",
+        "veiculo",
+        "equipamento",
+        "mobiliario",
+        "outros",
       ],
       tipo_documento_legislacao: [
         "lei_organica",
