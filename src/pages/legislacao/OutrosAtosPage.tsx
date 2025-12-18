@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 
 const breadcrumbItems = [
-  { label: "Início", href: "/" },
   { label: "Legislação", href: "/legislacao" },
   { label: "Outros Atos Normativos" },
 ];
@@ -75,7 +74,7 @@ export default function OutrosAtosPage() {
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-500 py-12 md:py-16">
           <div className="container mx-auto px-4">
-            <Breadcrumbs items={breadcrumbItems} className="mb-6 text-white/80" />
+            <Breadcrumbs items={breadcrumbItems} variant="light" className="mb-6" />
             <div className="flex items-center gap-4 mb-4">
               <div className="p-3 bg-white/20 rounded-lg">
                 <FileText className="h-8 w-8 text-white" />
