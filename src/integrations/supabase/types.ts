@@ -161,6 +161,57 @@ export type Database = {
         }
         Relationships: []
       }
+      documentos_legislacao: {
+        Row: {
+          ano: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at: string | null
+          created_by: string | null
+          data_publicacao: string
+          descricao: string | null
+          id: string
+          observacoes: string | null
+          tipo: Database["public"]["Enums"]["tipo_documento_legislacao"]
+          titulo: string
+          updated_at: string | null
+          updated_by: string | null
+          vigente: boolean | null
+        }
+        Insert: {
+          ano: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at?: string | null
+          created_by?: string | null
+          data_publicacao: string
+          descricao?: string | null
+          id?: string
+          observacoes?: string | null
+          tipo: Database["public"]["Enums"]["tipo_documento_legislacao"]
+          titulo: string
+          updated_at?: string | null
+          updated_by?: string | null
+          vigente?: boolean | null
+        }
+        Update: {
+          ano?: number
+          arquivo_nome?: string
+          arquivo_url?: string
+          created_at?: string | null
+          created_by?: string | null
+          data_publicacao?: string
+          descricao?: string | null
+          id?: string
+          observacoes?: string | null
+          tipo?: Database["public"]["Enums"]["tipo_documento_legislacao"]
+          titulo?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          vigente?: boolean | null
+        }
+        Relationships: []
+      }
       documentos_licitacao: {
         Row: {
           created_at: string
@@ -696,6 +747,13 @@ export type Database = {
         | "suspensa"
         | "deserta"
         | "fracassada"
+      tipo_documento_legislacao:
+        | "lei_organica"
+        | "ppa"
+        | "ldo"
+        | "loa"
+        | "emenda_lei_organica"
+        | "outro"
       tipo_documento_licitacao:
         | "edital"
         | "termo_referencia"
@@ -868,6 +926,14 @@ export const Constants = {
         "suspensa",
         "deserta",
         "fracassada",
+      ],
+      tipo_documento_legislacao: [
+        "lei_organica",
+        "ppa",
+        "ldo",
+        "loa",
+        "emenda_lei_organica",
+        "outro",
       ],
       tipo_documento_licitacao: [
         "edital",

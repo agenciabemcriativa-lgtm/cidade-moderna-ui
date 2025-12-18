@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Landmark,
   Info,
@@ -15,8 +16,12 @@ import {
   ChevronRight,
   Calendar,
   CheckCircle2,
-  History
+  History,
+  ExternalLink
 } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { useDocumentosLegislacao } from "@/hooks/useDocumentosLegislacao";
 
 const breadcrumbItems = [
   { label: "Início", href: "/" },
@@ -25,6 +30,17 @@ const breadcrumbItems = [
 ];
 
 export default function LeiOrganicaPage() {
+  const { data: leiOrganica, isLoading: loadingLei } = useDocumentosLegislacao({ 
+    tipo: 'lei_organica',
+    vigente: true 
+  });
+  
+  const { data: emendas, isLoading: loadingEmendas } = useDocumentosLegislacao({ 
+    tipo: 'emenda_lei_organica' 
+  });
+
+  const documentoVigente = leiOrganica?.[0];
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <TopBar />
@@ -100,40 +116,62 @@ export default function LeiOrganicaPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <h4 className="font-medium">Lei Orgânica do Município de Ipubi</h4>
-                          <Badge variant="secondary" className="bg-green-100 text-green-700">
-                            <CheckCircle2 className="h-3 w-3 mr-1" />
-                            Vigente
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-3">
-                          Texto consolidado com todas as alterações até a presente data
-                        </p>
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            Promulgação: 05/04/1990
-                          </span>
+                  {loadingLei ? (
+                    <div className="space-y-3">
+                      <Skeleton className="h-24 w-full" />
+                    </div>
+                  ) : documentoVigente ? (
+                    <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <h4 className="font-medium">{documentoVigente.titulo}</h4>
+                            <Badge variant="secondary" className="bg-green-100 text-green-700">
+                              <CheckCircle2 className="h-3 w-3 mr-1" />
+                              Vigente
+                            </Badge>
+                          </div>
+                          {documentoVigente.descricao && (
+                            <p className="text-sm text-muted-foreground mb-3">
+                              {documentoVigente.descricao}
+                            </p>
+                          )}
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              Publicação: {format(new Date(documentoVigente.data_publicacao), "dd/MM/yyyy", { locale: ptBR })}
+                            </span>
+                          </div>
                         </div>
                       </div>
+                      <div className="mt-4 flex gap-2">
+                        <a href={documentoVigente.arquivo_url} target="_blank" rel="noopener noreferrer">
+                          <Button variant="default" className="gap-2">
+                            <Download className="h-4 w-4" />
+                            Baixar PDF
+                          </Button>
+                        </a>
+                        <Link to="/publicacoes-oficiais?search=lei%20orgânica">
+                          <Button variant="outline" className="gap-2">
+                            <FileText className="h-4 w-4" />
+                            Ver Publicação Oficial
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
-                    <div className="mt-4 flex gap-2">
-                      <Button variant="default" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Baixar PDF
-                      </Button>
-                      <Link to="/publicacoes-oficiais?search=lei%20orgânica">
-                        <Button variant="outline" className="gap-2">
+                  ) : (
+                    <div className="p-4 bg-muted/50 rounded-lg border border-border text-center">
+                      <p className="text-muted-foreground">
+                        Documento ainda não cadastrado no sistema.
+                      </p>
+                      <Link to="/publicacoes-oficiais?search=lei%20orgânica" className="mt-2 inline-block">
+                        <Button variant="outline" size="sm" className="gap-2">
                           <FileText className="h-4 w-4" />
-                          Ver Publicação Oficial
+                          Buscar nas Publicações Oficiais
                         </Button>
                       </Link>
                     </div>
-                  </div>
+                  )}
 
                   <p className="text-sm text-muted-foreground">
                     <strong>Nota:</strong> O documento em PDF disponibilizado contém o texto consolidado 
@@ -183,27 +221,28 @@ export default function LeiOrganicaPage() {
                   <CardTitle className="text-lg">Informações</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">Data de Promulgação</p>
-                      <p className="text-sm text-muted-foreground">05 de Abril de 1990</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    <div>
-                      <p className="text-sm font-medium">Situação</p>
-                      <p className="text-sm text-muted-foreground">Vigente</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <History className="h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">Última Atualização</p>
-                      <p className="text-sm text-muted-foreground">Verificar histórico de emendas</p>
-                    </div>
-                  </div>
+                  {documentoVigente ? (
+                    <>
+                      <div className="flex items-center gap-3">
+                        <Calendar className="h-5 w-5 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm font-medium">Data de Publicação</p>
+                          <p className="text-sm text-muted-foreground">
+                            {format(new Date(documentoVigente.data_publicacao), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                        <div>
+                          <p className="text-sm font-medium">Situação</p>
+                          <p className="text-sm text-muted-foreground">Vigente</p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Informações disponíveis após cadastro do documento.</p>
+                  )}
                 </CardContent>
               </Card>
 
@@ -219,15 +258,39 @@ export default function LeiOrganicaPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Consulte as emendas à Lei Orgânica nas Publicações Oficiais:
-                  </p>
-                  <Link to="/publicacoes-oficiais?search=emenda%20lei%20orgânica">
-                    <Button variant="outline" size="sm" className="w-full gap-2">
-                      <FileText className="h-4 w-4" />
-                      Ver Emendas
-                    </Button>
-                  </Link>
+                  {loadingEmendas ? (
+                    <Skeleton className="h-16 w-full" />
+                  ) : emendas && emendas.length > 0 ? (
+                    <div className="space-y-2">
+                      {emendas.map((emenda) => (
+                        <a
+                          key={emenda.id}
+                          href={emenda.arquivo_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                        >
+                          <div>
+                            <p className="text-sm font-medium">{emenda.titulo}</p>
+                            <p className="text-xs text-muted-foreground">{emenda.ano}</p>
+                          </div>
+                          <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Consulte as emendas à Lei Orgânica nas Publicações Oficiais:
+                      </p>
+                      <Link to="/publicacoes-oficiais?search=emenda%20lei%20orgânica">
+                        <Button variant="outline" size="sm" className="w-full gap-2">
+                          <FileText className="h-4 w-4" />
+                          Ver Emendas
+                        </Button>
+                      </Link>
+                    </>
+                  )}
                 </CardContent>
               </Card>
 

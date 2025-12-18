@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   PiggyBank,
   Info,
@@ -20,6 +21,9 @@ import {
   TrendingUp,
   Wallet
 } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { useDocumentosLegislacao, DocumentoLegislacao } from "@/hooks/useDocumentosLegislacao";
 
 const breadcrumbItems = [
   { label: "Início", href: "/" },
@@ -29,7 +33,121 @@ const breadcrumbItems = [
 
 const currentYear = new Date().getFullYear();
 
+function DocumentoCard({ documento, tipo }: { documento?: DocumentoLegislacao; tipo: string }) {
+  if (!documento) {
+    return (
+      <div className="p-4 bg-muted/50 rounded-lg border border-border text-center">
+        <p className="text-muted-foreground">
+          Documento ainda não cadastrado no sistema.
+        </p>
+        <Link to={`/publicacoes-oficiais?search=${tipo}%20${currentYear}`} className="mt-2 inline-block">
+          <Button variant="outline" size="sm" className="gap-2">
+            <FileText className="h-4 w-4" />
+            Buscar nas Publicações Oficiais
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 bg-muted/50 rounded-lg border border-border">
+      <div className="flex items-start justify-between mb-3">
+        <div>
+          <h4 className="font-medium">{documento.titulo}</h4>
+          {documento.descricao && (
+            <p className="text-sm text-muted-foreground">
+              {documento.descricao}
+            </p>
+          )}
+        </div>
+        <Badge className={documento.vigente ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}>
+          {documento.vigente ? "Vigente" : "Não vigente"}
+        </Badge>
+      </div>
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+        <Calendar className="h-3 w-3" />
+        {format(new Date(documento.data_publicacao), "dd/MM/yyyy", { locale: ptBR })}
+      </div>
+      <div className="flex gap-2">
+        <a href={documento.arquivo_url} target="_blank" rel="noopener noreferrer">
+          <Button variant="default" size="sm" className="gap-2">
+            <Download className="h-4 w-4" />
+            Baixar PDF
+          </Button>
+        </a>
+        <Link to={`/publicacoes-oficiais?search=${tipo}%20${documento.ano}`}>
+          <Button variant="outline" size="sm" className="gap-2">
+            <FileText className="h-4 w-4" />
+            Ver Publicação
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function HistoricoList({ documentos, tipo, isLoading }: { documentos?: DocumentoLegislacao[]; tipo: string; isLoading: boolean }) {
+  const historico = documentos?.filter(d => !d.vigente) || [];
+  const anos = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4];
+
+  if (isLoading) {
+    return (
+      <div className="space-y-2">
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-12 w-full" />
+        ))}
+      </div>
+    );
+  }
+
+  if (historico.length > 0) {
+    return (
+      <div className="space-y-2">
+        {historico.map((doc) => (
+          <div key={doc.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+            <div>
+              <span className="text-sm font-medium">{doc.titulo}</span>
+              <p className="text-xs text-muted-foreground">{doc.ano}</p>
+            </div>
+            <a href={doc.arquivo_url} target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm" className="gap-1 h-8">
+                <FileText className="h-3 w-3" />
+                Ver
+              </Button>
+            </a>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {anos.map((ano) => (
+        <div key={ano} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+          <span className="text-sm">{tipo} {ano}</span>
+          <Link to={`/publicacoes-oficiais?search=${tipo}%20${ano}`}>
+            <Button variant="ghost" size="sm" className="gap-1 h-8">
+              <FileText className="h-3 w-3" />
+              Ver
+            </Button>
+          </Link>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function PlanejamentoOrcamentoPage() {
+  const { data: ppaDocs, isLoading: loadingPPA } = useDocumentosLegislacao({ tipo: 'ppa' });
+  const { data: ldoDocs, isLoading: loadingLDO } = useDocumentosLegislacao({ tipo: 'ldo' });
+  const { data: loaDocs, isLoading: loadingLOA } = useDocumentosLegislacao({ tipo: 'loa' });
+
+  const ppaVigente = ppaDocs?.find(d => d.vigente);
+  const ldoVigente = ldoDocs?.find(d => d.vigente);
+  const loaVigente = loaDocs?.find(d => d.vigente);
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <TopBar />
@@ -110,9 +228,11 @@ export default function PlanejamentoOrcamentoPage() {
                         Estabelece diretrizes, objetivos e metas para 4 anos
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-                      2022-2025
-                    </Badge>
+                    {ppaVigente && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                        {ppaVigente.ano}-{ppaVigente.ano + 3}
+                      </Badge>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -123,53 +243,22 @@ export default function PlanejamentoOrcamentoPage() {
                       regionalizada, as diretrizes, objetivos e metas da administração pública para as despesas 
                       de capital e outras delas decorrentes e para as relativas aos programas de duração continuada.
                     </p>
-                    <p>
-                      O PPA vigente abrange o período de <strong>2022 a 2025</strong>, tendo sido elaborado no 
-                      primeiro ano do mandato e devendo ser executado até o primeiro ano do mandato subsequente.
-                    </p>
                   </div>
 
                   {/* Documento Vigente */}
-                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h4 className="font-medium">PPA 2022-2025 (Vigente)</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Plano Plurianual do Município de Ipubi
-                        </p>
-                      </div>
-                      <Badge className="bg-green-100 text-green-700">Vigente</Badge>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="default" size="sm" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Baixar PDF
-                      </Button>
-                      <Link to="/publicacoes-oficiais?search=PPA%202022">
-                        <Button variant="outline" size="sm" className="gap-2">
-                          <FileText className="h-4 w-4" />
-                          Ver Publicação
-                        </Button>
-                      </Link>
-                    </div>
+                  <div>
+                    <h4 className="font-medium mb-3">Documento Vigente</h4>
+                    {loadingPPA ? (
+                      <Skeleton className="h-24 w-full" />
+                    ) : (
+                      <DocumentoCard documento={ppaVigente} tipo="PPA" />
+                    )}
                   </div>
 
                   {/* Histórico */}
                   <div>
                     <h4 className="font-medium mb-3">Histórico de PPAs</h4>
-                    <div className="space-y-2">
-                      {["2018-2021", "2014-2017", "2010-2013"].map((periodo) => (
-                        <div key={periodo} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                          <span className="text-sm">PPA {periodo}</span>
-                          <Link to={`/publicacoes-oficiais?search=PPA%20${periodo.split('-')[0]}`}>
-                            <Button variant="ghost" size="sm" className="gap-1 h-8">
-                              <FileText className="h-3 w-3" />
-                              Ver
-                            </Button>
-                          </Link>
-                        </div>
-                      ))}
-                    </div>
+                    <HistoricoList documentos={ppaDocs} tipo="PPA" isLoading={loadingPPA} />
                   </div>
                 </CardContent>
               </Card>
@@ -189,9 +278,11 @@ export default function PlanejamentoOrcamentoPage() {
                         Define metas e prioridades para o exercício seguinte
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
-                      {currentYear}
-                    </Badge>
+                    {ldoVigente && (
+                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
+                        {ldoVigente.ano}
+                      </Badge>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -202,53 +293,22 @@ export default function PlanejamentoOrcamentoPage() {
                       administração pública, incluindo as despesas de capital para o exercício financeiro 
                       subsequente, e orienta a elaboração da LOA.
                     </p>
-                    <p>
-                      A LDO também dispõe sobre alterações na legislação tributária e estabelece a 
-                      política de aplicação das agências financeiras oficiais de fomento.
-                    </p>
                   </div>
 
                   {/* Documento Vigente */}
-                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h4 className="font-medium">LDO {currentYear} (Vigente)</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Lei de Diretrizes Orçamentárias para o exercício de {currentYear}
-                        </p>
-                      </div>
-                      <Badge className="bg-green-100 text-green-700">Vigente</Badge>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="default" size="sm" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Baixar PDF
-                      </Button>
-                      <Link to={`/publicacoes-oficiais?search=LDO%20${currentYear}`}>
-                        <Button variant="outline" size="sm" className="gap-2">
-                          <FileText className="h-4 w-4" />
-                          Ver Publicação
-                        </Button>
-                      </Link>
-                    </div>
+                  <div>
+                    <h4 className="font-medium mb-3">Documento Vigente</h4>
+                    {loadingLDO ? (
+                      <Skeleton className="h-24 w-full" />
+                    ) : (
+                      <DocumentoCard documento={ldoVigente} tipo="LDO" />
+                    )}
                   </div>
 
                   {/* Histórico */}
                   <div>
                     <h4 className="font-medium mb-3">Histórico de LDOs</h4>
-                    <div className="space-y-2">
-                      {[currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4].map((ano) => (
-                        <div key={ano} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                          <span className="text-sm">LDO {ano}</span>
-                          <Link to={`/publicacoes-oficiais?search=LDO%20${ano}`}>
-                            <Button variant="ghost" size="sm" className="gap-1 h-8">
-                              <FileText className="h-3 w-3" />
-                              Ver
-                            </Button>
-                          </Link>
-                        </div>
-                      ))}
-                    </div>
+                    <HistoricoList documentos={ldoDocs} tipo="LDO" isLoading={loadingLDO} />
                   </div>
                 </CardContent>
               </Card>
@@ -268,9 +328,11 @@ export default function PlanejamentoOrcamentoPage() {
                         Estima receitas e fixa despesas para o exercício
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary" className="bg-rose-100 text-rose-700">
-                      {currentYear}
-                    </Badge>
+                    {loaVigente && (
+                      <Badge variant="secondary" className="bg-rose-100 text-rose-700">
+                        {loaVigente.ano}
+                      </Badge>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -280,53 +342,22 @@ export default function PlanejamentoOrcamentoPage() {
                       que estima as receitas e fixa as despesas para o exercício financeiro. A LOA deve 
                       ser elaborada de forma compatível com o PPA e com a LDO.
                     </p>
-                    <p>
-                      A LOA compreende o orçamento fiscal, o orçamento de investimento das empresas 
-                      estatais e o orçamento da seguridade social.
-                    </p>
                   </div>
 
                   {/* Documento Vigente */}
-                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h4 className="font-medium">LOA {currentYear} (Vigente)</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Lei Orçamentária Anual para o exercício de {currentYear}
-                        </p>
-                      </div>
-                      <Badge className="bg-green-100 text-green-700">Vigente</Badge>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="default" size="sm" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Baixar PDF
-                      </Button>
-                      <Link to={`/publicacoes-oficiais?search=LOA%20${currentYear}`}>
-                        <Button variant="outline" size="sm" className="gap-2">
-                          <FileText className="h-4 w-4" />
-                          Ver Publicação
-                        </Button>
-                      </Link>
-                    </div>
+                  <div>
+                    <h4 className="font-medium mb-3">Documento Vigente</h4>
+                    {loadingLOA ? (
+                      <Skeleton className="h-24 w-full" />
+                    ) : (
+                      <DocumentoCard documento={loaVigente} tipo="LOA" />
+                    )}
                   </div>
 
                   {/* Histórico */}
                   <div>
                     <h4 className="font-medium mb-3">Histórico de LOAs</h4>
-                    <div className="space-y-2">
-                      {[currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4].map((ano) => (
-                        <div key={ano} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                          <span className="text-sm">LOA {ano}</span>
-                          <Link to={`/publicacoes-oficiais?search=LOA%20${ano}`}>
-                            <Button variant="ghost" size="sm" className="gap-1 h-8">
-                              <FileText className="h-3 w-3" />
-                              Ver
-                            </Button>
-                          </Link>
-                        </div>
-                      ))}
-                    </div>
+                    <HistoricoList documentos={loaDocs} tipo="LOA" isLoading={loadingLOA} />
                   </div>
                 </CardContent>
               </Card>
@@ -345,10 +376,12 @@ export default function PlanejamentoOrcamentoPage() {
                   Para acompanhamento da execução orçamentária em tempo real e outras informações 
                   fiscais, acesse o Portal da Transparência do Município.
                 </p>
-                <Button variant="outline" className="gap-2">
-                  <ExternalLink className="h-4 w-4" />
-                  Acessar Portal da Transparência
-                </Button>
+                <a href="https://www.ipubi.pe.gov.br/portaldatransparencia/" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" className="gap-2">
+                    <ExternalLink className="h-4 w-4" />
+                    Acessar Portal da Transparência
+                  </Button>
+                </a>
               </div>
             </div>
           </div>
