@@ -5,7 +5,7 @@ import { HeroBanner } from "@/components/portal/HeroBanner";
 import { SearchBar } from "@/components/portal/SearchBar";
 import { ServicesGrid } from "@/components/portal/ServicesGrid";
 import { NewsSection } from "@/components/portal/NewsSection";
-import { QuickServices } from "@/components/portal/QuickServices";
+import { PublicacoesCarousel } from "@/components/portal/PublicacoesCarousel";
 import { Footer } from "@/components/portal/Footer";
 
 const Index = () => {
@@ -19,7 +19,7 @@ const Index = () => {
         <SearchBar id="buscador" />
         <ServicesGrid />
         <NewsSection />
-        <QuickServices />
+        <PublicacoesCarousel />
       </main>
       <Footer id="rodape" />
     </div>
