@@ -30,6 +30,7 @@ import OutrosAtosPage from "./pages/legislacao/OutrosAtosPage";
 import LeiAcessoInformacaoPage from "./pages/legislacao/LeiAcessoInformacaoPage";
 import LeiOrganicaPage from "./pages/legislacao/LeiOrganicaPage";
 import PlanejamentoOrcamentoPage from "./pages/legislacao/PlanejamentoOrcamentoPage";
+import DocumentoLegislacaoPage from "./pages/legislacao/DocumentoLegislacaoPage";
 import TransparenciaPage from "./pages/TransparenciaPage";
 import DespesasPage from "./pages/transparencia/DespesasPage";
 import ReceitasPage from "./pages/transparencia/ReceitasPage";
@@ -89,6 +90,7 @@ const App = () => (
             <Route path="/legislacao/lei-acesso-informacao" element={<LeiAcessoInformacaoPage />} />
             <Route path="/legislacao/lei-organica" element={<LeiOrganicaPage />} />
             <Route path="/legislacao/planejamento-orcamento" element={<PlanejamentoOrcamentoPage />} />
+            <Route path="/legislacao/documento/:id" element={<DocumentoLegislacaoPage />} />
             <Route path="/mapa-do-site" element={<MapaSitePage />} />
             <Route path="/acessibilidade" element={<AcessibilidadePage />} />
             <Route path="/transparencia" element={<TransparenciaPage />} />
