@@ -56,7 +56,7 @@ export function useRelatoriosFiscais(
   return useQuery({
     queryKey: ['relatorios_fiscais', tipo, ano, includeUnpublished],
     queryFn: async () => {
-      let query = supabase
+      let query = (supabase as any)
         .from('relatorios_fiscais')
         .select('*')
         .order('ano', { ascending: false })
@@ -86,7 +86,7 @@ export function useRelatorioFiscal(id: string) {
   return useQuery({
     queryKey: ['relatorio_fiscal', id],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('relatorios_fiscais')
         .select('*')
         .eq('id', id)
@@ -104,7 +104,7 @@ export function useCreateRelatorioFiscal() {
 
   return useMutation({
     mutationFn: async (relatorio: RelatorioFiscalInsert) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('relatorios_fiscais')
         .insert(relatorio)
         .select()
@@ -124,7 +124,7 @@ export function useUpdateRelatorioFiscal() {
 
   return useMutation({
     mutationFn: async ({ id, ...relatorio }: RelatorioFiscalUpdate & { id: string }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('relatorios_fiscais')
         .update(relatorio)
         .eq('id', id)
@@ -145,7 +145,7 @@ export function useDeleteRelatorioFiscal() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('relatorios_fiscais')
         .delete()
         .eq('id', id);
