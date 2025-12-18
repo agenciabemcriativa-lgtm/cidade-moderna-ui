@@ -32,7 +32,7 @@ import {
   CategoriaComItens,
   TransparenciaLinkRapido
 } from '@/hooks/useTransparencia';
-import { useRelatoriosFiscais, tipoRelatorioLabels, TipoRelatorioFiscal } from '@/hooks/useRelatoriosFiscais';
+
 
 // Icon mapping from string to Lucide component
 const iconMap: Record<string, LucideIcon> = {
@@ -82,13 +82,6 @@ const getIconColor = (cor: string | null): string => {
 export default function TransparenciaPage() {
   const { data: categorias, isLoading: loadingCategorias } = useTransparenciaCategoriasComItens();
   const { data: linksRapidos, isLoading: loadingLinks } = useTransparenciaLinksRapidos();
-  const { data: relatoriosFiscais, isLoading: loadingRelatorios } = useRelatoriosFiscais();
-
-  // Count reports by type
-  const relatoriosPorTipo = relatoriosFiscais?.reduce((acc, rel) => {
-    acc[rel.tipo] = (acc[rel.tipo] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>) || {};
 
   useEffect(() => {
     document.title = 'Portal da Transparência | Prefeitura de Ipubi';
@@ -312,70 +305,6 @@ export default function TransparenciaPage() {
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
           {renderCategories()}
-          
-          {/* Relatórios Fiscais Card */}
-          <Card className="bg-indigo-50 border-indigo-200 border transition-all duration-200 hover:shadow-md hover:bg-opacity-80">
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-white shadow-sm">
-                  <BarChart3 className="w-6 h-6 text-indigo-600" />
-                </div>
-                <div>
-                  <CardTitle className="text-base font-semibold text-gray-900">
-                    Relatórios Fiscais
-                  </CardTitle>
-                </div>
-              </div>
-              <CardDescription className="text-gray-600 text-sm mt-2">
-                RREO, RGF, pareceres e demonstrativos contábeis
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <Separator className="mb-3 bg-indigo-200" />
-              {loadingRelatorios ? (
-                <div className="space-y-2">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <Skeleton key={i} className="h-4 w-full" />
-                  ))}
-                </div>
-              ) : (
-                <ul className="space-y-1.5">
-                  <li>
-                    <Link
-                      to="/transparencia/relatorios?tipo=rreo"
-                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
-                    >
-                      <span className="font-medium">→ RREO - Relatório Resumido</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/transparencia/relatorios?tipo=rgf"
-                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
-                    >
-                      <span className="font-medium">→ RGF - Relatório de Gestão Fiscal</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/transparencia/relatorios?tipo=parecer_tce"
-                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
-                    >
-                      <span className="font-medium">→ Pareceres do TCE</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/transparencia/relatorios?tipo=prestacao_contas"
-                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
-                    >
-                      <span className="font-medium">→ Prestação de Contas</span>
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </CardContent>
-          </Card>
         </div>
 
         {/* Legal Compliance Section */}
