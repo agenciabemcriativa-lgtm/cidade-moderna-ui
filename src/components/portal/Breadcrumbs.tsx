@@ -28,7 +28,7 @@ export function Breadcrumbs({ items, className, variant = "default" }: Breadcrum
             className={cn(
               "transition-colors flex items-center gap-1",
               isLight 
-                ? "text-white/80 hover:text-white" 
+                ? "text-white hover:text-white/90" 
                 : "text-muted-foreground hover:text-primary"
             )}
           >
@@ -40,7 +40,7 @@ export function Breadcrumbs({ items, className, variant = "default" }: Breadcrum
           <li key={index} className="flex items-center">
             <ChevronRight className={cn(
               "w-4 h-4 mx-2",
-              isLight ? "text-white/50" : "text-muted-foreground/50"
+              isLight ? "text-white/70" : "text-muted-foreground/50"
             )} />
             {item.href && index < items.length - 1 ? (
               <Link 
@@ -48,7 +48,7 @@ export function Breadcrumbs({ items, className, variant = "default" }: Breadcrum
                 className={cn(
                   "transition-colors",
                   isLight 
-                    ? "text-white/80 hover:text-white" 
+                    ? "text-white hover:text-white/90" 
                     : "text-muted-foreground hover:text-primary"
                 )}
               >
