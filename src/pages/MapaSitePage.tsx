@@ -111,7 +111,7 @@ export default function MapaSitePage() {
         { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
         { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
         { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login", external: true },
-        { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
+        { label: "e-SIC", href: "/transparencia/esic", external: false },
         { label: "Publicações Oficiais", href: "https://www.ipubi.pe.gov.br/publicacoes-oficiais/", external: true },
       ],
     },

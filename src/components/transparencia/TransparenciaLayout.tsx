@@ -13,7 +13,7 @@ interface TransparenciaLayoutProps {
 }
 
 const quickLinks = [
-  { label: 'e-SIC', url: 'https://www.ipubi.pe.gov.br/esic/', icon: Search },
+  { label: 'e-SIC', url: '/transparencia/esic', icon: Search, internal: true },
 ];
 
 export function TransparenciaLayout({ children, title, description }: TransparenciaLayoutProps) {
@@ -53,16 +53,27 @@ export function TransparenciaLayout({ children, title, description }: Transparen
             
             <div className="hidden md:flex items-center gap-2">
               {quickLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
-                >
-                  <link.icon className="w-4 h-4" />
-                  <span className="hidden lg:inline">{link.label}</span>
-                </a>
+                link.internal ? (
+                  <Link
+                    key={link.label}
+                    to={link.url}
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                  >
+                    <link.icon className="w-4 h-4" />
+                    <span className="hidden lg:inline">{link.label}</span>
+                  </Link>
+                ) : (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                  >
+                    <link.icon className="w-4 h-4" />
+                    <span className="hidden lg:inline">{link.label}</span>
+                  </a>
+                )
               ))}
             </div>
           </div>

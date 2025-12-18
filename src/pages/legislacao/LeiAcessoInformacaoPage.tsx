@@ -27,7 +27,7 @@ const recursos = [
     titulo: "e-SIC",
     descricao: "Sistema Eletrônico do Serviço de Informação ao Cidadão",
     icone: MessageSquare,
-    link: "/contato",
+    link: "/transparencia/esic",
     tipo: "interno",
     cor: "from-blue-500 to-blue-600"
   },
