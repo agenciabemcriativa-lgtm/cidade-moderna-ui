@@ -6,7 +6,7 @@ const quickLinks = [
   { label: "Portal da Transparência", href: "/transparencia", external: false },
   { label: "Licitações", href: "/licitacoes", external: false },
   { label: "Legislação", href: "/legislacao", external: false },
-  { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
+  { label: "e-SIC", href: "/transparencia/esic", external: false },
 ];
 
 const tiposPublicacao = [
