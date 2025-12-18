@@ -68,7 +68,6 @@ const menuItems = [
   { label: "Notícias", href: "/noticias", hasDropdown: false, isLink: true },
   { label: "Secretarias", href: "/secretarias", hasDropdown: true, type: "secretarias", isLink: true },
   { label: "Serviços ao Cidadão", href: "#servicos", hasDropdown: true, type: "servicos", isLink: false },
-  { label: "Legislação", href: "https://www.ipubi.pe.gov.br/publicacoes-filtro.php?ano=&cat=6&x=66&y=23", hasDropdown: false, isLink: false, external: true },
   { label: "Contato", href: "/contato", hasDropdown: false, isLink: true },
 ];
 
@@ -290,16 +289,6 @@ export function Header({ id }: HeaderProps) {
                   {renderDropdownContent(item.type!)}
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : item.external ? (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 text-sm font-semibold text-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 uppercase tracking-wide"
-              >
-                {item.label}
-              </a>
             ) : item.isLink ? (
               <Link
                 key={item.label}
@@ -358,18 +347,6 @@ export function Header({ id }: HeaderProps) {
                     </div>
                   )}
                 </div>
-              ) : item.external ? (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-3 text-sm font-semibold text-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 uppercase tracking-wide"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
               ) : item.isLink ? (
                 <Link
                   key={item.label}
