@@ -25,7 +25,6 @@ const servicosLinks = [
 const quickLinks = [
   { label: "Notícias", href: "/noticias", external: false },
   { label: "Legislação", href: "/legislacao", external: false },
-  { label: "Publicações", href: "https://www.ipubi.pe.gov.br/publicacoes-oficiais/", external: true },
   { label: "Contato", href: "/contato", external: false },
   { label: "Acessibilidade", href: "/acessibilidade", external: false },
   { label: "Mapa do Site", href: "/mapa-do-site", external: false },
