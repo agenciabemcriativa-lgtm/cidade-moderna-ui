@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { FileText, Search, Filter, Download, Calendar, Building2, Scale, Info } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -31,11 +31,19 @@ const breadcrumbItems = [
 ];
 
 export default function PublicacoesOficiaisPage() {
+  const [searchParams] = useSearchParams();
+  const tipoFromUrl = searchParams.get("tipo") || "";
+
   const [search, setSearch] = useState("");
   const [selectedAno, setSelectedAno] = useState<string>("");
-  const [selectedTipo, setSelectedTipo] = useState<string>("");
+  const [selectedTipo, setSelectedTipo] = useState<string>(tipoFromUrl);
   const [selectedSituacao, setSelectedSituacao] = useState<string>("");
   const [selectedSecretaria, setSelectedSecretaria] = useState<string>("");
+
+  // Update selectedTipo when URL changes
+  useEffect(() => {
+    setSelectedTipo(tipoFromUrl);
+  }, [tipoFromUrl]);
 
   const { data: anos, isLoading: loadingAnos } = useAnosPublicacoes();
   
