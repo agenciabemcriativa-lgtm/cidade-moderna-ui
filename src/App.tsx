@@ -30,6 +30,7 @@ import OutrosAtosPage from "./pages/legislacao/OutrosAtosPage";
 import LeiAcessoInformacaoPage from "./pages/legislacao/LeiAcessoInformacaoPage";
 import LeiOrganicaPage from "./pages/legislacao/LeiOrganicaPage";
 import PlanejamentoOrcamentoPage from "./pages/legislacao/PlanejamentoOrcamentoPage";
+import TransparenciaPage from "./pages/TransparenciaPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -82,6 +83,7 @@ const App = () => (
             <Route path="/legislacao/planejamento-orcamento" element={<PlanejamentoOrcamentoPage />} />
             <Route path="/mapa-do-site" element={<MapaSitePage />} />
             <Route path="/acessibilidade" element={<AcessibilidadePage />} />
+            <Route path="/transparencia" element={<TransparenciaPage />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
