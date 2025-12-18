@@ -63,23 +63,18 @@ export default function AcessoInformacaoPage() {
               Solicite informações públicas. Acesso gratuito, sem necessidade de justificativa. Resposta em até 20 dias.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link to="/transparencia/esic">
+              <Link to="/transparencia/esic/nova-solicitacao">
                 <Button className="gap-2">
                   <Search className="w-4 h-4" />
-                  Acessar Módulo e-SIC
+                  Nova Solicitação
+                </Button>
+              </Link>
+              <Link to="/transparencia/esic/consultar">
+                <Button variant="outline" className="gap-2">
+                  Consultar Protocolo
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <a 
-                href="https://www.ipubi.pe.gov.br/esic/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="outline" className="gap-2">
-                  Sistema e-SIC
-                  <ExternalLink className="w-4 h-4" />
-                </Button>
-              </a>
             </div>
           </div>
         </div>

@@ -8,8 +8,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
-// URL do sistema externo de e-SIC
-const ESIC_URL = 'https://www.ipubi.pe.gov.br/esic/';
 
 const passoASolicitacao = [
   {
@@ -133,16 +131,18 @@ export default function ESicPage() {
               Qualquer cidadão pode solicitar informações aos órgãos públicos.
             </p>
             <div className="flex flex-wrap gap-4 items-center pt-2">
-              <a href={ESIC_URL} target="_blank" rel="noopener noreferrer">
+              <Link to="/transparencia/esic/nova-solicitacao">
                 <Button size="lg" className="gap-2">
                   <Search className="w-5 h-5" />
-                  Acessar e-SIC
-                  <ExternalLink className="w-4 h-4" />
+                  Nova Solicitação
                 </Button>
-              </a>
-              <span className="text-sm text-muted-foreground">
-                Sistema oficial para solicitações de informação
-              </span>
+              </Link>
+              <Link to="/transparencia/esic/consultar">
+                <Button size="lg" variant="outline" className="gap-2">
+                  <FileText className="w-5 h-5" />
+                  Consultar Protocolo
+                </Button>
+              </Link>
             </div>
           </div>
           <div className="hidden lg:block">
@@ -366,13 +366,12 @@ export default function ESicPage() {
           </div>
 
           <div className="flex justify-center pt-4">
-            <a href={ESIC_URL} target="_blank" rel="noopener noreferrer">
+            <Link to="/transparencia/esic/consultar">
               <Button variant="outline" className="border-blue-300 text-blue-700 hover:bg-blue-100 gap-2">
                 <Search className="w-4 h-4" />
-                Acompanhar Pedido no e-SIC
-                <ExternalLink className="w-4 h-4" />
+                Consultar Protocolo
               </Button>
-            </a>
+            </Link>
           </div>
         </CardContent>
       </Card>
@@ -540,13 +539,18 @@ export default function ESicPage() {
           <Separator className="my-6" />
 
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href={ESIC_URL} target="_blank" rel="noopener noreferrer">
+            <Link to="/transparencia/esic/nova-solicitacao">
               <Button className="gap-2">
                 <Search className="w-4 h-4" />
-                Acessar e-SIC Online
-                <ExternalLink className="w-4 h-4" />
+                Nova Solicitação
               </Button>
-            </a>
+            </Link>
+            <Link to="/transparencia/esic/consultar">
+              <Button variant="outline" className="gap-2">
+                <FileText className="w-4 h-4" />
+                Consultar Protocolo
+              </Button>
+            </Link>
             <Link to="/contato">
               <Button variant="outline" className="gap-2">
                 <MessageSquare className="w-4 h-4" />

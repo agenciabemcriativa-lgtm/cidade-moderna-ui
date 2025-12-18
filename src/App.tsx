@@ -44,6 +44,8 @@ import DiariasPassagensPage from "./pages/transparencia/DiariasPassagensPage";
 import PatrimonioPublicoPage from "./pages/transparencia/PatrimonioPublicoPage";
 import DadosAbertosPage from "./pages/transparencia/DadosAbertosPage";
 import ESicPage from "./pages/transparencia/ESicPage";
+import ESicNovaSolicitacaoPage from "./pages/transparencia/ESicNovaSolicitacaoPage";
+import ESicConsultarPage from "./pages/transparencia/ESicConsultarPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -66,6 +68,8 @@ import AdminRemuneracaoAgentes from "./pages/admin/AdminRemuneracaoAgentes";
 import AdminDiariasPassagens from "./pages/admin/AdminDiariasPassagens";
 import AdminPatrimonioPublico from "./pages/admin/AdminPatrimonioPublico";
 import AdminDadosAbertos from "./pages/admin/AdminDadosAbertos";
+import AdminESic from "./pages/admin/AdminESic";
+import AdminESicDetalhe from "./pages/admin/AdminESicDetalhe";
 
 const queryClient = new QueryClient();
 
@@ -117,6 +121,8 @@ const App = () => (
             <Route path="/transparencia/patrimonio" element={<PatrimonioPublicoPage />} />
             <Route path="/transparencia/dados-abertos" element={<DadosAbertosPage />} />
             <Route path="/transparencia/esic" element={<ESicPage />} />
+            <Route path="/transparencia/esic/nova-solicitacao" element={<ESicNovaSolicitacaoPage />} />
+            <Route path="/transparencia/esic/consultar" element={<ESicConsultarPage />} />
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
@@ -139,6 +145,8 @@ const App = () => (
             <Route path="/admin/diarias-passagens" element={<AdminDiariasPassagens />} />
             <Route path="/admin/patrimonio" element={<AdminPatrimonioPublico />} />
             <Route path="/admin/dados-abertos" element={<AdminDadosAbertos />} />
+            <Route path="/admin/esic" element={<AdminESic />} />
+            <Route path="/admin/esic/:id" element={<AdminESicDetalhe />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
