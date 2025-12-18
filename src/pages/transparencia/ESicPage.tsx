@@ -1,6 +1,9 @@
 import { ExternalLink, FileText, Clock, AlertTriangle, Phone, Mail, MapPin, HelpCircle, CheckCircle, ArrowRight, Shield, Users, Search, MessageSquare, Calendar, Scale, BarChart3, TrendingUp, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
+import { TopBar } from '@/components/portal/TopBar';
+import { Header } from '@/components/portal/Header';
+import { Footer } from '@/components/portal/Footer';
+import { Breadcrumbs } from '@/components/portal/Breadcrumbs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -9,6 +12,10 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useESicEstatisticasPublicas } from '@/hooks/useESic';
 
+const breadcrumbItems = [
+  { label: "Transparência", href: "/transparencia" },
+  { label: "e-SIC" },
+];
 
 const passoASolicitacao = [
   {
@@ -112,12 +119,33 @@ export default function ESicPage() {
   const { data: estatisticas, isLoading: loadingStats } = useESicEstatisticasPublicas();
 
   return (
-    <TransparenciaLayout 
-      title="e-SIC - Serviço de Informação ao Cidadão"
-      description="Solicite informações públicas garantidas pela Lei de Acesso à Informação"
-    >
-      {/* Hero Section - Acesso Principal */}
-      <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-xl p-6 md:p-8 mb-8">
+    <div className="min-h-screen flex flex-col bg-background">
+      <TopBar />
+      <Header />
+      
+      <main className="flex-1">
+        <section className="bg-gradient-to-br from-primary via-primary/90 to-secondary py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <Breadcrumbs items={breadcrumbItems} variant="light" className="mb-6" />
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-primary-foreground/20 rounded-lg">
+                <MessageSquare className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground">
+                  e-SIC - Serviço de Informação ao Cidadão
+                </h1>
+                <p className="text-primary-foreground/80 mt-1">
+                  Solicite informações públicas garantidas pela Lei de Acesso à Informação
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-4 py-8">
+          {/* Hero Section - Acesso Principal */}
+          <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-xl p-6 md:p-8 mb-8">
         <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center">
           <div className="flex-1 space-y-4">
             <div className="flex items-center gap-2">
@@ -698,6 +726,10 @@ export default function ESicPage() {
           </div>
         </CardContent>
       </Card>
-    </TransparenciaLayout>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 }
