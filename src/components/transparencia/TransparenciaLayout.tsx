@@ -1,20 +1,9 @@
 import { ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { 
-  DollarSign, 
-  TrendingUp, 
-  FileText, 
-  Users, 
-  Calculator, 
-  Handshake, 
-  BarChart3, 
-  MessageSquare,
-  ExternalLink,
   Search,
-  Clock,
-  Home
+  Clock
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import brasaoIpubi from '@/assets/brasao-ipubi.png';
 
 interface TransparenciaLayoutProps {
@@ -23,26 +12,11 @@ interface TransparenciaLayoutProps {
   description?: string;
 }
 
-const menuItems = [
-  { label: 'Visão Geral', href: '/transparencia', icon: Home },
-  { label: 'Despesas Públicas', href: '/transparencia/despesas', icon: DollarSign },
-  { label: 'Receitas Públicas', href: '/transparencia/receitas', icon: TrendingUp },
-  { label: 'Licitações e Contratos', href: '/licitacoes', icon: FileText },
-  { label: 'Servidores e Pessoal', href: '/transparencia/servidores', icon: Users },
-  { label: 'Planejamento e Orçamento', href: '/legislacao/planejamento-orcamento', icon: Calculator },
-  { label: 'Convênios e Parcerias', href: '/transparencia/convenios', icon: Handshake },
-  { label: 'Relatórios Fiscais', href: '/transparencia/relatorios', icon: BarChart3 },
-  { label: 'Acesso à Informação', href: '/transparencia/acesso-informacao', icon: MessageSquare },
-];
-
 const quickLinks = [
-  { label: 'Portal da Transparência (Sistema)', url: 'https://www.ipubi.pe.gov.br/portaldatransparencia/', icon: ExternalLink },
   { label: 'e-SIC', url: 'https://www.ipubi.pe.gov.br/esic/', icon: Search },
 ];
 
 export function TransparenciaLayout({ children, title, description }: TransparenciaLayoutProps) {
-  const location = useLocation();
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -94,32 +68,6 @@ export function TransparenciaLayout({ children, title, description }: Transparen
           </div>
         </div>
       </header>
-
-      {/* Navigation */}
-      <nav className="bg-primary text-white">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-hide">
-            {menuItems.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className={cn(
-                    "flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap transition-colors",
-                    isActive 
-                      ? "bg-white text-primary" 
-                      : "text-white/90 hover:bg-white/10"
-                  )}
-                >
-                  <item.icon className="w-4 h-4" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </nav>
 
       {/* Page Header */}
       <div className="bg-white border-b border-gray-200">
