@@ -43,6 +43,7 @@ import RemuneracaoAgentesPage from "./pages/transparencia/RemuneracaoAgentesPage
 import DiariasPassagensPage from "./pages/transparencia/DiariasPassagensPage";
 import PatrimonioPublicoPage from "./pages/transparencia/PatrimonioPublicoPage";
 import DadosAbertosPage from "./pages/transparencia/DadosAbertosPage";
+import ESicPage from "./pages/transparencia/ESicPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -115,7 +116,7 @@ const App = () => (
             <Route path="/transparencia/diarias-passagens" element={<DiariasPassagensPage />} />
             <Route path="/transparencia/patrimonio" element={<PatrimonioPublicoPage />} />
             <Route path="/transparencia/dados-abertos" element={<DadosAbertosPage />} />
-            
+            <Route path="/transparencia/esic" element={<ESicPage />} />
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
