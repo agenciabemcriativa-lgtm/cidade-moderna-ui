@@ -33,6 +33,7 @@ const menuItems = [
   { icon: FileText, label: "Publicações Oficiais", href: "/admin/publicacoes-oficiais" },
   { icon: BookOpen, label: "Legislação", href: "/admin/legislacao" },
   { icon: Shield, label: "Transparência", href: "/admin/transparencia" },
+  { icon: FileText, label: "Relatórios Fiscais", href: "/admin/relatorios-fiscais" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
   { icon: Wrench, label: "Serviços", href: "/admin/servicos" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },

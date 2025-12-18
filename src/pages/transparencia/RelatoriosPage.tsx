@@ -1,55 +1,51 @@
 import { useState } from 'react';
-import { ExternalLink, AlertCircle, BarChart3, Download, FileText } from 'lucide-react';
+import { AlertCircle, Download, FileText, Calendar, Filter } from 'lucide-react';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
-import { DataTable, DownloadButton, Column } from '@/components/transparencia/DataTable';
 import { FilterBar, YearFilter, TypeFilter } from '@/components/transparencia/FilterBar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-
-interface RelatorioItem {
-  id: string;
-  tipo: string;
-  periodo: string;
-  ano: number;
-  dataPublicacao: string;
-  arquivo: string;
-}
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import {
+  useRelatoriosFiscais,
+  TipoRelatorioFiscal,
+  tipoRelatorioLabels,
+  bimestreLabels,
+  quadrimestreLabels,
+} from '@/hooks/useRelatoriosFiscais';
 
 const relatoriosTipos = [
-  { value: 'rreo', label: 'RREO - Relatório Resumido da Execução Orçamentária' },
+  { value: 'rreo', label: 'RREO - Relatório Resumido' },
   { value: 'rgf', label: 'RGF - Relatório de Gestão Fiscal' },
-  { value: 'balanco', label: 'Balanço Anual' },
-  { value: 'parecer_tce', label: 'Parecer do TCE' },
+  { value: 'parecer_tce', label: 'Pareceres do TCE' },
   { value: 'prestacao_contas', label: 'Prestação de Contas' },
 ];
 
 const currentYear = new Date().getFullYear();
 const years = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4];
 
-// Dados simulados
-const relatoriosData: RelatorioItem[] = [];
+const tipoCardStyles: Record<TipoRelatorioFiscal, { bg: string; border: string; text: string; icon: string }> = {
+  rreo: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-800', icon: 'text-blue-600' },
+  rgf: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-800', icon: 'text-green-600' },
+  parecer_tce: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-800', icon: 'text-orange-600' },
+  prestacao_contas: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-800', icon: 'text-purple-600' },
+};
 
 export default function RelatoriosPage() {
   const [search, setSearch] = useState('');
   const [ano, setAno] = useState<string>('all');
   const [tipo, setTipo] = useState<string>('all');
 
-  const columns: Column<RelatorioItem>[] = [
-    { key: 'tipo', label: 'Tipo' },
-    { key: 'periodo', label: 'Período' },
-    { key: 'ano', label: 'Ano' },
-    { 
-      key: 'dataPublicacao', 
-      label: 'Data de Publicação',
-      render: (item) => new Date(item.dataPublicacao).toLocaleDateString('pt-BR')
-    },
-    { 
-      key: 'arquivo', 
-      label: 'Download',
-      render: (item) => <DownloadButton href={item.arquivo} label="Baixar PDF" />
-    },
-  ];
+  const { data: relatorios, isLoading } = useRelatoriosFiscais(
+    tipo !== 'all' ? (tipo as TipoRelatorioFiscal) : undefined,
+    ano !== 'all' ? Number(ano) : undefined
+  );
+
+  const filteredRelatorios = relatorios?.filter((r) =>
+    r.titulo.toLowerCase().includes(search.toLowerCase())
+  );
 
   const clearFilters = () => {
     setSearch('');
@@ -57,114 +53,72 @@ export default function RelatoriosPage() {
     setTipo('all');
   };
 
+  const getPeriodicidadeLabel = (relatorio: typeof relatorios extends (infer T)[] | undefined ? T : never) => {
+    if (relatorio.tipo === 'rreo' && relatorio.bimestre) {
+      return bimestreLabels[relatorio.bimestre];
+    }
+    if (relatorio.tipo === 'rgf' && relatorio.quadrimestre) {
+      return quadrimestreLabels[relatorio.quadrimestre];
+    }
+    if (relatorio.exercicio) {
+      return relatorio.exercicio;
+    }
+    return null;
+  };
+
+  // Group by type for summary cards
+  const countByType = relatorios?.reduce(
+    (acc, r) => {
+      acc[r.tipo] = (acc[r.tipo] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>
+  ) || {};
+
   return (
     <TransparenciaLayout 
       title="Relatórios Fiscais"
-      description="RREO, RGF, balanços e pareceres do Tribunal de Contas"
+      description="RREO, RGF, Pareceres do TCE e Prestação de Contas"
     >
-      {/* Cards com links diretos */}
+      {/* Cards de resumo por tipo */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <a 
-          href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Card className="bg-blue-50 border-blue-200 hover:shadow-md transition-shadow cursor-pointer h-full">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-blue-800">RREO</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-blue-600">Relatório Resumido da Execução Orçamentária</p>
-              <div className="flex items-center gap-1 mt-2 text-blue-700 text-xs">
-                <ExternalLink className="w-3 h-3" />
-                Acessar
-              </div>
-            </CardContent>
-          </Card>
-        </a>
-        
-        <a 
-          href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Card className="bg-green-50 border-green-200 hover:shadow-md transition-shadow cursor-pointer h-full">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-green-800">RGF</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-green-600">Relatório de Gestão Fiscal</p>
-              <div className="flex items-center gap-1 mt-2 text-green-700 text-xs">
-                <ExternalLink className="w-3 h-3" />
-                Acessar
-              </div>
-            </CardContent>
-          </Card>
-        </a>
-        
-        <a 
-          href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Card className="bg-purple-50 border-purple-200 hover:shadow-md transition-shadow cursor-pointer h-full">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-purple-800">Balanços</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-purple-600">Demonstrativos Contábeis Anuais</p>
-              <div className="flex items-center gap-1 mt-2 text-purple-700 text-xs">
-                <ExternalLink className="w-3 h-3" />
-                Acessar
-              </div>
-            </CardContent>
-          </Card>
-        </a>
-        
-        <a 
-          href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Card className="bg-orange-50 border-orange-200 hover:shadow-md transition-shadow cursor-pointer h-full">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-orange-800">Pareceres TCE</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-orange-600">Pareceres do Tribunal de Contas</p>
-              <div className="flex items-center gap-1 mt-2 text-orange-700 text-xs">
-                <ExternalLink className="w-3 h-3" />
-                Acessar
-              </div>
-            </CardContent>
-          </Card>
-        </a>
+        {Object.entries(tipoRelatorioLabels).map(([key, label]) => {
+          const tipoKey = key as TipoRelatorioFiscal;
+          const styles = tipoCardStyles[tipoKey];
+          const count = countByType[tipoKey] || 0;
+          
+          return (
+            <Card 
+              key={key}
+              className={`${styles.bg} ${styles.border} hover:shadow-md transition-shadow cursor-pointer`}
+              onClick={() => setTipo(key)}
+            >
+              <CardHeader className="pb-2">
+                <CardTitle className={`text-sm font-medium ${styles.text}`}>
+                  {key.toUpperCase().replace('_', ' ')}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className={`text-xs ${styles.icon}`}>{label}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <Badge variant="secondary" className="text-xs">
+                    {count} {count === 1 ? 'documento' : 'documentos'}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {/* Aviso sobre sistema oficial */}
+      {/* Aviso sobre Lei de Responsabilidade Fiscal */}
       <Alert className="mb-6 bg-blue-50 border-blue-200">
         <AlertCircle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
-          Os relatórios fiscais completos estão disponíveis no sistema oficial de transparência. 
-          Acesse para visualizar RREO, RGF e demais demonstrativos exigidos pela Lei de Responsabilidade Fiscal.
+          Os relatórios fiscais são publicados em atendimento à Lei Complementar nº 101/2000 
+          (Lei de Responsabilidade Fiscal) e à Lei nº 12.527/2011 (Lei de Acesso à Informação).
         </AlertDescription>
       </Alert>
-
-      {/* Botão de acesso ao sistema oficial */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <a
-          href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1"
-        >
-          <Button className="w-full" size="lg">
-            <BarChart3 className="w-5 h-5 mr-2" />
-            Acessar Relatórios Fiscais
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </Button>
-        </a>
-      </div>
 
       {/* Filtros */}
       <FilterBar
@@ -178,13 +132,80 @@ export default function RelatoriosPage() {
         <TypeFilter value={tipo} onChange={setTipo} options={relatoriosTipos} placeholder="Tipo" />
       </FilterBar>
 
-      {/* Tabela */}
-      <DataTable
-        columns={columns}
-        data={relatoriosData}
-        keyExtractor={(item) => item.id}
-        emptyMessage="Os relatórios fiscais estão disponíveis no sistema oficial de transparência. Clique no botão acima para acessar."
-      />
+      {/* Lista de Relatórios */}
+      {isLoading ? (
+        <div className="space-y-4">
+          {[...Array(5)].map((_, i) => (
+            <Skeleton key={i} className="h-24 w-full" />
+          ))}
+        </div>
+      ) : filteredRelatorios?.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+          <FileText className="w-12 h-12 mb-4 opacity-50" />
+          <p>Nenhum relatório encontrado</p>
+          {(search || ano !== 'all' || tipo !== 'all') && (
+            <button
+              onClick={clearFilters}
+              className="mt-2 text-primary hover:underline text-sm"
+            >
+              Limpar filtros
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredRelatorios?.map((relatorio) => {
+            const styles = tipoCardStyles[relatorio.tipo];
+            const periodo = getPeriodicidadeLabel(relatorio);
+            
+            return (
+              <Card key={relatorio.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge 
+                          variant="outline" 
+                          className={`${styles.bg} ${styles.border} ${styles.text} text-xs`}
+                        >
+                          {tipoRelatorioLabels[relatorio.tipo]}
+                        </Badge>
+                        <Badge variant="secondary" className="text-xs">
+                          {relatorio.ano}
+                        </Badge>
+                        {periodo && (
+                          <Badge variant="outline" className="text-xs">
+                            {periodo}
+                          </Badge>
+                        )}
+                      </div>
+                      <h3 className="font-semibold text-gray-900">{relatorio.titulo}</h3>
+                      {relatorio.descricao && (
+                        <p className="text-sm text-gray-600 mt-1">{relatorio.descricao}</p>
+                      )}
+                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          Publicado em {format(new Date(relatorio.data_publicacao), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                        </span>
+                      </div>
+                    </div>
+                    <a
+                      href={relatorio.arquivo_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                    >
+                      <Download className="w-4 h-4" />
+                      Baixar PDF
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
 
       {/* Informações legais */}
       <div className="mt-8 p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
@@ -196,7 +217,8 @@ export default function RelatoriosPage() {
         <ul className="list-disc list-inside space-y-1 ml-2">
           <li><strong>RREO</strong> - Bimestralmente, até 30 dias após o encerramento do bimestre</li>
           <li><strong>RGF</strong> - Quadrimestralmente, até 30 dias após o encerramento do quadrimestre</li>
-          <li><strong>Balanço Anual</strong> - Até 30 de junho do exercício seguinte</li>
+          <li><strong>Pareceres do TCE</strong> - Após emissão pelo Tribunal de Contas do Estado</li>
+          <li><strong>Prestação de Contas</strong> - Anualmente, conforme prazos legais</li>
         </ul>
       </div>
     </TransparenciaLayout>

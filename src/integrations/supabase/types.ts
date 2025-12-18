@@ -596,6 +596,66 @@ export type Database = {
           },
         ]
       }
+      relatorios_fiscais: {
+        Row: {
+          ano: number
+          arquivo_nome: string
+          arquivo_url: string
+          bimestre: number | null
+          created_at: string | null
+          created_by: string | null
+          data_publicacao: string
+          descricao: string | null
+          exercicio: string | null
+          id: string
+          observacoes: string | null
+          publicado: boolean | null
+          quadrimestre: number | null
+          tipo: Database["public"]["Enums"]["tipo_relatorio_fiscal"]
+          titulo: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          ano: number
+          arquivo_nome: string
+          arquivo_url: string
+          bimestre?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          data_publicacao?: string
+          descricao?: string | null
+          exercicio?: string | null
+          id?: string
+          observacoes?: string | null
+          publicado?: boolean | null
+          quadrimestre?: number | null
+          tipo: Database["public"]["Enums"]["tipo_relatorio_fiscal"]
+          titulo: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          ano?: number
+          arquivo_nome?: string
+          arquivo_url?: string
+          bimestre?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          data_publicacao?: string
+          descricao?: string | null
+          exercicio?: string | null
+          id?: string
+          observacoes?: string | null
+          publicado?: boolean | null
+          quadrimestre?: number | null
+          tipo?: Database["public"]["Enums"]["tipo_relatorio_fiscal"]
+          titulo?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       secretarias: {
         Row: {
           ativo: boolean | null
@@ -889,6 +949,7 @@ export type Database = {
         | "ato_administrativo"
         | "edital"
         | "comunicado"
+      tipo_relatorio_fiscal: "rreo" | "rgf" | "parecer_tce" | "prestacao_contas"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1072,6 +1133,7 @@ export const Constants = {
         "edital",
         "comunicado",
       ],
+      tipo_relatorio_fiscal: ["rreo", "rgf", "parecer_tce", "prestacao_contas"],
     },
   },
 } as const
