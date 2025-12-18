@@ -82,7 +82,7 @@ export function TopBar() {
             </button>
             
             {isDropdownOpen && (
-              <div className="absolute right-0 top-full mt-1 w-56 bg-card text-card-foreground rounded-lg shadow-lg border border-border z-50 py-1 animate-fade-in">
+              <div className="absolute right-0 top-full mt-1 w-56 bg-card text-card-foreground rounded-lg shadow-lg border border-border z-[200] py-1 animate-fade-in">
                 {tiposPublicacao.map((tipo) => (
                   <Link
                     key={tipo.value}
