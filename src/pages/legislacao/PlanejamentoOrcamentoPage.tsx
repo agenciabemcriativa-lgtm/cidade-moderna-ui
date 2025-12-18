@@ -86,9 +86,10 @@ function DocumentoCard({ documento, tipo }: { documento?: DocumentoLegislacao; t
   );
 }
 
-function HistoricoList({ documentos, tipo, isLoading }: { documentos?: DocumentoLegislacao[]; tipo: string; isLoading: boolean }) {
-  const historico = documentos?.filter(d => !d.vigente) || [];
-  const anosComDocumento = historico.map(d => d.ano);
+function HistoricoList({ documentos, documentoVigente, tipo, isLoading }: { documentos?: DocumentoLegislacao[]; documentoVigente?: DocumentoLegislacao; tipo: string; isLoading: boolean }) {
+  // Histórico = todos os documentos exceto o vigente
+  const historico = documentos?.filter(d => d.id !== documentoVigente?.id) || [];
+  const anosComDocumento = documentos?.map(d => d.ano) || [];
   const anosAnteriores = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4].filter(
     ano => !anosComDocumento.includes(ano)
   );
@@ -263,7 +264,7 @@ export default function PlanejamentoOrcamentoPage() {
                   {/* Histórico */}
                   <div>
                     <h4 className="font-medium mb-3">Histórico de PPAs</h4>
-                    <HistoricoList documentos={ppaDocs} tipo="PPA" isLoading={loadingPPA} />
+                    <HistoricoList documentos={ppaDocs} documentoVigente={ppaVigente} tipo="PPA" isLoading={loadingPPA} />
                   </div>
                 </CardContent>
               </Card>
@@ -313,7 +314,7 @@ export default function PlanejamentoOrcamentoPage() {
                   {/* Histórico */}
                   <div>
                     <h4 className="font-medium mb-3">Histórico de LDOs</h4>
-                    <HistoricoList documentos={ldoDocs} tipo="LDO" isLoading={loadingLDO} />
+                    <HistoricoList documentos={ldoDocs} documentoVigente={ldoVigente} tipo="LDO" isLoading={loadingLDO} />
                   </div>
                 </CardContent>
               </Card>
@@ -362,7 +363,7 @@ export default function PlanejamentoOrcamentoPage() {
                   {/* Histórico */}
                   <div>
                     <h4 className="font-medium mb-3">Histórico de LOAs</h4>
-                    <HistoricoList documentos={loaDocs} tipo="LOA" isLoading={loadingLOA} />
+                    <HistoricoList documentos={loaDocs} documentoVigente={loaVigente} tipo="LOA" isLoading={loadingLOA} />
                   </div>
                 </CardContent>
               </Card>
