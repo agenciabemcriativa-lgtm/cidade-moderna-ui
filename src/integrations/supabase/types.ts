@@ -689,6 +689,119 @@ export type Database = {
         }
         Relationships: []
       }
+      transparencia_categorias: {
+        Row: {
+          ativo: boolean | null
+          cor: string | null
+          created_at: string | null
+          descricao: string | null
+          icone: string | null
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          cor?: string | null
+          created_at?: string | null
+          descricao?: string | null
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          cor?: string | null
+          created_at?: string | null
+          descricao?: string | null
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      transparencia_itens: {
+        Row: {
+          ativo: boolean | null
+          categoria_id: string
+          created_at: string | null
+          externo: boolean | null
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          categoria_id: string
+          created_at?: string | null
+          externo?: boolean | null
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          categoria_id?: string
+          created_at?: string | null
+          externo?: boolean | null
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transparencia_itens_categoria_id_fkey"
+            columns: ["categoria_id"]
+            isOneToOne: false
+            referencedRelation: "transparencia_categorias"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transparencia_links_rapidos: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          icone: string | null
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          icone?: string | null
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null

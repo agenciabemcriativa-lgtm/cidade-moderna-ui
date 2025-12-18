@@ -52,6 +52,7 @@ import AdminMunicipio from "./pages/admin/AdminMunicipio";
 import AdminAtendimento from "./pages/admin/AdminAtendimento";
 import AdminPublicacoesOficiais from "./pages/admin/AdminPublicacoesOficiais";
 import AdminLegislacao from "./pages/admin/AdminLegislacao";
+import AdminTransparencia from "./pages/admin/AdminTransparencia";
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,7 @@ const App = () => (
             <Route path="/admin/atendimento" element={<AdminAtendimento />} />
             <Route path="/admin/publicacoes-oficiais" element={<AdminPublicacoesOficiais />} />
             <Route path="/admin/legislacao" element={<AdminLegislacao />} />
+            <Route path="/admin/transparencia" element={<AdminTransparencia />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

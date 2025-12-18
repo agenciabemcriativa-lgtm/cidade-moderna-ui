@@ -16,7 +16,8 @@ import {
   Landmark,
   MapPin,
   Users,
-  BookOpen
+  BookOpen,
+  Shield
 } from "lucide-react";
 import { useState } from "react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
@@ -31,6 +32,7 @@ const menuItems = [
   { icon: FileText, label: "Licitações", href: "/admin/licitacoes" },
   { icon: FileText, label: "Publicações Oficiais", href: "/admin/publicacoes-oficiais" },
   { icon: BookOpen, label: "Legislação", href: "/admin/legislacao" },
+  { icon: Shield, label: "Transparência", href: "/admin/transparencia" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
   { icon: Wrench, label: "Serviços", href: "/admin/servicos" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },
