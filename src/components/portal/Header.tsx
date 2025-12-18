@@ -30,6 +30,7 @@ const servicosCidadao: { category: string; items: ServicoItem[] }[] = [
     category: "Serviços Digitais",
     items: [
       { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
+      { label: "Publicações Oficiais", href: "/publicacoes-oficiais", external: false },
       { label: "Licitações", href: "/licitacoes", external: false },
       { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
       { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },

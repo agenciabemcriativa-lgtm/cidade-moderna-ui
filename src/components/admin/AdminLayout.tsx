@@ -28,6 +28,7 @@ const menuItems = [
   { icon: MapPin, label: "Município", href: "/admin/municipio" },
   { icon: Users, label: "Atendimento", href: "/admin/atendimento" },
   { icon: FileText, label: "Licitações", href: "/admin/licitacoes" },
+  { icon: FileText, label: "Publicações Oficiais", href: "/admin/publicacoes-oficiais" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
   { icon: Wrench, label: "Serviços", href: "/admin/servicos" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },

@@ -429,6 +429,122 @@ export type Database = {
         }
         Relationships: []
       }
+      publicacoes_historico: {
+        Row: {
+          alterado_em: string
+          alterado_por: string | null
+          campo_alterado: string
+          id: string
+          publicacao_id: string
+          valor_anterior: string | null
+          valor_novo: string | null
+        }
+        Insert: {
+          alterado_em?: string
+          alterado_por?: string | null
+          campo_alterado: string
+          id?: string
+          publicacao_id: string
+          valor_anterior?: string | null
+          valor_novo?: string | null
+        }
+        Update: {
+          alterado_em?: string
+          alterado_por?: string | null
+          campo_alterado?: string
+          id?: string
+          publicacao_id?: string
+          valor_anterior?: string | null
+          valor_novo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publicacoes_historico_publicacao_id_fkey"
+            columns: ["publicacao_id"]
+            isOneToOne: false
+            referencedRelation: "publicacoes_oficiais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      publicacoes_oficiais: {
+        Row: {
+          ano: number
+          created_at: string
+          created_by: string | null
+          data_publicacao: string
+          ementa: string
+          id: string
+          numero: string
+          observacoes: string | null
+          publicacao_relacionada_id: string | null
+          publicado: boolean
+          secretaria_id: string | null
+          secretaria_nome: string | null
+          situacao: Database["public"]["Enums"]["situacao_publicacao"]
+          texto_completo_url: string | null
+          tipo: Database["public"]["Enums"]["tipo_publicacao"]
+          titulo: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          ano: number
+          created_at?: string
+          created_by?: string | null
+          data_publicacao: string
+          ementa: string
+          id?: string
+          numero: string
+          observacoes?: string | null
+          publicacao_relacionada_id?: string | null
+          publicado?: boolean
+          secretaria_id?: string | null
+          secretaria_nome?: string | null
+          situacao?: Database["public"]["Enums"]["situacao_publicacao"]
+          texto_completo_url?: string | null
+          tipo: Database["public"]["Enums"]["tipo_publicacao"]
+          titulo: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          ano?: number
+          created_at?: string
+          created_by?: string | null
+          data_publicacao?: string
+          ementa?: string
+          id?: string
+          numero?: string
+          observacoes?: string | null
+          publicacao_relacionada_id?: string | null
+          publicado?: boolean
+          secretaria_id?: string | null
+          secretaria_nome?: string | null
+          situacao?: Database["public"]["Enums"]["situacao_publicacao"]
+          texto_completo_url?: string | null
+          tipo?: Database["public"]["Enums"]["tipo_publicacao"]
+          titulo?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publicacoes_oficiais_publicacao_relacionada_id_fkey"
+            columns: ["publicacao_relacionada_id"]
+            isOneToOne: false
+            referencedRelation: "publicacoes_oficiais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "publicacoes_oficiais_secretaria_id_fkey"
+            columns: ["secretaria_id"]
+            isOneToOne: false
+            referencedRelation: "secretarias"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       secretarias: {
         Row: {
           ativo: boolean | null
@@ -571,6 +687,7 @@ export type Database = {
         | "dispensa"
         | "inexigibilidade"
         | "chamada_publica"
+      situacao_publicacao: "vigente" | "revogado" | "alterado"
       status_licitacao:
         | "aberta"
         | "em_andamento"
@@ -592,6 +709,15 @@ export type Database = {
         | "impugnacao"
         | "esclarecimento"
         | "outros"
+      tipo_publicacao:
+        | "lei"
+        | "decreto"
+        | "portaria"
+        | "resolucao"
+        | "instrucao_normativa"
+        | "ato_administrativo"
+        | "edital"
+        | "comunicado"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -733,6 +859,7 @@ export const Constants = {
         "inexigibilidade",
         "chamada_publica",
       ],
+      situacao_publicacao: ["vigente", "revogado", "alterado"],
       status_licitacao: [
         "aberta",
         "em_andamento",
@@ -755,6 +882,16 @@ export const Constants = {
         "impugnacao",
         "esclarecimento",
         "outros",
+      ],
+      tipo_publicacao: [
+        "lei",
+        "decreto",
+        "portaria",
+        "resolucao",
+        "instrucao_normativa",
+        "ato_administrativo",
+        "edital",
+        "comunicado",
       ],
     },
   },
