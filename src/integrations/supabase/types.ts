@@ -397,6 +397,280 @@ export type Database = {
           },
         ]
       }
+      esic_anexos: {
+        Row: {
+          created_at: string
+          id: string
+          nome_arquivo: string
+          recurso_id: string | null
+          resposta_id: string | null
+          solicitacao_id: string | null
+          tamanho_bytes: number | null
+          tipo_mime: string | null
+          uploaded_by: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nome_arquivo: string
+          recurso_id?: string | null
+          resposta_id?: string | null
+          solicitacao_id?: string | null
+          tamanho_bytes?: number | null
+          tipo_mime?: string | null
+          uploaded_by?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nome_arquivo?: string
+          recurso_id?: string | null
+          resposta_id?: string | null
+          solicitacao_id?: string | null
+          tamanho_bytes?: number | null
+          tipo_mime?: string | null
+          uploaded_by?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "esic_anexos_recurso_id_fkey"
+            columns: ["recurso_id"]
+            isOneToOne: false
+            referencedRelation: "esic_recursos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "esic_anexos_resposta_id_fkey"
+            columns: ["resposta_id"]
+            isOneToOne: false
+            referencedRelation: "esic_respostas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "esic_anexos_solicitacao_id_fkey"
+            columns: ["solicitacao_id"]
+            isOneToOne: false
+            referencedRelation: "esic_solicitacoes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      esic_historico: {
+        Row: {
+          acao: string
+          created_at: string
+          dados_anteriores: Json | null
+          dados_novos: Json | null
+          descricao: string | null
+          id: string
+          ip_address: string | null
+          solicitacao_id: string
+          usuario_id: string | null
+          usuario_nome: string | null
+        }
+        Insert: {
+          acao: string
+          created_at?: string
+          dados_anteriores?: Json | null
+          dados_novos?: Json | null
+          descricao?: string | null
+          id?: string
+          ip_address?: string | null
+          solicitacao_id: string
+          usuario_id?: string | null
+          usuario_nome?: string | null
+        }
+        Update: {
+          acao?: string
+          created_at?: string
+          dados_anteriores?: Json | null
+          dados_novos?: Json | null
+          descricao?: string | null
+          id?: string
+          ip_address?: string | null
+          solicitacao_id?: string
+          usuario_id?: string | null
+          usuario_nome?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "esic_historico_solicitacao_id_fkey"
+            columns: ["solicitacao_id"]
+            isOneToOne: false
+            referencedRelation: "esic_solicitacoes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      esic_recursos: {
+        Row: {
+          created_at: string
+          data_decisao: string | null
+          data_limite: string
+          data_recurso: string
+          decidido_por: string | null
+          decisao: string | null
+          fundamentacao: string | null
+          id: string
+          instancia: Database["public"]["Enums"]["instancia_recurso_esic"]
+          motivo: string
+          solicitacao_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_decisao?: string | null
+          data_limite: string
+          data_recurso?: string
+          decidido_por?: string | null
+          decisao?: string | null
+          fundamentacao?: string | null
+          id?: string
+          instancia: Database["public"]["Enums"]["instancia_recurso_esic"]
+          motivo: string
+          solicitacao_id: string
+        }
+        Update: {
+          created_at?: string
+          data_decisao?: string | null
+          data_limite?: string
+          data_recurso?: string
+          decidido_por?: string | null
+          decisao?: string | null
+          fundamentacao?: string | null
+          id?: string
+          instancia?: Database["public"]["Enums"]["instancia_recurso_esic"]
+          motivo?: string
+          solicitacao_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "esic_recursos_solicitacao_id_fkey"
+            columns: ["solicitacao_id"]
+            isOneToOne: false
+            referencedRelation: "esic_solicitacoes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      esic_respostas: {
+        Row: {
+          conteudo: string
+          created_at: string
+          data_resposta: string
+          fundamentacao_legal: string | null
+          id: string
+          respondido_por: string | null
+          respondido_por_nome: string | null
+          solicitacao_id: string
+          tipo: Database["public"]["Enums"]["tipo_resposta_esic"]
+        }
+        Insert: {
+          conteudo: string
+          created_at?: string
+          data_resposta?: string
+          fundamentacao_legal?: string | null
+          id?: string
+          respondido_por?: string | null
+          respondido_por_nome?: string | null
+          solicitacao_id: string
+          tipo: Database["public"]["Enums"]["tipo_resposta_esic"]
+        }
+        Update: {
+          conteudo?: string
+          created_at?: string
+          data_resposta?: string
+          fundamentacao_legal?: string | null
+          id?: string
+          respondido_por?: string | null
+          respondido_por_nome?: string | null
+          solicitacao_id?: string
+          tipo?: Database["public"]["Enums"]["tipo_resposta_esic"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "esic_respostas_solicitacao_id_fkey"
+            columns: ["solicitacao_id"]
+            isOneToOne: false
+            referencedRelation: "esic_solicitacoes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      esic_solicitacoes: {
+        Row: {
+          assunto: string
+          created_at: string
+          data_limite: string
+          data_prorrogacao: string | null
+          data_resposta: string | null
+          data_solicitacao: string
+          descricao: string
+          forma_recebimento: string | null
+          id: string
+          ip_solicitante: string | null
+          prioridade: number | null
+          protocolo: string
+          responsavel_id: string | null
+          setor_responsavel: string | null
+          solicitante_documento: string | null
+          solicitante_email: string
+          solicitante_nome: string
+          solicitante_telefone: string | null
+          solicitante_user_id: string | null
+          status: Database["public"]["Enums"]["status_esic"]
+          updated_at: string
+        }
+        Insert: {
+          assunto: string
+          created_at?: string
+          data_limite: string
+          data_prorrogacao?: string | null
+          data_resposta?: string | null
+          data_solicitacao?: string
+          descricao: string
+          forma_recebimento?: string | null
+          id?: string
+          ip_solicitante?: string | null
+          prioridade?: number | null
+          protocolo: string
+          responsavel_id?: string | null
+          setor_responsavel?: string | null
+          solicitante_documento?: string | null
+          solicitante_email: string
+          solicitante_nome: string
+          solicitante_telefone?: string | null
+          solicitante_user_id?: string | null
+          status?: Database["public"]["Enums"]["status_esic"]
+          updated_at?: string
+        }
+        Update: {
+          assunto?: string
+          created_at?: string
+          data_limite?: string
+          data_prorrogacao?: string | null
+          data_resposta?: string | null
+          data_solicitacao?: string
+          descricao?: string
+          forma_recebimento?: string | null
+          id?: string
+          ip_solicitante?: string | null
+          prioridade?: number | null
+          protocolo?: string
+          responsavel_id?: string | null
+          setor_responsavel?: string | null
+          solicitante_documento?: string | null
+          solicitante_email?: string
+          solicitante_nome?: string
+          solicitante_telefone?: string | null
+          solicitante_user_id?: string | null
+          status?: Database["public"]["Enums"]["status_esic"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       governo_itens: {
         Row: {
           ativo: boolean | null
@@ -1267,6 +1541,7 @@ export type Database = {
     }
     Functions: {
       create_first_admin: { Args: never; Returns: boolean }
+      gerar_protocolo_esic: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1306,6 +1581,7 @@ export type Database = {
         | "json"
         | "xml"
         | "outros"
+      instancia_recurso_esic: "primeira" | "segunda" | "terceira"
       modalidade_licitacao:
         | "pregao_eletronico"
         | "pregao_presencial"
@@ -1320,6 +1596,14 @@ export type Database = {
         | "chamada_publica"
       situacao_bem: "bom" | "regular" | "ruim" | "inservivel" | "alienado"
       situacao_publicacao: "vigente" | "revogado" | "alterado"
+      status_esic:
+        | "pendente"
+        | "em_andamento"
+        | "respondida"
+        | "prorrogada"
+        | "recurso"
+        | "arquivada"
+        | "cancelada"
       status_licitacao:
         | "aberta"
         | "em_andamento"
@@ -1366,6 +1650,13 @@ export type Database = {
         | "comunicado"
         | "outros"
       tipo_relatorio_fiscal: "rreo" | "rgf" | "parecer_tce" | "prestacao_contas"
+      tipo_resposta_esic:
+        | "deferido"
+        | "deferido_parcial"
+        | "indeferido"
+        | "nao_possui"
+        | "encaminhado"
+        | "prorrogacao"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1519,6 +1810,7 @@ export const Constants = {
         "outros",
       ],
       formato_arquivo: ["csv", "xls", "xlsx", "pdf", "json", "xml", "outros"],
+      instancia_recurso_esic: ["primeira", "segunda", "terceira"],
       modalidade_licitacao: [
         "pregao_eletronico",
         "pregao_presencial",
@@ -1534,6 +1826,15 @@ export const Constants = {
       ],
       situacao_bem: ["bom", "regular", "ruim", "inservivel", "alienado"],
       situacao_publicacao: ["vigente", "revogado", "alterado"],
+      status_esic: [
+        "pendente",
+        "em_andamento",
+        "respondida",
+        "prorrogada",
+        "recurso",
+        "arquivada",
+        "cancelada",
+      ],
       status_licitacao: [
         "aberta",
         "em_andamento",
@@ -1585,6 +1886,14 @@ export const Constants = {
         "outros",
       ],
       tipo_relatorio_fiscal: ["rreo", "rgf", "parecer_tce", "prestacao_contas"],
+      tipo_resposta_esic: [
+        "deferido",
+        "deferido_parcial",
+        "indeferido",
+        "nao_possui",
+        "encaminhado",
+        "prorrogacao",
+      ],
     },
   },
 } as const
