@@ -128,12 +128,12 @@ export default function PublicacoesOficiaisPage() {
               </div>
 
               {/* Ano */}
-              <Select value={selectedAno} onValueChange={setSelectedAno}>
+              <Select value={selectedAno || "__all__"} onValueChange={(v) => setSelectedAno(v === "__all__" ? "" : v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Ano" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os anos</SelectItem>
+                  <SelectItem value="__all__">Todos os anos</SelectItem>
                   {anos?.map((ano) => (
                     <SelectItem key={ano} value={ano.toString()}>
                       {ano}
@@ -143,12 +143,12 @@ export default function PublicacoesOficiaisPage() {
               </Select>
 
               {/* Tipo */}
-              <Select value={selectedTipo} onValueChange={setSelectedTipo}>
+              <Select value={selectedTipo || "__all__"} onValueChange={(v) => setSelectedTipo(v === "__all__" ? "" : v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="__all__">Todos os tipos</SelectItem>
                   {Object.entries(tipoLabels).map(([value, label]) => (
                     <SelectItem key={value} value={value}>
                       {label}
@@ -158,12 +158,12 @@ export default function PublicacoesOficiaisPage() {
               </Select>
 
               {/* Situação */}
-              <Select value={selectedSituacao} onValueChange={setSelectedSituacao}>
+              <Select value={selectedSituacao || "__all__"} onValueChange={(v) => setSelectedSituacao(v === "__all__" ? "" : v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Situação" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todas</SelectItem>
+                  <SelectItem value="__all__">Todas</SelectItem>
                   {Object.entries(situacaoLabels).map(([value, label]) => (
                     <SelectItem key={value} value={value}>
                       {label}
@@ -176,12 +176,12 @@ export default function PublicacoesOficiaisPage() {
             {/* Secretaria filter + Clear */}
             <div className="flex flex-col md:flex-row gap-4 mt-4">
               <div className="flex-1 md:max-w-xs">
-                <Select value={selectedSecretaria} onValueChange={setSelectedSecretaria}>
+                <Select value={selectedSecretaria || "__all__"} onValueChange={(v) => setSelectedSecretaria(v === "__all__" ? "" : v)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Secretaria / Órgão" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todas as secretarias</SelectItem>
+                    <SelectItem value="__all__">Todas as secretarias</SelectItem>
                     {secretarias?.map((sec) => (
                       <SelectItem key={sec.id} value={sec.id}>
                         {sec.nome}
