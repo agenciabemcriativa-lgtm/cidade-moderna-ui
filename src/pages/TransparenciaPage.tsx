@@ -273,15 +273,13 @@ export default function TransparenciaPage() {
               </p>
             </div>
             
-            <a
-              href="https://www.ipubi.pe.gov.br/esic/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/transparencia/esic"
               className="flex items-center justify-center gap-2 bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
             >
               <Search className="w-5 h-5" />
               Solicitar Informação (e-SIC)
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -427,14 +425,12 @@ export default function TransparenciaPage() {
                   </Link>
                 </li>
                 <li>
-                  <a 
-                    href="https://www.ipubi.pe.gov.br/esic/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link 
+                    to="/transparencia/esic"
                     className="hover:text-white transition-colors"
                   >
                     e-SIC
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link to="/contato" className="hover:text-white transition-colors">
