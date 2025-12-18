@@ -24,6 +24,11 @@ import MapaSitePage from "./pages/MapaSitePage";
 import AcessibilidadePage from "./pages/AcessibilidadePage";
 import PublicacoesOficiaisPage from "./pages/PublicacoesOficiaisPage";
 import PublicacaoOficialPage from "./pages/PublicacaoOficialPage";
+import LegislacaoPage from "./pages/LegislacaoPage";
+import OutrosAtosPage from "./pages/legislacao/OutrosAtosPage";
+import LeiAcessoInformacaoPage from "./pages/legislacao/LeiAcessoInformacaoPage";
+import LeiOrganicaPage from "./pages/legislacao/LeiOrganicaPage";
+import PlanejamentoOrcamentoPage from "./pages/legislacao/PlanejamentoOrcamentoPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
@@ -67,6 +72,11 @@ const App = () => (
             <Route path="/atendimento/:slug" element={<AtendimentoPage />} />
             <Route path="/publicacoes-oficiais" element={<PublicacoesOficiaisPage />} />
             <Route path="/publicacao/:id" element={<PublicacaoOficialPage />} />
+            <Route path="/legislacao" element={<LegislacaoPage />} />
+            <Route path="/legislacao/outros-atos" element={<OutrosAtosPage />} />
+            <Route path="/legislacao/lei-acesso-informacao" element={<LeiAcessoInformacaoPage />} />
+            <Route path="/legislacao/lei-organica" element={<LeiOrganicaPage />} />
+            <Route path="/legislacao/planejamento-orcamento" element={<PlanejamentoOrcamentoPage />} />
             <Route path="/mapa-do-site" element={<MapaSitePage />} />
             <Route path="/acessibilidade" element={<AcessibilidadePage />} />
             
