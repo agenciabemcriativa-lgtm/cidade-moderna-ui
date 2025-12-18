@@ -1364,6 +1364,7 @@ export type Database = {
         | "ato_administrativo"
         | "edital"
         | "comunicado"
+        | "outros"
       tipo_relatorio_fiscal: "rreo" | "rgf" | "parecer_tce" | "prestacao_contas"
     }
     CompositeTypes: {
@@ -1581,6 +1582,7 @@ export const Constants = {
         "ato_administrativo",
         "edital",
         "comunicado",
+        "outros",
       ],
       tipo_relatorio_fiscal: ["rreo", "rgf", "parecer_tce", "prestacao_contas"],
     },
