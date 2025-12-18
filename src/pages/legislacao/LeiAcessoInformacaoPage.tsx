@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 
 const breadcrumbItems = [
-  { label: "Início", href: "/" },
   { label: "Legislação", href: "/legislacao" },
   { label: "Lei de Acesso à Informação" },
 ];
@@ -60,7 +59,7 @@ export default function LeiAcessoInformacaoPage() {
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-amber-500 via-amber-400 to-orange-500 py-12 md:py-16">
           <div className="container mx-auto px-4">
-            <Breadcrumbs items={breadcrumbItems} className="mb-6 text-white/80" />
+            <Breadcrumbs items={breadcrumbItems} variant="light" className="mb-6" />
             <div className="flex items-center gap-4 mb-4">
               <div className="p-3 bg-white/20 rounded-lg">
                 <Info className="h-8 w-8 text-white" />
