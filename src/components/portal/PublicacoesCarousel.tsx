@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FileText, Calendar, ArrowRight, Scale, Download, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
@@ -11,6 +12,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { usePublicacoesOficiais, tipoLabels, situacaoLabels, situacaoColors } from "@/hooks/usePublicacoesOficiais";
@@ -29,9 +31,27 @@ const tipoIcons: Record<string, string> = {
 
 export function PublicacoesCarousel() {
   const { data: publicacoes, isLoading } = usePublicacoesOficiais({ publicado: true });
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
   
   // Get latest 10 publications
   const latestPublicacoes = publicacoes?.slice(0, 10) || [];
+
+  useEffect(() => {
+    if (!api) return;
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const scrollTo = useCallback((index: number) => {
+    api?.scrollTo(index);
+  }, [api]);
 
   return (
     <section className="py-16 bg-gradient-to-br from-background via-muted/20 to-muted/40 relative overflow-hidden">
@@ -69,100 +89,121 @@ export function PublicacoesCarousel() {
             ))}
           </div>
         ) : latestPublicacoes.length > 0 ? (
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 4000,
-                stopOnInteraction: false,
-                stopOnMouseEnter: true,
-              }),
-            ]}
-            className="w-full"
-          >
-            <CarouselContent className="-ml-3 md:-ml-4">
-              {latestPublicacoes.map((pub) => (
-                <CarouselItem key={pub.id} className="pl-3 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                  <div className="bg-card rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 h-full flex flex-col group overflow-hidden">
-                    {/* Card Header with Type */}
-                    <div className="p-5 pb-0">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl">{tipoIcons[pub.tipo] || "📄"}</span>
+          <div className="space-y-6">
+            <Carousel
+              setApi={setApi}
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              plugins={[
+                Autoplay({
+                  delay: 4000,
+                  stopOnInteraction: false,
+                  stopOnMouseEnter: true,
+                }),
+              ]}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-3 md:-ml-4">
+                {latestPublicacoes.map((pub) => (
+                  <CarouselItem key={pub.id} className="pl-3 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                    <div className="bg-card rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 h-full flex flex-col group overflow-hidden">
+                      {/* Card Header with Type */}
+                      <div className="p-5 pb-0">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">{tipoIcons[pub.tipo] || "📄"}</span>
+                            <Badge 
+                              variant="secondary" 
+                              className="font-medium bg-primary/10 text-primary border-0"
+                            >
+                              {tipoLabels[pub.tipo]}
+                            </Badge>
+                          </div>
                           <Badge 
-                            variant="secondary" 
-                            className="font-medium bg-primary/10 text-primary border-0"
+                            className={`text-xs font-medium border-0 ${situacaoColors[pub.situacao]}`}
                           >
-                            {tipoLabels[pub.tipo]}
+                            {situacaoLabels[pub.situacao]}
                           </Badge>
                         </div>
-                        <Badge 
-                          className={`text-xs font-medium border-0 ${situacaoColors[pub.situacao]}`}
-                        >
-                          {situacaoLabels[pub.situacao]}
-                        </Badge>
+
+                        {/* Number */}
+                        <p className="text-sm font-semibold text-primary mb-2">
+                          Nº {pub.numero}/{pub.ano}
+                        </p>
                       </div>
 
-                      {/* Number */}
-                      <p className="text-sm font-semibold text-primary mb-2">
-                        Nº {pub.numero}/{pub.ano}
-                      </p>
-                    </div>
+                      {/* Card Body */}
+                      <div className="px-5 flex-1 flex flex-col">
+                        {/* Title */}
+                        <Link to={`/publicacao/${pub.id}`} className="block">
+                          <h3 className="font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 text-base mb-2">
+                            {pub.titulo}
+                          </h3>
+                        </Link>
 
-                    {/* Card Body */}
-                    <div className="px-5 flex-1 flex flex-col">
-                      {/* Title */}
-                      <Link to={`/publicacao/${pub.id}`} className="block">
-                        <h3 className="font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 text-base mb-2">
-                          {pub.titulo}
-                        </h3>
-                      </Link>
+                        {/* Ementa */}
+                        <p className="text-sm text-muted-foreground line-clamp-3 flex-1">
+                          {pub.ementa}
+                        </p>
+                      </div>
 
-                      {/* Ementa */}
-                      <p className="text-sm text-muted-foreground line-clamp-3 flex-1">
-                        {pub.ementa}
-                      </p>
-                    </div>
-
-                    {/* Card Footer */}
-                    <div className="p-5 pt-4 mt-auto">
-                      <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <Calendar className="w-3.5 h-3.5" />
-                          {format(new Date(pub.data_publicacao), "dd MMM yyyy", { locale: ptBR })}
-                        </span>
-                        <div className="flex items-center gap-1">
-                          {pub.texto_completo_url && (
-                            <a
-                              href={pub.texto_completo_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                      {/* Card Footer */}
+                      <div className="p-5 pt-4 mt-auto">
+                        <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Calendar className="w-3.5 h-3.5" />
+                            {format(new Date(pub.data_publicacao), "dd MMM yyyy", { locale: ptBR })}
+                          </span>
+                          <div className="flex items-center gap-1">
+                            {pub.texto_completo_url && (
+                              <a
+                                href={pub.texto_completo_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
+                                title="Baixar PDF"
+                              >
+                                <Download className="w-4 h-4" />
+                              </a>
+                            )}
+                            <Link
+                              to={`/publicacao/${pub.id}`}
                               className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
-                              title="Baixar PDF"
+                              title="Ver detalhes"
                             >
-                              <Download className="w-4 h-4" />
-                            </a>
-                          )}
-                          <Link
-                            to={`/publicacao/${pub.id}`}
-                            className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
-                            title="Ver detalhes"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </Link>
+                              <ExternalLink className="w-4 h-4" />
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="-left-3 md:-left-5 w-10 h-10 bg-card border-border shadow-lg hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all" />
-            <CarouselNext className="-right-3 md:-right-5 w-10 h-10 bg-card border-border shadow-lg hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all" />
-          </Carousel>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-3 md:-left-5 w-10 h-10 bg-card border-border shadow-lg hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all" />
+              <CarouselNext className="-right-3 md:-right-5 w-10 h-10 bg-card border-border shadow-lg hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all" />
+            </Carousel>
+
+            {/* Pagination Dots */}
+            {count > 1 && (
+              <div className="flex items-center justify-center gap-2">
+                {Array.from({ length: count }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => scrollTo(index)}
+                    className={`transition-all duration-300 rounded-full ${
+                      index === current
+                        ? "w-8 h-2.5 bg-primary"
+                        : "w-2.5 h-2.5 bg-primary/30 hover:bg-primary/50"
+                    }`}
+                    aria-label={`Ir para slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         ) : (
           <div className="bg-card rounded-2xl border border-border py-16 text-center">
             <FileText className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
