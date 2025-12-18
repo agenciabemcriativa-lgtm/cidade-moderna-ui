@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 
 const breadcrumbItems = [
-  { label: "Início", href: "/" },
   { label: "Legislação" },
 ];
 
@@ -74,7 +73,7 @@ export default function LegislacaoPage() {
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary via-primary/90 to-secondary py-12 md:py-16">
           <div className="container mx-auto px-4">
-            <Breadcrumbs items={breadcrumbItems} className="mb-6 text-primary-foreground/80" />
+            <Breadcrumbs items={breadcrumbItems} variant="light" className="mb-6" />
             <div className="flex items-center gap-4 mb-4">
               <div className="p-3 bg-primary-foreground/20 rounded-lg">
                 <BookOpen className="h-8 w-8 text-primary-foreground" />

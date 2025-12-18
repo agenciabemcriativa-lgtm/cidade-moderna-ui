@@ -26,9 +26,9 @@ export function Breadcrumbs({ items, className, variant = "default" }: Breadcrum
           <Link 
             to="/" 
             className={cn(
-              "transition-colors flex items-center gap-1",
+              "transition-colors flex items-center gap-1 font-semibold drop-shadow-sm",
               isLight 
-                ? "text-white hover:text-white/90" 
+                ? "text-primary-foreground hover:text-primary-foreground/90" 
                 : "text-muted-foreground hover:text-primary"
             )}
           >
@@ -40,15 +40,15 @@ export function Breadcrumbs({ items, className, variant = "default" }: Breadcrum
           <li key={index} className="flex items-center">
             <ChevronRight className={cn(
               "w-4 h-4 mx-2",
-              isLight ? "text-white/70" : "text-muted-foreground/50"
+              isLight ? "text-primary-foreground drop-shadow-sm" : "text-muted-foreground/50"
             )} />
             {item.href && index < items.length - 1 ? (
               <Link 
                 to={item.href} 
                 className={cn(
-                  "transition-colors",
+                  "transition-colors font-semibold drop-shadow-sm",
                   isLight 
-                    ? "text-white hover:text-white/90" 
+                    ? "text-primary-foreground hover:text-primary-foreground/90" 
                     : "text-muted-foreground hover:text-primary"
                 )}
               >
@@ -56,8 +56,8 @@ export function Breadcrumbs({ items, className, variant = "default" }: Breadcrum
               </Link>
             ) : (
               <span className={cn(
-                "font-medium truncate max-w-[200px] md:max-w-none",
-                isLight ? "text-white" : "text-foreground"
+                "font-semibold drop-shadow-sm truncate max-w-[200px] md:max-w-none",
+                isLight ? "text-primary-foreground" : "text-foreground"
               )}>
                 {item.label}
               </span>
