@@ -23,7 +23,6 @@ export default function PublicacaoOficialPage() {
   const { data: publicacao, isLoading, error } = usePublicacaoOficial(id || "");
 
   const breadcrumbItems = [
-    { label: "Início", href: "/" },
     { label: "Publicações Oficiais", href: "/publicacoes-oficiais" },
     { label: publicacao?.titulo || "Carregando..." },
   ];
