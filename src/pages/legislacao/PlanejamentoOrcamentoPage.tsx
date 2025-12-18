@@ -88,7 +88,10 @@ function DocumentoCard({ documento, tipo }: { documento?: DocumentoLegislacao; t
 
 function HistoricoList({ documentos, tipo, isLoading }: { documentos?: DocumentoLegislacao[]; tipo: string; isLoading: boolean }) {
   const historico = documentos?.filter(d => !d.vigente) || [];
-  
+  const anosComDocumento = historico.map(d => d.ano);
+  const anosAnteriores = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4].filter(
+    ano => !anosComDocumento.includes(ano)
+  );
 
   if (isLoading) {
     return (
@@ -100,32 +103,43 @@ function HistoricoList({ documentos, tipo, isLoading }: { documentos?: Documento
     );
   }
 
-  if (historico.length > 0) {
+  const temConteudo = historico.length > 0 || anosAnteriores.length > 0;
+
+  if (!temConteudo) {
     return (
-      <div className="space-y-2">
-        {historico.map((doc) => (
-          <div key={doc.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-            <div>
-              <span className="text-sm font-medium">{doc.titulo}</span>
-              <p className="text-xs text-muted-foreground">{doc.ano}</p>
-            </div>
-            <Link to={`/legislacao/documento/${doc.id}`}>
-              <Button variant="ghost" size="sm" className="gap-1 h-8">
-                <FileText className="h-3 w-3" />
-                Ver
-              </Button>
-            </Link>
-          </div>
-        ))}
+      <div className="p-4 bg-muted/50 rounded-lg border border-border">
+        <p className="text-sm text-muted-foreground">
+          Nenhum documento histórico disponível.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="p-4 bg-muted/50 rounded-lg border border-border">
-      <p className="text-sm text-muted-foreground">
-        Nenhum documento histórico cadastrado no sistema.
-      </p>
+    <div className="space-y-2">
+      {/* Documentos cadastrados no banco */}
+      {historico.map((doc) => (
+        <div key={doc.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+          <div>
+            <span className="text-sm font-medium">{doc.titulo}</span>
+            <p className="text-xs text-muted-foreground">{doc.ano}</p>
+          </div>
+          <Link to={`/legislacao/documento/${doc.id}`}>
+            <Button variant="ghost" size="sm" className="gap-1 h-8">
+              <FileText className="h-3 w-3" />
+              Ver
+            </Button>
+          </Link>
+        </div>
+      ))}
+      
+      {/* Anos sem documento cadastrado */}
+      {anosAnteriores.map((ano) => (
+        <div key={ano} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+          <span className="text-sm text-muted-foreground">{tipo} {ano}</span>
+          <span className="text-xs text-muted-foreground italic">Não cadastrado</span>
+        </div>
+      ))}
     </div>
   );
 }
