@@ -75,6 +75,12 @@ function DocumentoCard({ documento, tipo }: { documento?: DocumentoLegislacao; t
             Baixar PDF
           </Button>
         </a>
+        <Link to={`/legislacao/documento/${documento.id}`}>
+          <Button variant="outline" size="sm" className="gap-2">
+            <FileText className="h-4 w-4" />
+            Ver Detalhes
+          </Button>
+        </Link>
       </div>
     </div>
   );
@@ -103,12 +109,12 @@ function HistoricoList({ documentos, tipo, isLoading }: { documentos?: Documento
               <span className="text-sm font-medium">{doc.titulo}</span>
               <p className="text-xs text-muted-foreground">{doc.ano}</p>
             </div>
-            <a href={doc.arquivo_url} target="_blank" rel="noopener noreferrer">
+            <Link to={`/legislacao/documento/${doc.id}`}>
               <Button variant="ghost" size="sm" className="gap-1 h-8">
                 <FileText className="h-3 w-3" />
                 Ver
               </Button>
-            </a>
+            </Link>
           </div>
         ))}
       </div>
