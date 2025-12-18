@@ -2,6 +2,7 @@ import { Phone, Mail, ExternalLink } from "lucide-react";
 
 const quickLinks = [
   { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
+  { label: "Publicações Oficiais", href: "/publicacoes-oficiais", external: false },
   { label: "Licitações", href: "/licitacoes", external: false },
   { label: "e-SIC", href: "https://www.ipubi.pe.gov.br/esic/", external: true },
 ];
