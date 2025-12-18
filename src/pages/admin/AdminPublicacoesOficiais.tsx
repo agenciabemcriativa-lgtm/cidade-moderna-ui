@@ -381,14 +381,14 @@ export default function AdminPublicacoesOficiais() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Secretaria / Órgão Emissor</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select onValueChange={(v) => field.onChange(v === "__none__" ? "" : v)} value={field.value || "__none__"}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Selecione (opcional)" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="">Nenhuma</SelectItem>
+                            <SelectItem value="__none__">Nenhuma</SelectItem>
                             {secretarias?.map((sec) => (
                               <SelectItem key={sec.id} value={sec.id}>
                                 {sec.nome}
@@ -485,12 +485,12 @@ export default function AdminPublicacoesOficiais() {
                   className="pl-10"
                 />
               </div>
-              <Select value={filterTipo} onValueChange={setFilterTipo}>
+              <Select value={filterTipo || "__all__"} onValueChange={(v) => setFilterTipo(v === "__all__" ? "" : v)}>
                 <SelectTrigger className="w-full md:w-48">
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos os tipos</SelectItem>
+                  <SelectItem value="__all__">Todos os tipos</SelectItem>
                   {Object.entries(tipoLabels).map(([value, label]) => (
                     <SelectItem key={value} value={value}>
                       {label}
@@ -498,12 +498,12 @@ export default function AdminPublicacoesOficiais() {
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={filterSituacao} onValueChange={setFilterSituacao}>
+              <Select value={filterSituacao || "__all__"} onValueChange={(v) => setFilterSituacao(v === "__all__" ? "" : v)}>
                 <SelectTrigger className="w-full md:w-40">
                   <SelectValue placeholder="Situação" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todas</SelectItem>
+                  <SelectItem value="__all__">Todas</SelectItem>
                   {Object.entries(situacaoLabels).map(([value, label]) => (
                     <SelectItem key={value} value={value}>
                       {label}
