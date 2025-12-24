@@ -1185,6 +1185,36 @@ export type Database = {
           },
         ]
       }
+      receitas_categorias: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       relatorios_fiscais: {
         Row: {
           ano: number
