@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { ExternalLink, AlertCircle, TrendingUp } from 'lucide-react';
+import { ExternalLink, AlertCircle } from 'lucide-react';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
 import { DataTable, ExternalLinkButton, Column } from '@/components/transparencia/DataTable';
 import { FilterBar, YearFilter, MonthFilter, TypeFilter } from '@/components/transparencia/FilterBar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useReceitasCategorias } from '@/hooks/useReceitasCategorias';
 
 interface ReceitaItem {
   id: string;
@@ -32,6 +33,7 @@ const years = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, c
 const receitasData: ReceitaItem[] = [];
 
 export default function ReceitasPage() {
+  const { data: categorias, isLoading: loadingCategorias } = useReceitasCategorias();
   const [search, setSearch] = useState('');
   const [ano, setAno] = useState<string>('all');
   const [mes, setMes] = useState<string>('all');
@@ -134,51 +136,30 @@ export default function ReceitasPage() {
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Categorias de Receitas</h3>
         <div className="flex flex-col gap-2">
-          <a
-            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
-          >
-            <span className="font-medium">Arrecadação Orçamentária Geral</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          <a
-            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
-          >
-            <span className="font-medium">Receitas Extras</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          <a
-            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
-          >
-            <span className="font-medium">Arrecadação Orçamentária – Transferência do Estado</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          <a
-            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
-          >
-            <span className="font-medium">Arrecadação Extra-orçamentária</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          <a
-            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
-          >
-            <span className="font-medium">Dívida Ativa</span>
-            <ExternalLink className="w-4 h-4" />
-          </a>
+          {loadingCategorias ? (
+            <>
+              <Skeleton className="h-14 w-full" />
+              <Skeleton className="h-14 w-full" />
+              <Skeleton className="h-14 w-full" />
+            </>
+          ) : categorias && categorias.length > 0 ? (
+            categorias.map((categoria) => (
+              <a
+                key={categoria.id}
+                href={categoria.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
+              >
+                <span className="font-medium">{categoria.titulo}</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            ))
+          ) : (
+            <p className="text-muted-foreground text-center py-4">
+              Nenhuma categoria disponível.
+            </p>
+          )}
         </div>
       </div>
 

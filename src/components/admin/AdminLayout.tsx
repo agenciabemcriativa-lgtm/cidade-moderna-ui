@@ -40,6 +40,7 @@ const menuItems = [
   { icon: Landmark, label: "Patrimônio Público", href: "/admin/patrimonio" },
   { icon: FileText, label: "Dados Abertos", href: "/admin/dados-abertos" },
   { icon: Users, label: "e-SIC", href: "/admin/esic" },
+  { icon: FileText, label: "Categorias Receitas", href: "/admin/receitas-categorias" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
   { icon: Wrench, label: "Serviços", href: "/admin/servicos" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },

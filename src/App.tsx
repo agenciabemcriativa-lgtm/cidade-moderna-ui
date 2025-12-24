@@ -70,6 +70,7 @@ import AdminPatrimonioPublico from "./pages/admin/AdminPatrimonioPublico";
 import AdminDadosAbertos from "./pages/admin/AdminDadosAbertos";
 import AdminESic from "./pages/admin/AdminESic";
 import AdminESicDetalhe from "./pages/admin/AdminESicDetalhe";
+import AdminReceitasCategorias from "./pages/admin/AdminReceitasCategorias";
 
 const queryClient = new QueryClient();
 
@@ -147,6 +148,8 @@ const App = () => (
             <Route path="/admin/dados-abertos" element={<AdminDadosAbertos />} />
             <Route path="/admin/esic" element={<AdminESic />} />
             <Route path="/admin/esic/:id" element={<AdminESicDetalhe />} />
+            <Route path="/admin/receitas-categorias" element={<AdminReceitasCategorias />} />
+            
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
