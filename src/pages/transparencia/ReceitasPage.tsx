@@ -130,30 +130,66 @@ export default function ReceitasPage() {
         </Card>
       </div>
 
+      {/* Categorias de Receitas */}
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Categorias de Receitas</h3>
+        <div className="flex flex-col gap-2">
+          <a
+            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
+          >
+            <span className="font-medium">Arrecadação Orçamentária Geral</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
+          <a
+            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
+          >
+            <span className="font-medium">Receitas Extras</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
+          <a
+            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
+          >
+            <span className="font-medium">Arrecadação Orçamentária – Transferência do Estado</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
+          <a
+            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
+          >
+            <span className="font-medium">Arrecadação Extra-orçamentária</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
+          <a
+            href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between bg-[#1e88c7] hover:bg-[#1976b0] text-white px-6 py-4 rounded transition-colors"
+          >
+            <span className="font-medium">Dívida Ativa</span>
+            <ExternalLink className="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+
       {/* Aviso sobre sistema oficial */}
       <Alert className="mb-6 bg-blue-50 border-blue-200">
         <AlertCircle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
           Os dados detalhados de receitas públicas estão disponíveis no sistema oficial de transparência. 
-          Clique no botão abaixo para acessar informações completas sobre arrecadação e transferências.
+          Clique nas categorias acima para acessar informações completas sobre arrecadação e transferências.
         </AlertDescription>
       </Alert>
-
-      {/* Botão de acesso ao sistema oficial */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <a
-          href="https://www.ipubi.pe.gov.br/portaldatransparencia/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1"
-        >
-          <Button className="w-full" size="lg">
-            <TrendingUp className="w-5 h-5 mr-2" />
-            Acessar Sistema de Receitas
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </Button>
-        </a>
-      </div>
 
       {/* Filtros */}
       <FilterBar
