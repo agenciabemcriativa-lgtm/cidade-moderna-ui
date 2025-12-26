@@ -190,6 +190,7 @@ export default function NoticiasPage() {
                     isFirstPage={pagination.isFirstPage}
                     isLastPage={pagination.isLastPage}
                     itemLabel="notícia"
+                    isTransitioning={pagination.isTransitioning}
                   />
                 )}
               </>

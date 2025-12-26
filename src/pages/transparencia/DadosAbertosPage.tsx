@@ -236,6 +236,7 @@ export default function DadosAbertosPage() {
             isFirstPage={pagination.isFirstPage}
             isLastPage={pagination.isLastPage}
             itemLabel="arquivo"
+            isTransitioning={pagination.isTransitioning}
           />
         </>
       ) : (

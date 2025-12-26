@@ -316,6 +316,7 @@ export default function PublicacoesOficiaisPage() {
                 isFirstPage={pagination.isFirstPage}
                 isLastPage={pagination.isLastPage}
                 itemLabel="publicação"
+                isTransitioning={pagination.isTransitioning}
               />
             </div>
           ) : (

@@ -258,6 +258,7 @@ export default function LicitacoesPage() {
                   isFirstPage={pagination.isFirstPage}
                   isLastPage={pagination.isLastPage}
                   itemLabel="processo"
+                  isTransitioning={pagination.isTransitioning}
                 />
               </>
             ) : (

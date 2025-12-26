@@ -3,6 +3,7 @@ import { useState, useMemo, useCallback } from 'react';
 interface UsePaginationOptions {
   initialPage?: number;
   initialItemsPerPage?: number;
+  transitionDuration?: number;
 }
 
 interface UsePaginationResult<T> {
@@ -21,16 +22,18 @@ interface UsePaginationResult<T> {
   isLastPage: boolean;
   startIndex: number;
   endIndex: number;
+  isTransitioning: boolean;
 }
 
 export function usePagination<T>(
   items: T[] | undefined | null,
   options: UsePaginationOptions = {}
 ): UsePaginationResult<T> {
-  const { initialPage = 1, initialItemsPerPage = 10 } = options;
+  const { initialPage = 1, initialItemsPerPage = 10, transitionDuration = 300 } = options;
   
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const totalItems = items?.length || 0;
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
@@ -52,9 +55,16 @@ export function usePagination<T>(
 
   const handleSetCurrentPage = useCallback((page: number) => {
     const validPage = Math.max(1, Math.min(page, totalPages));
+    if (validPage === currentPage) return;
+    
+    setIsTransitioning(true);
     setCurrentPage(validPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [totalPages]);
+    
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, transitionDuration);
+  }, [totalPages, currentPage, transitionDuration]);
 
   const handleSetItemsPerPage = useCallback((items: number) => {
     setItemsPerPage(items);
@@ -97,5 +107,6 @@ export function usePagination<T>(
     isLastPage: validCurrentPage === totalPages,
     startIndex: startIndex + 1, // 1-indexed for display
     endIndex,
+    isTransitioning,
   };
 }

@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -21,6 +21,7 @@ interface ListPaginationProps {
   isLastPage: boolean;
   itemLabel?: string;
   showItemsPerPage?: boolean;
+  isTransitioning?: boolean;
 }
 
 const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20, 30, 50];
@@ -38,6 +39,7 @@ export function ListPagination({
   isLastPage,
   itemLabel = "item",
   showItemsPerPage = true,
+  isTransitioning = false,
 }: ListPaginationProps) {
   if (totalItems === 0) return null;
 
@@ -64,8 +66,11 @@ export function ListPagination({
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
-      {/* Info text */}
-      <div className="text-sm text-muted-foreground">
+      {/* Info text with loading indicator */}
+      <div className="text-sm text-muted-foreground flex items-center gap-2">
+        {isTransitioning && (
+          <Loader2 className="h-4 w-4 animate-spin text-primary" />
+        )}
         Exibindo <span className="font-medium">{startIndex}</span> a{" "}
         <span className="font-medium">{endIndex}</span> de{" "}
         <span className="font-medium">{totalItems}</span> {itemLabelPlural}
@@ -101,7 +106,7 @@ export function ListPagination({
             size="icon"
             className="h-8 w-8"
             onClick={() => onPageChange(1)}
-            disabled={isFirstPage}
+            disabled={isFirstPage || isTransitioning}
           >
             <ChevronsLeft className="h-4 w-4" />
             <span className="sr-only">Primeira página</span>
@@ -111,7 +116,7 @@ export function ListPagination({
             size="icon"
             className="h-8 w-8"
             onClick={() => onPageChange(currentPage - 1)}
-            disabled={isFirstPage}
+            disabled={isFirstPage || isTransitioning}
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Página anterior</span>
@@ -134,6 +139,7 @@ export function ListPagination({
                   size="icon"
                   className="h-8 w-8"
                   onClick={() => onPageChange(page)}
+                  disabled={isTransitioning}
                 >
                   {page}
                 </Button>
@@ -151,7 +157,7 @@ export function ListPagination({
             size="icon"
             className="h-8 w-8"
             onClick={() => onPageChange(currentPage + 1)}
-            disabled={isLastPage}
+            disabled={isLastPage || isTransitioning}
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Próxima página</span>
@@ -161,7 +167,7 @@ export function ListPagination({
             size="icon"
             className="h-8 w-8"
             onClick={() => onPageChange(totalPages)}
-            disabled={isLastPage}
+            disabled={isLastPage || isTransitioning}
           >
             <ChevronsRight className="h-4 w-4" />
             <span className="sr-only">Última página</span>

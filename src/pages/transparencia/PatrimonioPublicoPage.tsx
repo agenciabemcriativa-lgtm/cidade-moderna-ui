@@ -242,6 +242,7 @@ export default function PatrimonioPublicoPage() {
                       isFirstPage={paginationImoveis.isFirstPage}
                       isLastPage={paginationImoveis.isLastPage}
                       itemLabel="imóvel"
+                      isTransitioning={paginationImoveis.isTransitioning}
                     />
                   </>
                 ) : (
@@ -302,6 +303,7 @@ export default function PatrimonioPublicoPage() {
                       isFirstPage={paginationVeiculos.isFirstPage}
                       isLastPage={paginationVeiculos.isLastPage}
                       itemLabel="veículo"
+                      isTransitioning={paginationVeiculos.isTransitioning}
                     />
                   </>
                 ) : (
@@ -366,6 +368,7 @@ export default function PatrimonioPublicoPage() {
                       isFirstPage={paginationOutros.isFirstPage}
                       isLastPage={paginationOutros.isLastPage}
                       itemLabel="bem"
+                      isTransitioning={paginationOutros.isTransitioning}
                     />
                   </>
                 ) : (
