@@ -102,7 +102,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             <p className="text-center text-sm font-semibold mt-2">Painel Admin</p>
           </div>
           
-          <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+          <nav className="flex-1 overflow-y-auto p-4 pb-28 space-y-1">
             {menuItems.map((item) => {
               const isActive = location.pathname === item.href;
               return (
@@ -123,7 +123,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             })}
           </nav>
 
-          <div className="flex-shrink-0 p-4 border-t bg-card">
+          <div className="flex-shrink-0 sticky bottom-0 z-10 p-4 border-t bg-card">
             <p className="text-xs text-muted-foreground mb-2 truncate">{user.email}</p>
             <Button variant="outline" className="w-full" onClick={handleSignOut}>
               <LogOut className="h-4 w-4 mr-2" />
