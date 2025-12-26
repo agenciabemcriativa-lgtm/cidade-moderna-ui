@@ -2,18 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Newspaper, Building2, Image, Wrench, FileText } from "lucide-react";
+import { Newspaper, Building2, Image, Wrench, FileText, ClipboardList } from "lucide-react";
 
 export default function AdminDashboard() {
   const { data: stats } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const [noticias, secretarias, slides, servicos, licitacoes] = await Promise.all([
+      const [noticias, secretarias, slides, servicos, licitacoes, cartaServicos] = await Promise.all([
         supabase.from("noticias").select("id", { count: "exact", head: true }),
         supabase.from("secretarias").select("id", { count: "exact", head: true }),
         supabase.from("banner_slides").select("id", { count: "exact", head: true }),
         supabase.from("servicos").select("id", { count: "exact", head: true }),
         supabase.from("licitacoes").select("id", { count: "exact", head: true }),
+        supabase.from("carta_servicos").select("id", { count: "exact", head: true }),
       ]);
       
       return {
@@ -22,6 +23,7 @@ export default function AdminDashboard() {
         slides: slides.count || 0,
         servicos: servicos.count || 0,
         licitacoes: licitacoes.count || 0,
+        cartaServicos: cartaServicos.count || 0,
       };
     },
   });
@@ -30,6 +32,7 @@ export default function AdminDashboard() {
     { title: "Notícias", value: stats?.noticias || 0, icon: Newspaper, color: "text-blue-500" },
     { title: "Secretarias", value: stats?.secretarias || 0, icon: Building2, color: "text-green-500" },
     { title: "Licitações", value: stats?.licitacoes || 0, icon: FileText, color: "text-amber-500" },
+    { title: "Carta de Serviços", value: stats?.cartaServicos || 0, icon: ClipboardList, color: "text-teal-500" },
     { title: "Slides", value: stats?.slides || 0, icon: Image, color: "text-purple-500" },
     { title: "Serviços", value: stats?.servicos || 0, icon: Wrench, color: "text-orange-500" },
   ];
