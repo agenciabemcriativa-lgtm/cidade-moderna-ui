@@ -75,6 +75,9 @@ import AdminESicDetalhe from "./pages/admin/AdminESicDetalhe";
 import AdminReceitasCategorias from "./pages/admin/AdminReceitasCategorias";
 import AdminEstruturaOrganizacional from "./pages/admin/AdminEstruturaOrganizacional";
 import AdminFaq from "./pages/admin/AdminFaq";
+import CartaServicosPage from "./pages/CartaServicosPage";
+import CartaServicoDetalhePage from "./pages/CartaServicoDetalhePage";
+import AdminCartaServicos from "./pages/admin/AdminCartaServicos";
 
 const queryClient = new QueryClient();
 
@@ -114,6 +117,8 @@ const App = () => (
             <Route path="/mapa-do-site" element={<MapaSitePage />} />
             <Route path="/acessibilidade" element={<AcessibilidadePage />} />
             <Route path="/perguntas-frequentes" element={<PerguntasFrequentesPage />} />
+            <Route path="/carta-de-servicos" element={<CartaServicosPage />} />
+            <Route path="/carta-de-servicos/:slug" element={<CartaServicoDetalhePage />} />
             <Route path="/politica-de-privacidade" element={<PoliticaPrivacidadePage />} />
             <Route path="/transparencia" element={<TransparenciaPage />} />
             <Route path="/transparencia/despesas" element={<DespesasPage />} />
@@ -157,6 +162,7 @@ const App = () => (
             <Route path="/admin/receitas-categorias" element={<AdminReceitasCategorias />} />
             <Route path="/admin/estrutura-organizacional" element={<AdminEstruturaOrganizacional />} />
             <Route path="/admin/faq" element={<AdminFaq />} />
+            <Route path="/admin/carta-servicos" element={<AdminCartaServicos />} />
             
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
