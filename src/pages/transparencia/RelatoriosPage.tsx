@@ -26,6 +26,9 @@ const relatoriosTipos = [
   { value: 'rgf', label: 'RGF - Relatório de Gestão Fiscal' },
   { value: 'parecer_tce', label: 'Pareceres do TCE' },
   { value: 'prestacao_contas', label: 'Prestação de Contas' },
+  { value: 'balancos', label: 'Balanços' },
+  { value: 'execucao_orcamentaria', label: 'Relatórios Execução Orçamentária' },
+  { value: 'execucao_publicidade', label: 'Execução Contrato Publicidade' },
 ];
 
 const currentYear = new Date().getFullYear();
@@ -36,6 +39,9 @@ const tipoCardStyles: Record<TipoRelatorioFiscal, { bg: string; border: string; 
   rgf: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-800', icon: 'text-green-600' },
   parecer_tce: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-800', icon: 'text-orange-600' },
   prestacao_contas: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-800', icon: 'text-purple-600' },
+  balancos: { bg: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-800', icon: 'text-teal-600' },
+  execucao_orcamentaria: { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-800', icon: 'text-indigo-600' },
+  execucao_publicidade: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-800', icon: 'text-rose-600' },
 };
 
 export default function RelatoriosPage() {
@@ -106,8 +112,8 @@ export default function RelatoriosPage() {
 
   return (
     <TransparenciaLayout 
-      title="Relatórios Fiscais"
-      description="RREO, RGF, Pareceres do TCE e Prestação de Contas"
+      title="Relatórios Fiscais e Prestação de Contas"
+      description="RREO, RGF, Balanços, Pareceres do TCE e Prestação de Contas"
     >
       {/* Last Updated */}
       {relatorios && relatorios.length > 0 && (
