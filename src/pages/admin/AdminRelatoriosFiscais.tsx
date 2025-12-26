@@ -184,9 +184,9 @@ export default function AdminRelatoriosFiscais() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Relatórios Fiscais</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Relatórios Fiscais e Prestação de Contas</h1>
             <p className="text-gray-600">
-              Gerencie RREO, RGF, Pareceres do TCE e Prestação de Contas
+              Gerencie RREO, RGF, Balanços, Pareceres do TCE e outros relatórios
             </p>
           </div>
           <Button onClick={openCreateDialog} className="gap-2">
@@ -428,7 +428,7 @@ export default function AdminRelatoriosFiscais() {
                 </div>
               )}
 
-              {(formData.tipo === 'prestacao_contas' || formData.tipo === 'parecer_tce') && (
+              {(formData.tipo === 'prestacao_contas' || formData.tipo === 'parecer_tce' || formData.tipo === 'balancos' || formData.tipo === 'execucao_orcamentaria' || formData.tipo === 'execucao_publicidade') && (
                 <div className="space-y-2">
                   <Label>Exercício/Período</Label>
                   <Input

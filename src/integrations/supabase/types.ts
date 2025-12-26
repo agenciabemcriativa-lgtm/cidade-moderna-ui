@@ -1976,7 +1976,14 @@ export type Database = {
         | "edital"
         | "comunicado"
         | "outros"
-      tipo_relatorio_fiscal: "rreo" | "rgf" | "parecer_tce" | "prestacao_contas"
+      tipo_relatorio_fiscal:
+        | "rreo"
+        | "rgf"
+        | "parecer_tce"
+        | "prestacao_contas"
+        | "balancos"
+        | "execucao_orcamentaria"
+        | "execucao_publicidade"
       tipo_resposta_esic:
         | "deferido"
         | "deferido_parcial"
@@ -2212,7 +2219,15 @@ export const Constants = {
         "comunicado",
         "outros",
       ],
-      tipo_relatorio_fiscal: ["rreo", "rgf", "parecer_tce", "prestacao_contas"],
+      tipo_relatorio_fiscal: [
+        "rreo",
+        "rgf",
+        "parecer_tce",
+        "prestacao_contas",
+        "balancos",
+        "execucao_orcamentaria",
+        "execucao_publicidade",
+      ],
       tipo_resposta_esic: [
         "deferido",
         "deferido_parcial",

@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export type TipoRelatorioFiscal = 'rreo' | 'rgf' | 'parecer_tce' | 'prestacao_contas';
+export type TipoRelatorioFiscal = 'rreo' | 'rgf' | 'parecer_tce' | 'prestacao_contas' | 'balancos' | 'execucao_orcamentaria' | 'execucao_publicidade';
 
 export interface RelatorioFiscal {
   id: string;
@@ -31,6 +31,9 @@ export const tipoRelatorioLabels: Record<TipoRelatorioFiscal, string> = {
   rgf: 'RGF - Relatório de Gestão Fiscal',
   parecer_tce: 'Pareceres do TCE',
   prestacao_contas: 'Prestação de Contas',
+  balancos: 'Balanços',
+  execucao_orcamentaria: 'Relatórios Execução Orçamentária',
+  execucao_publicidade: 'Execução Contrato Publicidade',
 };
 
 export const bimestreLabels: Record<number, string> = {
