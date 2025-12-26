@@ -4,6 +4,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
+import { ExportMetadataButtons } from "@/components/portal/ExportMetadataButtons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,6 +44,19 @@ export default function LicitacaoPage() {
       currency: 'BRL',
     }).format(value / 100);
   };
+
+  const exportData = licitacao ? {
+    numero_processo: licitacao.numero_processo,
+    ano: licitacao.ano,
+    modalidade: modalidadeLabels[licitacao.modalidade],
+    status: statusLabels[licitacao.status],
+    objeto: licitacao.objeto,
+    valor_estimado: formatCurrency(licitacao.valor_estimado),
+    data_abertura: licitacao.data_abertura,
+    data_encerramento: licitacao.data_encerramento || '',
+    secretaria: licitacao.secretaria_nome || '',
+    observacoes: licitacao.observacoes || '',
+  } : {};
 
   if (isLoading) {
     return (
@@ -312,9 +326,15 @@ export default function LicitacaoPage() {
                   <Badge className={`${statusColors[licitacao.status]} text-white text-base px-4 py-2`}>
                     {statusLabels[licitacao.status]}
                   </Badge>
-                  <p className="text-sm text-muted-foreground mt-3">
+                  <p className="text-sm text-muted-foreground mt-3 mb-4">
                     Última atualização: {format(new Date(licitacao.updated_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
                   </p>
+                  <Separator className="my-4" />
+                  <p className="text-sm text-muted-foreground mb-2">Exportar metadados</p>
+                  <ExportMetadataButtons 
+                    data={exportData} 
+                    filename={`licitacao-${licitacao.numero_processo}`} 
+                  />
                 </CardContent>
               </Card>
 

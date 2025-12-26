@@ -7,6 +7,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
+import { ExportMetadataButtons } from "@/components/portal/ExportMetadataButtons";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +29,18 @@ export default function PublicacaoOficialPage() {
     { label: "Publicações Oficiais", href: "/publicacoes-oficiais" },
     { label: publicacao?.titulo || "Carregando..." },
   ];
+
+  const exportData = publicacao ? {
+    titulo: publicacao.titulo,
+    tipo: tipoLabels[publicacao.tipo],
+    numero: publicacao.numero,
+    ano: publicacao.ano,
+    data_publicacao: publicacao.data_publicacao,
+    situacao: situacaoLabels[publicacao.situacao],
+    ementa: publicacao.ementa,
+    secretaria: publicacao.secretaria_nome || '',
+    observacoes: publicacao.observacoes || '',
+  } : {};
 
   if (isLoading) {
     return (
@@ -240,6 +253,16 @@ export default function PublicacaoOficialPage() {
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Número/Ano</p>
                     <p className="font-medium">{publicacao.numero}/{publicacao.ano}</p>
+                  </div>
+
+                  <Separator />
+
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">Exportar metadados</p>
+                    <ExportMetadataButtons 
+                      data={exportData} 
+                      filename={`${tipoLabels[publicacao.tipo]}-${publicacao.numero}-${publicacao.ano}`} 
+                    />
                   </div>
                 </CardContent>
               </Card>
