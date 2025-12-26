@@ -1,3 +1,5 @@
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
+import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
@@ -81,6 +83,8 @@ const linksUteis = [
 export default function AcessibilidadePage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <AccessibilityBar />
+      <TopBar />
       <Header />
       
       <main className="flex-1">

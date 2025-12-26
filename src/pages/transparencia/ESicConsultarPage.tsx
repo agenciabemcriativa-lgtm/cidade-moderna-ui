@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Search, FileText, Clock, CheckCircle, AlertTriangle, MessageSquare, ArrowRight, ExternalLink, Calendar, User, Mail } from 'lucide-react';
+import { AccessibilityBar } from '@/components/portal/AccessibilityBar';
 import { TopBar } from '@/components/portal/TopBar';
 import { Header } from '@/components/portal/Header';
 import { Footer } from '@/components/portal/Footer';
@@ -88,6 +89,7 @@ export default function ESicConsultarPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       

@@ -1,3 +1,4 @@
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -7,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function InstitucionalPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       

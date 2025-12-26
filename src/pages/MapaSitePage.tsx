@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
+import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
@@ -145,6 +147,8 @@ export default function MapaSitePage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <AccessibilityBar />
+      <TopBar />
       <Header />
       
       <main className="flex-1">

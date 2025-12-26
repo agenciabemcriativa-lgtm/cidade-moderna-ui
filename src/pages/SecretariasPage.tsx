@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -46,6 +47,7 @@ export default function SecretariasPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       <main className="flex-1">

@@ -1,5 +1,6 @@
 import { ExternalLink, FileText, Clock, AlertTriangle, Phone, Mail, MapPin, HelpCircle, CheckCircle, ArrowRight, Shield, Users, Search, MessageSquare, Calendar, Scale, BarChart3, TrendingUp, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { AccessibilityBar } from '@/components/portal/AccessibilityBar';
 import { TopBar } from '@/components/portal/TopBar';
 import { Header } from '@/components/portal/Header';
 import { Footer } from '@/components/portal/Footer';
@@ -120,6 +121,7 @@ export default function ESicPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       

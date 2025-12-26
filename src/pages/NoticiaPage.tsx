@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, Tag, Share2, Facebook, Instagram } from "lucide-react";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -39,6 +40,7 @@ export default function NoticiaPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 container py-8 lg:py-12">
@@ -62,6 +64,7 @@ export default function NoticiaPage() {
   if (!noticia) {
     return (
       <div className="min-h-screen flex flex-col">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 container py-16 text-center">
@@ -80,6 +83,7 @@ export default function NoticiaPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       
