@@ -262,9 +262,9 @@ export function Header({ id }: HeaderProps) {
 
   return (
     <header id={id} className="bg-card shadow-md sticky top-0 z-50">
-      <div className="container flex items-center justify-between py-4">
+      <div className="container mx-auto px-4 flex items-center justify-between py-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 flex-shrink-0">
           <img 
             src={brasaoIpubi} 
             alt="Brasão de Ipubi" 
@@ -273,7 +273,7 @@ export function Header({ id }: HeaderProps) {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1 ml-auto">
           {menuItems.map((item) =>
             item.hasDropdown ? (
               <DropdownMenu key={item.label}>
