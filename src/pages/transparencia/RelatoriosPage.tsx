@@ -16,6 +16,8 @@ import {
   bimestreLabels,
   quadrimestreLabels,
 } from '@/hooks/useRelatoriosFiscais';
+import { ListPagination } from '@/components/ui/list-pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 const relatoriosTipos = [
   { value: 'rreo', label: 'RREO - Relatório Resumido' },
@@ -63,6 +65,13 @@ export default function RelatoriosPage() {
   const filteredRelatorios = relatorios?.filter((r) =>
     r.titulo.toLowerCase().includes(search.toLowerCase())
   );
+
+  const pagination = usePagination(filteredRelatorios, { initialItemsPerPage: 10 });
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [search, ano, tipo]);
 
   const clearFilters = () => {
     setSearch('');
@@ -175,58 +184,73 @@ export default function RelatoriosPage() {
           )}
         </div>
       ) : (
-        <div className="space-y-4">
-          {filteredRelatorios?.map((relatorio) => {
-            const styles = tipoCardStyles[relatorio.tipo];
-            const periodo = getPeriodicidadeLabel(relatorio);
-            
-            return (
-              <Card key={relatorio.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge 
-                          variant="outline" 
-                          className={`${styles.bg} ${styles.border} ${styles.text} text-xs`}
-                        >
-                          {tipoRelatorioLabels[relatorio.tipo]}
-                        </Badge>
-                        <Badge variant="secondary" className="text-xs">
-                          {relatorio.ano}
-                        </Badge>
-                        {periodo && (
-                          <Badge variant="outline" className="text-xs">
-                            {periodo}
+        <>
+          <div className="space-y-4">
+            {pagination.paginatedItems?.map((relatorio) => {
+              const styles = tipoCardStyles[relatorio.tipo];
+              const periodo = getPeriodicidadeLabel(relatorio);
+              
+              return (
+                <Card key={relatorio.id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge 
+                            variant="outline" 
+                            className={`${styles.bg} ${styles.border} ${styles.text} text-xs`}
+                          >
+                            {tipoRelatorioLabels[relatorio.tipo]}
                           </Badge>
+                          <Badge variant="secondary" className="text-xs">
+                            {relatorio.ano}
+                          </Badge>
+                          {periodo && (
+                            <Badge variant="outline" className="text-xs">
+                              {periodo}
+                            </Badge>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-gray-900">{relatorio.titulo}</h3>
+                        {relatorio.descricao && (
+                          <p className="text-sm text-gray-600 mt-1">{relatorio.descricao}</p>
                         )}
+                        <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            Publicado em {format(new Date(relatorio.data_publicacao), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                          </span>
+                        </div>
                       </div>
-                      <h3 className="font-semibold text-gray-900">{relatorio.titulo}</h3>
-                      {relatorio.descricao && (
-                        <p className="text-sm text-gray-600 mt-1">{relatorio.descricao}</p>
-                      )}
-                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          Publicado em {format(new Date(relatorio.data_publicacao), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-                        </span>
-                      </div>
+                      <a
+                        href={relatorio.arquivo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                      >
+                        <Download className="w-4 h-4" />
+                        Baixar PDF
+                      </a>
                     </div>
-                    <a
-                      href={relatorio.arquivo_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
-                    >
-                      <Download className="w-4 h-4" />
-                      Baixar PDF
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+          <ListPagination
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+            totalItems={pagination.totalItems}
+            startIndex={pagination.startIndex}
+            endIndex={pagination.endIndex}
+            itemsPerPage={pagination.itemsPerPage}
+            onPageChange={pagination.setCurrentPage}
+            onItemsPerPageChange={pagination.setItemsPerPage}
+            isFirstPage={pagination.isFirstPage}
+            isLastPage={pagination.isLastPage}
+            itemLabel="relatório"
+          />
+        </>
       )}
 
       {/* Informações legais */}

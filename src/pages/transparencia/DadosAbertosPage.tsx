@@ -9,6 +9,8 @@ import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLay
 import { useDadosAbertos, CategoriaDadosAbertos, categoriaDadosAbertosLabels, formatoArquivoLabels } from '@/hooks/useDadosAbertos';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { ListPagination } from '@/components/ui/list-pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 const formatoIcons: Record<string, React.ReactNode> = {
   csv: <FileSpreadsheet className="w-5 h-5 text-green-600" />,
@@ -36,6 +38,13 @@ export default function DadosAbertosPage() {
   const { data: dados, isLoading } = useDadosAbertos(
     categoriaFilter !== 'all' ? categoriaFilter : undefined
   );
+
+  const pagination = usePagination(dados, { initialItemsPerPage: 10 });
+
+  // Reset pagination when filter changes
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [categoriaFilter]);
 
   useEffect(() => {
     document.title = 'Dados Abertos | Portal da Transparência - Ipubi';
@@ -148,72 +157,87 @@ export default function DadosAbertosPage() {
           ))}
         </div>
       ) : dados && dados.length > 0 ? (
-        <div className="space-y-6">
-          {Object.entries(dataByCategory).map(([categoria, items]) => (
-            <Card key={categoria}>
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Badge className={`${categoriaColors[categoria as CategoriaDadosAbertos]} border`}>
-                    {categoriaDadosAbertosLabels[categoria as CategoriaDadosAbertos]}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    {items?.length} arquivo(s)
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {items?.map((item) => (
-                    <div 
-                      key={item.id}
-                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                    >
-                      <div className="flex items-center gap-4">
-                        {formatoIcons[item.formato]}
-                        <div>
-                          <p className="font-medium">{item.titulo}</p>
-                          {item.descricao && (
-                            <p className="text-sm text-muted-foreground">{item.descricao}</p>
-                          )}
-                          <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              Atualizado: {formatDate(item.ultima_atualizacao)}
-                            </span>
-                            {item.periodicidade && (
-                              <span>Periodicidade: {item.periodicidade}</span>
+        <>
+          <div className="space-y-6">
+            {Object.entries(dataByCategory).map(([categoria, items]) => (
+              <Card key={categoria}>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <Badge className={`${categoriaColors[categoria as CategoriaDadosAbertos]} border`}>
+                      {categoriaDadosAbertosLabels[categoria as CategoriaDadosAbertos]}
+                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      {items?.length} arquivo(s)
+                    </span>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {items?.map((item) => (
+                      <div 
+                        key={item.id}
+                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-4">
+                          {formatoIcons[item.formato]}
+                          <div>
+                            <p className="font-medium">{item.titulo}</p>
+                            {item.descricao && (
+                              <p className="text-sm text-muted-foreground">{item.descricao}</p>
                             )}
-                            {item.tamanho_bytes && (
-                              <span>{formatFileSize(item.tamanho_bytes)}</span>
-                            )}
+                            <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                Atualizado: {formatDate(item.ultima_atualizacao)}
+                              </span>
+                              {item.periodicidade && (
+                                <span>Periodicidade: {item.periodicidade}</span>
+                              )}
+                              {item.tamanho_bytes && (
+                                <span>{formatFileSize(item.tamanho_bytes)}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">
-                          {formatoArquivoLabels[item.formato]}
-                        </Badge>
-                        <Button asChild size="sm">
-                          <a href={item.arquivo_url} download={item.arquivo_nome}>
-                            <Download className="w-4 h-4 mr-2" />
-                            Baixar
-                          </a>
-                        </Button>
-                        {item.link_sistema_origem && (
-                          <Button variant="outline" size="sm" asChild>
-                            <a href={item.link_sistema_origem} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="w-4 h-4" />
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">
+                            {formatoArquivoLabels[item.formato]}
+                          </Badge>
+                          <Button asChild size="sm">
+                            <a href={item.arquivo_url} download={item.arquivo_nome}>
+                              <Download className="w-4 h-4 mr-2" />
+                              Baixar
                             </a>
                           </Button>
-                        )}
+                          {item.link_sistema_origem && (
+                            <Button variant="outline" size="sm" asChild>
+                              <a href={item.link_sistema_origem} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="w-4 h-4" />
+                              </a>
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <ListPagination
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+            totalItems={pagination.totalItems}
+            startIndex={pagination.startIndex}
+            endIndex={pagination.endIndex}
+            itemsPerPage={pagination.itemsPerPage}
+            onPageChange={pagination.setCurrentPage}
+            onItemsPerPageChange={pagination.setItemsPerPage}
+            isFirstPage={pagination.isFirstPage}
+            isLastPage={pagination.isLastPage}
+            itemLabel="arquivo"
+          />
+        </>
       ) : (
         <Card>
           <CardContent className="p-8 text-center">

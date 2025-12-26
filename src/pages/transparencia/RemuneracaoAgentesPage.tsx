@@ -8,6 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
 import { useRemuneracaoAgentes, CargoAgentePolitico, cargoAgentePoliticoLabels, mesesLabels } from '@/hooks/useRemuneracaoAgentes';
+import { ListPagination } from '@/components/ui/list-pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -20,6 +22,13 @@ export default function RemuneracaoAgentesPage() {
     Number(ano),
     mes !== 'all' ? Number(mes) : undefined
   );
+
+  const pagination = usePagination(agentes, { initialItemsPerPage: 10 });
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [ano, mes]);
 
   useEffect(() => {
     document.title = 'Remuneração de Agentes Políticos | Portal da Transparência - Ipubi';
@@ -146,7 +155,7 @@ export default function RemuneracaoAgentesPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {agentes.map((agente) => (
+                  {pagination.paginatedItems.map((agente) => (
                     <TableRow key={agente.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -187,6 +196,19 @@ export default function RemuneracaoAgentesPage() {
                 </TableBody>
               </Table>
             </div>
+            <ListPagination
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
+              totalItems={pagination.totalItems}
+              startIndex={pagination.startIndex}
+              endIndex={pagination.endIndex}
+              itemsPerPage={pagination.itemsPerPage}
+              onPageChange={pagination.setCurrentPage}
+              onItemsPerPageChange={pagination.setItemsPerPage}
+              isFirstPage={pagination.isFirstPage}
+              isLastPage={pagination.isLastPage}
+              itemLabel="agente"
+            />
           </CardContent>
         </Card>
       ) : (

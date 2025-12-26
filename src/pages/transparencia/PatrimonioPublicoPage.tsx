@@ -10,6 +10,8 @@ import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLay
 import { usePatrimonioPublico, TipoBemPublico, tipoBemPublicoLabels, situacaoBemLabels } from '@/hooks/usePatrimonioPublico';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { ListPagination } from '@/components/ui/list-pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 const tipoIcons: Record<TipoBemPublico, React.ReactNode> = {
   imovel: <Building className="w-5 h-5" />,
@@ -32,6 +34,23 @@ export default function PatrimonioPublicoPage() {
   const { data: patrimonio, isLoading } = usePatrimonioPublico(
     tipoFilter !== 'all' ? tipoFilter : undefined
   );
+
+  // Filter items by type for tabs
+  const imoveis = patrimonio?.filter(p => p.tipo === 'imovel') || [];
+  const veiculos = patrimonio?.filter(p => p.tipo === 'veiculo') || [];
+  const outros = patrimonio?.filter(p => !['imovel', 'veiculo'].includes(p.tipo)) || [];
+
+  // Pagination for each tab
+  const paginationImoveis = usePagination(imoveis, { initialItemsPerPage: 10 });
+  const paginationVeiculos = usePagination(veiculos, { initialItemsPerPage: 10 });
+  const paginationOutros = usePagination(outros, { initialItemsPerPage: 10 });
+
+  // Reset pagination when filter changes
+  useEffect(() => {
+    paginationImoveis.setCurrentPage(1);
+    paginationVeiculos.setCurrentPage(1);
+    paginationOutros.setCurrentPage(1);
+  }, [tipoFilter]);
 
   useEffect(() => {
     document.title = 'Patrimônio Público | Portal da Transparência - Ipubi';
@@ -59,10 +78,6 @@ export default function PatrimonioPublicoPage() {
   // Total value
   const totalValor = patrimonio?.reduce((acc, item) => acc + (item.valor_atual || item.valor_aquisicao || 0), 0) || 0;
 
-  // Filter items by type for tabs
-  const imoveis = patrimonio?.filter(p => p.tipo === 'imovel') || [];
-  const veiculos = patrimonio?.filter(p => p.tipo === 'veiculo') || [];
-  const outros = patrimonio?.filter(p => !['imovel', 'veiculo'].includes(p.tipo)) || [];
 
   return (
     <TransparenciaLayout
@@ -184,36 +199,51 @@ export default function PatrimonioPublicoPage() {
               </CardHeader>
               <CardContent>
                 {imoveis.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Descrição</TableHead>
-                          <TableHead>Endereço</TableHead>
-                          <TableHead>Área (m²)</TableHead>
-                          <TableHead>Situação</TableHead>
-                          <TableHead className="text-right">Valor</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {imoveis.map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell className="font-medium">{item.descricao}</TableCell>
-                            <TableCell>{item.endereco || '-'}</TableCell>
-                            <TableCell>{item.area_m2?.toLocaleString('pt-BR') || '-'}</TableCell>
-                            <TableCell>
-                              <Badge className={`${situacaoStyles[item.situacao || 'bom']} border-0`}>
-                                {situacaoBemLabels[item.situacao || 'bom']}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              {formatCurrency(item.valor_atual || item.valor_aquisicao)}
-                            </TableCell>
+                  <>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Descrição</TableHead>
+                            <TableHead>Endereço</TableHead>
+                            <TableHead>Área (m²)</TableHead>
+                            <TableHead>Situação</TableHead>
+                            <TableHead className="text-right">Valor</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
+                        </TableHeader>
+                        <TableBody>
+                          {paginationImoveis.paginatedItems.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell className="font-medium">{item.descricao}</TableCell>
+                              <TableCell>{item.endereco || '-'}</TableCell>
+                              <TableCell>{item.area_m2?.toLocaleString('pt-BR') || '-'}</TableCell>
+                              <TableCell>
+                                <Badge className={`${situacaoStyles[item.situacao || 'bom']} border-0`}>
+                                  {situacaoBemLabels[item.situacao || 'bom']}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                {formatCurrency(item.valor_atual || item.valor_aquisicao)}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <ListPagination
+                      currentPage={paginationImoveis.currentPage}
+                      totalPages={paginationImoveis.totalPages}
+                      totalItems={paginationImoveis.totalItems}
+                      startIndex={paginationImoveis.startIndex}
+                      endIndex={paginationImoveis.endIndex}
+                      itemsPerPage={paginationImoveis.itemsPerPage}
+                      onPageChange={paginationImoveis.setCurrentPage}
+                      onItemsPerPageChange={paginationImoveis.setItemsPerPage}
+                      isFirstPage={paginationImoveis.isFirstPage}
+                      isLastPage={paginationImoveis.isLastPage}
+                      itemLabel="imóvel"
+                    />
+                  </>
                 ) : (
                   <p className="text-center text-muted-foreground py-8">Nenhum imóvel cadastrado.</p>
                 )}
@@ -229,36 +259,51 @@ export default function PatrimonioPublicoPage() {
               </CardHeader>
               <CardContent>
                 {veiculos.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Descrição</TableHead>
-                          <TableHead>Marca/Modelo</TableHead>
-                          <TableHead>Placa</TableHead>
-                          <TableHead>Ano</TableHead>
-                          <TableHead>Situação</TableHead>
-                          <TableHead>Secretaria</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {veiculos.map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell className="font-medium">{item.descricao}</TableCell>
-                            <TableCell>{item.marca_modelo || '-'}</TableCell>
-                            <TableCell>{item.placa || '-'}</TableCell>
-                            <TableCell>{item.ano_fabricacao || '-'}</TableCell>
-                            <TableCell>
-                              <Badge className={`${situacaoStyles[item.situacao || 'bom']} border-0`}>
-                                {situacaoBemLabels[item.situacao || 'bom']}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>{item.secretaria_responsavel || '-'}</TableCell>
+                  <>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Descrição</TableHead>
+                            <TableHead>Marca/Modelo</TableHead>
+                            <TableHead>Placa</TableHead>
+                            <TableHead>Ano</TableHead>
+                            <TableHead>Situação</TableHead>
+                            <TableHead>Secretaria</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
+                        </TableHeader>
+                        <TableBody>
+                          {paginationVeiculos.paginatedItems.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell className="font-medium">{item.descricao}</TableCell>
+                              <TableCell>{item.marca_modelo || '-'}</TableCell>
+                              <TableCell>{item.placa || '-'}</TableCell>
+                              <TableCell>{item.ano_fabricacao || '-'}</TableCell>
+                              <TableCell>
+                                <Badge className={`${situacaoStyles[item.situacao || 'bom']} border-0`}>
+                                  {situacaoBemLabels[item.situacao || 'bom']}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>{item.secretaria_responsavel || '-'}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <ListPagination
+                      currentPage={paginationVeiculos.currentPage}
+                      totalPages={paginationVeiculos.totalPages}
+                      totalItems={paginationVeiculos.totalItems}
+                      startIndex={paginationVeiculos.startIndex}
+                      endIndex={paginationVeiculos.endIndex}
+                      itemsPerPage={paginationVeiculos.itemsPerPage}
+                      onPageChange={paginationVeiculos.setCurrentPage}
+                      onItemsPerPageChange={paginationVeiculos.setItemsPerPage}
+                      isFirstPage={paginationVeiculos.isFirstPage}
+                      isLastPage={paginationVeiculos.isLastPage}
+                      itemLabel="veículo"
+                    />
+                  </>
                 ) : (
                   <p className="text-center text-muted-foreground py-8">Nenhum veículo cadastrado.</p>
                 )}
@@ -274,40 +319,55 @@ export default function PatrimonioPublicoPage() {
               </CardHeader>
               <CardContent>
                 {outros.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Tipo</TableHead>
-                          <TableHead>Descrição</TableHead>
-                          <TableHead>Nº Patrimônio</TableHead>
-                          <TableHead>Situação</TableHead>
-                          <TableHead>Localização</TableHead>
-                          <TableHead className="text-right">Valor</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {outros.map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell>
-                              <Badge variant="outline">{tipoBemPublicoLabels[item.tipo]}</Badge>
-                            </TableCell>
-                            <TableCell className="font-medium">{item.descricao}</TableCell>
-                            <TableCell>{item.numero_patrimonio || '-'}</TableCell>
-                            <TableCell>
-                              <Badge className={`${situacaoStyles[item.situacao || 'bom']} border-0`}>
-                                {situacaoBemLabels[item.situacao || 'bom']}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>{item.localizacao_atual || '-'}</TableCell>
-                            <TableCell className="text-right">
-                              {formatCurrency(item.valor_atual || item.valor_aquisicao)}
-                            </TableCell>
+                  <>
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Tipo</TableHead>
+                            <TableHead>Descrição</TableHead>
+                            <TableHead>Nº Patrimônio</TableHead>
+                            <TableHead>Situação</TableHead>
+                            <TableHead>Localização</TableHead>
+                            <TableHead className="text-right">Valor</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
+                        </TableHeader>
+                        <TableBody>
+                          {paginationOutros.paginatedItems.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell>
+                                <Badge variant="outline">{tipoBemPublicoLabels[item.tipo]}</Badge>
+                              </TableCell>
+                              <TableCell className="font-medium">{item.descricao}</TableCell>
+                              <TableCell>{item.numero_patrimonio || '-'}</TableCell>
+                              <TableCell>
+                                <Badge className={`${situacaoStyles[item.situacao || 'bom']} border-0`}>
+                                  {situacaoBemLabels[item.situacao || 'bom']}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>{item.localizacao_atual || '-'}</TableCell>
+                              <TableCell className="text-right">
+                                {formatCurrency(item.valor_atual || item.valor_aquisicao)}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <ListPagination
+                      currentPage={paginationOutros.currentPage}
+                      totalPages={paginationOutros.totalPages}
+                      totalItems={paginationOutros.totalItems}
+                      startIndex={paginationOutros.startIndex}
+                      endIndex={paginationOutros.endIndex}
+                      itemsPerPage={paginationOutros.itemsPerPage}
+                      onPageChange={paginationOutros.setCurrentPage}
+                      onItemsPerPageChange={paginationOutros.setItemsPerPage}
+                      isFirstPage={paginationOutros.isFirstPage}
+                      isLastPage={paginationOutros.isLastPage}
+                      itemLabel="bem"
+                    />
+                  </>
                 ) : (
                   <p className="text-center text-muted-foreground py-8">Nenhum bem cadastrado.</p>
                 )}
