@@ -276,6 +276,7 @@ export default function DiariasPassagensPage() {
               isFirstPage={pagination.isFirstPage}
               isLastPage={pagination.isLastPage}
               itemLabel="registro"
+              isTransitioning={pagination.isTransitioning}
             />
           </CardContent>
         </Card>

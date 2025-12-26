@@ -249,6 +249,7 @@ export default function RelatoriosPage() {
             isFirstPage={pagination.isFirstPage}
             isLastPage={pagination.isLastPage}
             itemLabel="relatório"
+            isTransitioning={pagination.isTransitioning}
           />
         </>
       )}

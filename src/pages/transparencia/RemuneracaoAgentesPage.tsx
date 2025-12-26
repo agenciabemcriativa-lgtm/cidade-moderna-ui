@@ -208,6 +208,7 @@ export default function RemuneracaoAgentesPage() {
               isFirstPage={pagination.isFirstPage}
               isLastPage={pagination.isLastPage}
               itemLabel="agente"
+              isTransitioning={pagination.isTransitioning}
             />
           </CardContent>
         </Card>

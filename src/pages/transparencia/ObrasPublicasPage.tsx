@@ -236,6 +236,7 @@ export default function ObrasPublicasPage() {
             isFirstPage={pagination.isFirstPage}
             isLastPage={pagination.isLastPage}
             itemLabel="obra"
+            isTransitioning={pagination.isTransitioning}
           />
         </div>
       ) : (
