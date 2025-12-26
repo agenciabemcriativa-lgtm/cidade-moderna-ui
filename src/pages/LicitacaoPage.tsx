@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -46,6 +47,7 @@ export default function LicitacaoPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 py-8">
@@ -63,6 +65,7 @@ export default function LicitacaoPage() {
   if (error || !licitacao) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 py-8">
@@ -98,6 +101,7 @@ export default function LicitacaoPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       

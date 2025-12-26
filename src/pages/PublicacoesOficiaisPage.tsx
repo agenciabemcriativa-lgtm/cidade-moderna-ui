@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { FileText, Search, Filter, Download, Calendar, Building2, Scale, Info } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -90,6 +91,7 @@ export default function PublicacoesOficiaisPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
 

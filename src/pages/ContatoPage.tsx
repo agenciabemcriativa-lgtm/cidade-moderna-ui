@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -71,6 +72,7 @@ export default function ContatoPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       

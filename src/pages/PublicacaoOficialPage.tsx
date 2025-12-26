@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { FileText, Calendar, Building2, Download, ArrowLeft, Scale, Info, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -31,6 +32,7 @@ export default function PublicacaoOficialPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
@@ -46,6 +48,7 @@ export default function PublicacaoOficialPage() {
   if (error || !publicacao) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
@@ -72,6 +75,7 @@ export default function PublicacaoOficialPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
 

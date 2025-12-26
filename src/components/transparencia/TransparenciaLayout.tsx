@@ -5,6 +5,7 @@ import {
   Clock
 } from 'lucide-react';
 import brasaoIpubi from '@/assets/brasao-ipubi.png';
+import { AccessibilityBar } from '@/components/portal/AccessibilityBar';
 
 interface TransparenciaLayoutProps {
   children: ReactNode;
@@ -19,6 +20,9 @@ const quickLinks = [
 export function TransparenciaLayout({ children, title, description }: TransparenciaLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Accessibility Bar */}
+      <AccessibilityBar />
+      
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4">

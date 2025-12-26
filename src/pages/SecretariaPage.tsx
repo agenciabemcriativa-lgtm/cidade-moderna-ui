@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -16,6 +17,7 @@ export default function SecretariaPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1">
@@ -50,6 +52,7 @@ export default function SecretariaPage() {
   if (!secretaria) {
     return (
       <div className="min-h-screen flex flex-col">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 container py-16 text-center">
@@ -65,6 +68,7 @@ export default function SecretariaPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       <main className="flex-1">

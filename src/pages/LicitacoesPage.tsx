@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
@@ -81,6 +82,7 @@ export default function LicitacoesPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       

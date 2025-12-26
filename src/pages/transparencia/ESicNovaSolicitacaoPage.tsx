@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Send, CheckCircle, AlertCircle, MessageSquareText } from 'lucide-react';
+import { AccessibilityBar } from '@/components/portal/AccessibilityBar';
 import { TopBar } from '@/components/portal/TopBar';
 import { Header } from '@/components/portal/Header';
 import { Footer } from '@/components/portal/Footer';
@@ -80,6 +81,7 @@ export default function ESicNovaSolicitacaoPage() {
   if (protocoloGerado) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         
@@ -153,6 +155,7 @@ export default function ESicNovaSolicitacaoPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       
