@@ -17,230 +17,57 @@ import {
   Scale, 
   Shield,
   Search,
-  MessageSquare
+  MessageSquare,
+  Info,
+  BookOpen,
+  Briefcase,
+  Phone,
+  Mail,
+  MapPin,
+  Calendar,
+  LucideIcon
 } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useFaqCategoriasWithPerguntas } from "@/hooks/useFaq";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface FAQCategory {
-  id: string;
-  title: string;
-  icon: React.ElementType;
-  questions: {
-    question: string;
-    answer: string;
-  }[];
-}
-
-const faqCategories: FAQCategory[] = [
-  {
-    id: "portal",
-    title: "Sobre o Portal",
-    icon: HelpCircle,
-    questions: [
-      {
-        question: "O que é o Portal da Prefeitura de Ipubi?",
-        answer: "O Portal da Prefeitura de Ipubi é o canal oficial de comunicação digital do município, oferecendo acesso a informações sobre a administração pública, serviços ao cidadão, notícias, licitações, transparência e muito mais. Foi desenvolvido para facilitar o acesso da população às informações e serviços públicos."
-      },
-      {
-        question: "Como navegar no portal?",
-        answer: "O portal possui uma estrutura organizada em seções principais: Governo (informações sobre a gestão), Município (dados sobre a cidade), Secretarias (informações de cada secretaria), Transparência (dados públicos), Legislação (leis e decretos) e Notícias (atualizações). Você também pode usar a barra de busca no topo da página para encontrar conteúdos específicos."
-      },
-      {
-        question: "O portal funciona em dispositivos móveis?",
-        answer: "Sim, o portal foi desenvolvido com design responsivo, adaptando-se automaticamente a diferentes tamanhos de tela, como smartphones, tablets e computadores. Você pode acessar todas as funcionalidades de qualquer dispositivo com acesso à internet."
-      },
-      {
-        question: "Como utilizar os recursos de acessibilidade?",
-        answer: "O portal oferece recursos de acessibilidade na barra superior, incluindo: ajuste do tamanho da fonte (A- e A+), modo de alto contraste para melhor visualização, e atalhos de navegação. Esses recursos foram implementados seguindo as diretrizes de acessibilidade web (WCAG)."
-      },
-      {
-        question: "Onde encontro o Mapa do Site?",
-        answer: "O Mapa do Site está disponível no rodapé do portal e também pode ser acessado diretamente pelo link /mapa-do-site. Ele apresenta a estrutura completa do portal, facilitando a localização de conteúdos específicos."
-      }
-    ]
-  },
-  {
-    id: "transparencia",
-    title: "Transparência Pública",
-    icon: Shield,
-    questions: [
-      {
-        question: "O que é o Portal da Transparência?",
-        answer: "O Portal da Transparência é uma ferramenta de controle social que permite ao cidadão acompanhar a gestão dos recursos públicos. Nele você encontra informações sobre receitas, despesas, licitações, contratos, servidores, obras públicas, patrimônio e muito mais, conforme determina a Lei Complementar nº 131/2009 (Lei da Transparência) e a Lei nº 12.527/2011 (Lei de Acesso à Informação)."
-      },
-      {
-        question: "Como consultar as despesas do município?",
-        answer: "No Portal da Transparência, acesse a seção 'Despesas' onde você encontrará informações detalhadas sobre os gastos públicos, incluindo empenhos, liquidações e pagamentos, organizados por período, órgão, credor e elemento de despesa."
-      },
-      {
-        question: "Como consultar as receitas do município?",
-        answer: "Na seção 'Receitas' do Portal da Transparência, você encontra informações sobre a arrecadação municipal, incluindo receitas tributárias, transferências governamentais e outras fontes, organizadas por categoria e período."
-      },
-      {
-        question: "O que são Dados Abertos?",
-        answer: "Dados Abertos são informações públicas disponibilizadas em formatos que podem ser lidos e processados por máquinas (como CSV, JSON e XML), permitindo que cidadãos, pesquisadores e desenvolvedores analisem e reutilizem esses dados. É uma iniciativa de transparência e governo digital."
-      },
-      {
-        question: "Como baixar dados em formatos abertos?",
-        answer: "Na maioria das páginas de listagem do portal, você encontrará botões de exportação que permitem baixar os dados nos formatos CSV, JSON, XML e PDF. Além disso, a seção 'Dados Abertos' no Portal da Transparência oferece conjuntos de dados específicos para download."
-      },
-      {
-        question: "O que são os Relatórios de Gestão Fiscal (RGF)?",
-        answer: "Os Relatórios de Gestão Fiscal são documentos que demonstram o cumprimento dos limites estabelecidos pela Lei de Responsabilidade Fiscal, incluindo despesas com pessoal, dívida consolidada, garantias e operações de crédito. São publicados quadrimestralmente."
-      },
-      {
-        question: "O que são os Relatórios Resumidos de Execução Orçamentária (RREO)?",
-        answer: "Os RREO são relatórios bimestrais que apresentam o balanço orçamentário, demonstrativo da execução das despesas e receitas, e outros demonstrativos exigidos pela Lei de Responsabilidade Fiscal."
-      }
-    ]
-  },
-  {
-    id: "esic",
-    title: "e-SIC e Acesso à Informação",
-    icon: MessageSquare,
-    questions: [
-      {
-        question: "O que é o e-SIC?",
-        answer: "O e-SIC (Sistema Eletrônico do Serviço de Informação ao Cidadão) é o canal oficial para solicitar informações públicas ao município, conforme garantido pela Lei de Acesso à Informação (Lei nº 12.527/2011). Através dele, qualquer pessoa pode solicitar dados e documentos que não estejam disponíveis no portal."
-      },
-      {
-        question: "Como fazer uma solicitação pelo e-SIC?",
-        answer: "Acesse a seção 'e-SIC' no Portal da Transparência, clique em 'Nova Solicitação', preencha o formulário com seus dados e descreva claramente a informação desejada. Você receberá um número de protocolo para acompanhamento."
-      },
-      {
-        question: "Qual o prazo para resposta do e-SIC?",
-        answer: "O órgão público tem até 20 dias corridos para responder, podendo prorrogar por mais 10 dias mediante justificativa. Em caso de indeferimento ou resposta insatisfatória, o cidadão pode apresentar recurso em até 10 dias."
-      },
-      {
-        question: "Como acompanhar minha solicitação?",
-        answer: "Acesse a opção 'Consultar Solicitação' no e-SIC e informe o número do protocolo e o e-mail cadastrado. Você poderá ver o status da solicitação, respostas e anexos disponíveis."
-      },
-      {
-        question: "Posso solicitar qualquer informação?",
-        answer: "A Lei de Acesso à Informação garante o direito de acesso a informações públicas, com exceções previstas em lei, como informações pessoais, sigilosas por lei específica, ou que comprometam a segurança da sociedade e do Estado."
-      },
-      {
-        question: "Preciso justificar o motivo da solicitação?",
-        answer: "Não. A Lei de Acesso à Informação garante que o cidadão não precisa justificar os motivos do pedido. Basta identificar-se e especificar a informação desejada."
-      }
-    ]
-  },
-  {
-    id: "licitacoes",
-    title: "Licitações e Contratos",
-    icon: FileText,
-    questions: [
-      {
-        question: "Como consultar as licitações em andamento?",
-        answer: "Na página de Licitações do portal, você encontra todas as licitações do município, podendo filtrar por modalidade, status, ano e secretaria. Cada licitação possui página própria com todos os documentos disponíveis para download."
-      },
-      {
-        question: "Como participar de uma licitação?",
-        answer: "Consulte o edital da licitação de interesse para verificar os requisitos de participação, documentação necessária e prazos. Os editais podem ser baixados diretamente do portal. Em caso de dúvidas, utilize o e-mail de contato indicado no edital."
-      },
-      {
-        question: "O que é Pregão Eletrônico?",
-        answer: "Pregão Eletrônico é uma modalidade de licitação realizada pela internet, utilizada para aquisição de bens e serviços comuns. As sessões são realizadas em plataformas específicas indicadas nos editais."
-      },
-      {
-        question: "Como obter certidões para participar de licitações?",
-        answer: "As certidões necessárias variam conforme o edital. Certidões federais podem ser obtidas no site da Receita Federal, certidões estaduais no site da Secretaria da Fazenda do estado, e certidões municipais nos canais de atendimento da prefeitura."
-      },
-      {
-        question: "Como consultar contratos firmados?",
-        answer: "Os contratos firmados estão disponíveis no Portal da Transparência, onde você pode consultar dados como partes contratantes, objeto, valor, vigência e aditivos."
-      }
-    ]
-  },
-  {
-    id: "servidores",
-    title: "Servidores Públicos",
-    icon: Users,
-    questions: [
-      {
-        question: "Como consultar a folha de pagamento?",
-        answer: "No Portal da Transparência, acesse a seção 'Servidores' onde estão disponíveis informações sobre a remuneração dos servidores públicos municipais, conforme determina a Lei de Acesso à Informação."
-      },
-      {
-        question: "O que é a remuneração de agentes políticos?",
-        answer: "A seção 'Remuneração de Agentes Políticos' apresenta os valores recebidos pelo Prefeito, Vice-Prefeito e Secretários Municipais, incluindo subsídio mensal, verbas de representação e outros valores."
-      },
-      {
-        question: "Como acessar meu contracheque online?",
-        answer: "O acesso ao contracheque online está disponível para servidores ativos através do link no rodapé do portal ou no sistema de recursos humanos. É necessário login e senha cadastrados."
-      },
-      {
-        question: "Como consultar diárias e passagens?",
-        answer: "Na seção 'Diárias e Passagens' do Portal da Transparência, você encontra informações sobre deslocamentos de servidores, incluindo beneficiário, destino, período, finalidade e valores."
-      }
-    ]
-  },
-  {
-    id: "secretarias",
-    title: "Secretarias e Atendimento",
-    icon: Building2,
-    questions: [
-      {
-        question: "Como encontrar informações de uma secretaria?",
-        answer: "No menu 'Secretarias' você encontra a lista completa das secretarias municipais. Cada página de secretaria contém informações sobre o secretário responsável, endereço, telefone, e-mail e horário de funcionamento."
-      },
-      {
-        question: "Qual o horário de funcionamento da prefeitura?",
-        answer: "O horário de atendimento da Prefeitura de Ipubi é de segunda a sexta-feira, das 8h às 12h e das 14h às 17h. Algumas secretarias podem ter horários diferenciados, consulte a página específica de cada uma."
-      },
-      {
-        question: "Como entrar em contato com a prefeitura?",
-        answer: "Você pode entrar em contato pelo telefone (87) 3881-1156, pelo formulário de contato no portal, pelo e-SIC para solicitações de informação, ou presencialmente na Praça Professor Agamanon Magalhães, 56, Centro."
-      },
-      {
-        question: "Como agendar atendimento?",
-        answer: "Para alguns serviços é possível agendar atendimento. Consulte a seção 'Atendimento' do portal para verificar os serviços disponíveis e os canais de agendamento de cada secretaria."
-      }
-    ]
-  },
-  {
-    id: "legislacao",
-    title: "Legislação Municipal",
-    icon: Scale,
-    questions: [
-      {
-        question: "Onde encontro a Lei Orgânica do Município?",
-        answer: "A Lei Orgânica do Município está disponível na seção 'Legislação', subseção 'Lei Orgânica'. É a lei maior do município, que estabelece sua organização política e administrativa."
-      },
-      {
-        question: "Como consultar leis e decretos?",
-        answer: "Na seção 'Legislação' você encontra as leis, decretos, portarias e outros atos normativos do município. Utilize os filtros de busca para encontrar documentos específicos por tipo, ano ou palavras-chave."
-      },
-      {
-        question: "O que são PPA, LDO e LOA?",
-        answer: "São instrumentos de planejamento orçamentário: o PPA (Plano Plurianual) define diretrizes para 4 anos; a LDO (Lei de Diretrizes Orçamentárias) estabelece metas anuais; e a LOA (Lei Orçamentária Anual) detalha receitas e despesas do ano."
-      },
-      {
-        question: "Como acessar as Publicações Oficiais?",
-        answer: "Na seção 'Publicações Oficiais' você encontra todos os atos publicados pelo município, incluindo leis, decretos, portarias, editais e comunicados, com filtros por tipo e período."
-      },
-      {
-        question: "O que é a Lei de Acesso à Informação?",
-        answer: "A Lei nº 12.527/2011 regulamenta o direito constitucional de acesso às informações públicas. Estabelece procedimentos para garantir que qualquer pessoa possa solicitar e receber informações dos órgãos públicos."
-      }
-    ]
-  }
-];
+const iconMap: Record<string, LucideIcon> = {
+  HelpCircle,
+  FileText,
+  Users,
+  Building2,
+  Scale,
+  Shield,
+  Search,
+  MessageSquare,
+  Info,
+  BookOpen,
+  Briefcase,
+  Phone,
+  Mail,
+  MapPin,
+  Calendar
+};
 
 export default function PerguntasFrequentesPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const { data: categorias = [], isLoading } = useFaqCategoriasWithPerguntas();
 
-  const filteredCategories = faqCategories.map(category => ({
+  const filteredCategories = categorias.map(category => ({
     ...category,
-    questions: category.questions.filter(
+    perguntas: category.perguntas.filter(
       q => 
-        q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        q.answer.toLowerCase().includes(searchTerm.toLowerCase())
+        q.pergunta.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        q.resposta.toLowerCase().includes(searchTerm.toLowerCase())
     )
-  })).filter(category => category.questions.length > 0);
+  })).filter(category => category.perguntas.length > 0);
 
-  const totalQuestions = faqCategories.reduce((acc, cat) => acc + cat.questions.length, 0);
+  const totalQuestions = categorias.reduce((acc, cat) => acc + cat.perguntas.length, 0);
+
+  const getIcon = (iconName: string): LucideIcon => {
+    return iconMap[iconName] || HelpCircle;
+  };
 
   return (
     <>
@@ -292,10 +119,13 @@ export default function PerguntasFrequentesPage() {
                 />
               </div>
               <p className="text-sm text-muted-foreground text-center mt-3">
-                {searchTerm 
-                  ? `${filteredCategories.reduce((acc, cat) => acc + cat.questions.length, 0)} perguntas encontradas`
-                  : `${totalQuestions} perguntas em ${faqCategories.length} categorias`
-                }
+                {isLoading ? (
+                  "Carregando..."
+                ) : searchTerm ? (
+                  `${filteredCategories.reduce((acc, cat) => acc + cat.perguntas.length, 0)} perguntas encontradas`
+                ) : (
+                  `${totalQuestions} perguntas em ${categorias.length} categorias`
+                )}
               </p>
             </div>
           </div>
@@ -303,43 +133,67 @@ export default function PerguntasFrequentesPage() {
 
         {/* FAQ Content */}
         <section className="container py-12">
-          {filteredCategories.length === 0 ? (
+          {isLoading ? (
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-card rounded-xl border p-6">
+                  <Skeleton className="h-8 w-48 mb-4" />
+                  <div className="space-y-3">
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : categorias.length === 0 ? (
             <div className="text-center py-12">
               <HelpCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Nenhuma pergunta cadastrada</h2>
+              <p className="text-muted-foreground">
+                Em breve teremos perguntas frequentes disponíveis
+              </p>
+            </div>
+          ) : filteredCategories.length === 0 ? (
+            <div className="text-center py-12">
+              <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
               <h2 className="text-xl font-semibold mb-2">Nenhuma pergunta encontrada</h2>
               <p className="text-muted-foreground">
-                Tente buscar com outros termos ou navegue pelas categorias abaixo
+                Tente buscar com outros termos
               </p>
             </div>
           ) : (
             <div className="space-y-8">
-              {filteredCategories.map((category) => (
-                <div key={category.id} className="bg-card rounded-xl border shadow-sm overflow-hidden">
-                  <div className="bg-muted/50 px-6 py-4 border-b flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <category.icon className="w-5 h-5 text-primary" />
+              {filteredCategories.map((category) => {
+                const IconComponent = getIcon(category.icone);
+                return (
+                  <div key={category.id} className="bg-card rounded-xl border shadow-sm overflow-hidden">
+                    <div className="bg-muted/50 px-6 py-4 border-b flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <IconComponent className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-semibold">{category.titulo}</h2>
+                        <p className="text-sm text-muted-foreground">
+                          {category.perguntas.length} {category.perguntas.length === 1 ? 'pergunta' : 'perguntas'}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-xl font-semibold">{category.title}</h2>
-                      <p className="text-sm text-muted-foreground">
-                        {category.questions.length} {category.questions.length === 1 ? 'pergunta' : 'perguntas'}
-                      </p>
-                    </div>
+                    <Accordion type="single" collapsible className="px-6">
+                      {category.perguntas.map((faq, index) => (
+                        <AccordionItem key={faq.id} value={faq.id}>
+                          <AccordionTrigger className="text-left hover:no-underline py-4">
+                            <span className="font-medium pr-4">{faq.pergunta}</span>
+                          </AccordionTrigger>
+                          <AccordionContent className="text-muted-foreground pb-4 leading-relaxed whitespace-pre-wrap">
+                            {faq.resposta}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
                   </div>
-                  <Accordion type="single" collapsible className="px-6">
-                    {category.questions.map((faq, index) => (
-                      <AccordionItem key={index} value={`${category.id}-${index}`}>
-                        <AccordionTrigger className="text-left hover:no-underline py-4">
-                          <span className="font-medium pr-4">{faq.question}</span>
-                        </AccordionTrigger>
-                        <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                          {faq.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>
