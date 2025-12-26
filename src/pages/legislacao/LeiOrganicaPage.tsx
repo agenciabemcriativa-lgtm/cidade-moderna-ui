@@ -22,6 +22,8 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useDocumentosLegislacao } from "@/hooks/useDocumentosLegislacao";
+import { LastUpdated } from "@/components/portal/LastUpdated";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 
 const breadcrumbItems = [
   { label: "Legislação", href: "/legislacao" },
@@ -42,6 +44,7 @@ export default function LeiOrganicaPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       
@@ -50,18 +53,29 @@ export default function LeiOrganicaPage() {
         <section className="bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-500 py-12 md:py-16">
           <div className="container mx-auto px-4">
             <Breadcrumbs items={breadcrumbItems} variant="light" className="mb-6" />
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-white/20 rounded-lg">
-                <Landmark className="h-8 w-8 text-white" />
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-white/20 rounded-lg">
+                  <Landmark className="h-8 w-8 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-white">
+                    Lei Orgânica do Município
+                  </h1>
+                  <p className="text-white/80 mt-1">
+                    Constituição Municipal de Ipubi
+                  </p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white">
-                  Lei Orgânica do Município
-                </h1>
-                <p className="text-white/80 mt-1">
-                  Constituição Municipal de Ipubi
-                </p>
-              </div>
+              {(leiOrganica || emendas) && (
+                <LastUpdated 
+                  date={[...(leiOrganica || []), ...(emendas || [])].reduce((latest, d) => 
+                    d.updated_at && new Date(d.updated_at) > new Date(latest || 0) ? d.updated_at : latest, 
+                    leiOrganica?.[0]?.updated_at || emendas?.[0]?.updated_at
+                  )}
+                  className="text-white/80"
+                />
+              )}
             </div>
           </div>
         </section>

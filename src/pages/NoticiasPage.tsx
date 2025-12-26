@@ -11,6 +11,7 @@ import { useMemo, useEffect } from "react";
 import { ListPagination } from "@/components/ui/list-pagination";
 import { usePagination } from "@/hooks/usePagination";
 import { ExportListButtons } from "@/components/portal/ExportListButtons";
+import { LastUpdated } from "@/components/portal/LastUpdated";
 
 // Mapeamento de cores para garantir que o Tailwind inclua as classes
 const categoryColorMap: Record<string, string> = {
@@ -75,13 +76,26 @@ export default function NoticiasPage() {
 
         {/* Hero Section */}
         <section className="bg-primary py-12">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-              Notícias
-            </h1>
-            <p className="text-primary-foreground/80 max-w-2xl mx-auto">
-              Acompanhe as últimas notícias e eventos do município
-            </p>
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="text-center md:text-left">
+                <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
+                  Notícias
+                </h1>
+                <p className="text-primary-foreground/80 max-w-2xl">
+                  Acompanhe as últimas notícias e eventos do município
+                </p>
+              </div>
+              {noticias && noticias.length > 0 && (
+                <LastUpdated 
+                  date={noticias.reduce((latest, n) => {
+                    const nDate = n.rawDate;
+                    return nDate && new Date(nDate) > new Date(latest || 0) ? nDate : latest;
+                  }, noticias[0].rawDate)}
+                  className="text-primary-foreground/80"
+                />
+              )}
+            </div>
           </div>
         </section>
 

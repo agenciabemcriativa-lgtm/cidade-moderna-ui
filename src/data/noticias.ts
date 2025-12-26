@@ -8,6 +8,7 @@ export interface Noticia {
   category: string;
   categoryColor: string;
   image: string;
+  rawDate: string | null;
 }
 
 export const noticiasData: Noticia[] = [
@@ -30,7 +31,8 @@ export const noticiasData: Noticia[] = [
     date: "28 Nov 2024",
     category: "Educação",
     categoryColor: "bg-accent",
-    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=60"
+    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=60",
+    rawDate: "2024-11-28T00:00:00Z"
   },
   {
     id: "2",
@@ -49,7 +51,8 @@ export const noticiasData: Noticia[] = [
     date: "25 Nov 2024",
     category: "Saúde",
     categoryColor: "bg-secondary",
-    image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&auto=format&fit=crop&q=60"
+    image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&auto=format&fit=crop&q=60",
+    rawDate: "2024-11-25T00:00:00Z"
   },
   {
     id: "3",
@@ -68,7 +71,8 @@ export const noticiasData: Noticia[] = [
     date: "22 Nov 2024",
     category: "Obras",
     categoryColor: "bg-highlight text-highlight-foreground",
-    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=60"
+    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=60",
+    rawDate: "2024-11-22T00:00:00Z"
   },
   {
     id: "4",
@@ -87,7 +91,8 @@ export const noticiasData: Noticia[] = [
     date: "20 Nov 2024",
     category: "Agricultura",
     categoryColor: "bg-accent",
-    image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&auto=format&fit=crop&q=60"
+    image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&auto=format&fit=crop&q=60",
+    rawDate: "2024-11-20T00:00:00Z"
   },
   {
     id: "5",
@@ -106,7 +111,8 @@ export const noticiasData: Noticia[] = [
     date: "18 Nov 2024",
     category: "Social",
     categoryColor: "bg-secondary",
-    image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&auto=format&fit=crop&q=60"
+    image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&auto=format&fit=crop&q=60",
+    rawDate: "2024-11-18T00:00:00Z"
   },
   {
     id: "6",
@@ -125,7 +131,8 @@ export const noticiasData: Noticia[] = [
     date: "15 Nov 2024",
     category: "Cultura",
     categoryColor: "bg-highlight text-highlight-foreground",
-    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&auto=format&fit=crop&q=60"
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&auto=format&fit=crop&q=60",
+    rawDate: "2024-11-15T00:00:00Z"
   }
 ];
 

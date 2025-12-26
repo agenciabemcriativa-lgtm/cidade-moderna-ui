@@ -13,6 +13,7 @@ import { ptBR } from 'date-fns/locale';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { ExportListButtons } from '@/components/portal/ExportListButtons';
+import { LastUpdated } from '@/components/portal/LastUpdated';
 
 const statusStyles: Record<StatusObra, { bg: string; text: string; icon: React.ReactNode }> = {
   em_andamento: { bg: 'bg-blue-100', text: 'text-blue-800', icon: <Clock className="w-4 h-4" /> },
@@ -57,6 +58,17 @@ export default function ObrasPublicasPage() {
       title="Obras Públicas"
       description="Acompanhe as obras em execução, concluídas e planejadas pelo Município de Ipubi"
     >
+      {/* Last Updated */}
+      {obras && obras.length > 0 && (
+        <div className="mb-6">
+          <LastUpdated 
+            date={obras.reduce((latest, o) => 
+              o.updated_at && new Date(o.updated_at) > new Date(latest || 0) ? o.updated_at : latest, 
+              obras[0].updated_at
+            )}
+          />
+        </div>
+      )}
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {Object.entries(statusObraLabels).map(([status, label]) => {

@@ -32,6 +32,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ListPagination } from "@/components/ui/list-pagination";
 import { usePagination } from "@/hooks/usePagination";
 import { ExportListButtons } from "@/components/portal/ExportListButtons";
+import { LastUpdated } from "@/components/portal/LastUpdated";
 
 export default function LicitacoesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -98,11 +99,24 @@ export default function LicitacoesPage() {
         {/* Hero Section */}
         <section className="bg-primary text-primary-foreground py-12">
           <div className="container">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Licitações Públicas</h1>
-            <p className="text-primary-foreground/80 max-w-2xl">
-              Acesse todas as informações sobre processos licitatórios do município. 
-              Transparência e acesso à informação garantidos conforme Lei nº 14.133/2021.
-            </p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">Licitações Públicas</h1>
+                <p className="text-primary-foreground/80 max-w-2xl">
+                  Acesse todas as informações sobre processos licitatórios do município. 
+                  Transparência e acesso à informação garantidos conforme Lei nº 14.133/2021.
+                </p>
+              </div>
+              {licitacoes && licitacoes.length > 0 && (
+                <LastUpdated 
+                  date={licitacoes.reduce((latest, l) => 
+                    new Date(l.updated_at) > new Date(latest) ? l.updated_at : latest, 
+                    licitacoes[0].updated_at
+                  )}
+                  className="text-primary-foreground/80"
+                />
+              )}
+            </div>
           </div>
         </section>
 

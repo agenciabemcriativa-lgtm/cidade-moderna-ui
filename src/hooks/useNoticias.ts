@@ -12,6 +12,7 @@ export interface Noticia {
   categoryColor: string;
   image: string;
   date: string;
+  rawDate: string | null;
 }
 
 export function useNoticias() {
@@ -43,6 +44,7 @@ export function useNoticias() {
           month: "long",
           year: "numeric"
         }),
+        rawDate: item.updated_at || item.data_publicacao || item.created_at,
       })) as Noticia[];
     },
   });
