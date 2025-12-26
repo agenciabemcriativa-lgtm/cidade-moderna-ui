@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ListPagination } from "@/components/ui/list-pagination";
+import { usePagination } from "@/hooks/usePagination";
 import {
   usePublicacoesOficiais,
   useAnosPublicacoes,
@@ -68,6 +70,13 @@ export default function PublicacoesOficiaisPage() {
     search: search || undefined,
     publicado: true,
   });
+
+  const pagination = usePagination(publicacoes, { initialItemsPerPage: 10 });
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [search, selectedAno, selectedTipo, selectedSituacao, selectedSecretaria]);
 
   const clearFilters = () => {
     setSearch("");
@@ -227,7 +236,7 @@ export default function PublicacoesOficiaisPage() {
                 {publicacoes.length} publicação(ões) encontrada(s)
               </p>
 
-              {publicacoes.map((pub) => (
+              {pagination.paginatedItems.map((pub) => (
                 <Card key={pub.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -294,6 +303,20 @@ export default function PublicacoesOficiaisPage() {
                   </CardContent>
                 </Card>
               ))}
+
+              <ListPagination
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                totalItems={pagination.totalItems}
+                startIndex={pagination.startIndex}
+                endIndex={pagination.endIndex}
+                itemsPerPage={pagination.itemsPerPage}
+                onPageChange={pagination.setCurrentPage}
+                onItemsPerPageChange={pagination.setItemsPerPage}
+                isFirstPage={pagination.isFirstPage}
+                isLastPage={pagination.isLastPage}
+                itemLabel="publicação"
+              />
             </div>
           ) : (
             <Card>

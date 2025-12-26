@@ -10,6 +10,8 @@ import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLay
 import { useObrasPublicas, StatusObra, statusObraLabels, fonteRecursoLabels } from '@/hooks/useObrasPublicas';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { ListPagination } from '@/components/ui/list-pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 const statusStyles: Record<StatusObra, { bg: string; text: string; icon: React.ReactNode }> = {
   em_andamento: { bg: 'bg-blue-100', text: 'text-blue-800', icon: <Clock className="w-4 h-4" /> },
@@ -23,6 +25,13 @@ export default function ObrasPublicasPage() {
   const { data: obras, isLoading } = useObrasPublicas(
     statusFilter !== 'all' ? statusFilter : undefined
   );
+
+  const pagination = usePagination(obras, { initialItemsPerPage: 10 });
+
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [statusFilter]);
 
   useEffect(() => {
     document.title = 'Obras Públicas | Portal da Transparência - Ipubi';
@@ -115,7 +124,7 @@ export default function ObrasPublicasPage() {
         </div>
       ) : obras && obras.length > 0 ? (
         <div className="space-y-4">
-          {obras.map((obra) => {
+          {pagination.paginatedItems.map((obra) => {
             const style = statusStyles[obra.status || 'em_andamento'];
             return (
               <Card key={obra.id} className="overflow-hidden">
@@ -215,6 +224,19 @@ export default function ObrasPublicasPage() {
               </Card>
             );
           })}
+          <ListPagination
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+            totalItems={pagination.totalItems}
+            startIndex={pagination.startIndex}
+            endIndex={pagination.endIndex}
+            itemsPerPage={pagination.itemsPerPage}
+            onPageChange={pagination.setCurrentPage}
+            onItemsPerPageChange={pagination.setItemsPerPage}
+            isFirstPage={pagination.isFirstPage}
+            isLastPage={pagination.isLastPage}
+            itemLabel="obra"
+          />
         </div>
       ) : (
         <Card>
