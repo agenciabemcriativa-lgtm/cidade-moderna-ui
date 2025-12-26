@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { ExportListButtons } from '@/components/portal/ExportListButtons';
 
 const statusStyles: Record<StatusObra, { bg: string; text: string; icon: React.ReactNode }> = {
   em_andamento: { bg: 'bg-blue-100', text: 'text-blue-800', icon: <Clock className="w-4 h-4" /> },
@@ -85,25 +86,50 @@ export default function ObrasPublicasPage() {
       </div>
 
       {/* Filter */}
-      <div className="flex items-center gap-4 mb-6">
-        <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusObra | 'all')}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Filtrar por status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas as obras</SelectItem>
-            {Object.entries(statusObraLabels).map(([value, label]) => (
-              <SelectItem key={value} value={value}>{label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {statusFilter !== 'all' && (
-          <button 
-            onClick={() => setStatusFilter('all')}
-            className="text-sm text-primary hover:underline"
-          >
-            Limpar filtro
-          </button>
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="flex items-center gap-4">
+          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusObra | 'all')}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Filtrar por status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todas as obras</SelectItem>
+              {Object.entries(statusObraLabels).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {statusFilter !== 'all' && (
+            <button 
+              onClick={() => setStatusFilter('all')}
+              className="text-sm text-primary hover:underline"
+            >
+              Limpar filtro
+            </button>
+          )}
+        </div>
+        {obras && obras.length > 0 && (
+          <ExportListButtons
+            data={obras.map(o => ({
+              titulo: o.titulo,
+              objeto: o.objeto,
+              status: statusObraLabels[o.status || 'em_andamento'],
+              valor_contratado: formatCurrency(o.valor_contratado),
+              empresa_executora: o.empresa_executora || '-',
+              localizacao: o.localizacao || '-',
+              percentual_execucao: o.percentual_execucao ? `${o.percentual_execucao}%` : '-',
+            }))}
+            filename="obras-publicas-ipubi"
+            columns={[
+              { key: 'titulo', label: 'Título' },
+              { key: 'objeto', label: 'Objeto' },
+              { key: 'status', label: 'Status' },
+              { key: 'valor_contratado', label: 'Valor Contratado' },
+              { key: 'empresa_executora', label: 'Empresa' },
+              { key: 'localizacao', label: 'Localização' },
+              { key: 'percentual_execucao', label: 'Execução' },
+            ]}
+          />
         )}
       </div>
 

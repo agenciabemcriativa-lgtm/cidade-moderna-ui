@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { ExportListButtons } from '@/components/portal/ExportListButtons';
 
 const tipoIcons: Record<TipoBemPublico, React.ReactNode> = {
   imovel: <Building className="w-5 h-5" />,
@@ -141,25 +142,49 @@ export default function PatrimonioPublicoPage() {
       </Card>
 
       {/* Filter */}
-      <div className="flex items-center gap-4 mb-6">
-        <Select value={tipoFilter} onValueChange={(v) => setTipoFilter(v as TipoBemPublico | 'all')}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Filtrar por tipo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os tipos</SelectItem>
-            {Object.entries(tipoBemPublicoLabels).map(([value, label]) => (
-              <SelectItem key={value} value={value}>{label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {tipoFilter !== 'all' && (
-          <button 
-            onClick={() => setTipoFilter('all')}
-            className="text-sm text-primary hover:underline"
-          >
-            Limpar filtro
-          </button>
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="flex items-center gap-4">
+          <Select value={tipoFilter} onValueChange={(v) => setTipoFilter(v as TipoBemPublico | 'all')}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Filtrar por tipo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os tipos</SelectItem>
+              {Object.entries(tipoBemPublicoLabels).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {tipoFilter !== 'all' && (
+            <button 
+              onClick={() => setTipoFilter('all')}
+              className="text-sm text-primary hover:underline"
+            >
+              Limpar filtro
+            </button>
+          )}
+        </div>
+        
+        {patrimonio && patrimonio.length > 0 && (
+          <ExportListButtons
+            data={patrimonio.map(p => ({
+              tipo: tipoBemPublicoLabels[p.tipo],
+              descricao: p.descricao,
+              situacao: situacaoBemLabels[p.situacao || 'bom'],
+              valor: formatCurrency(p.valor_atual || p.valor_aquisicao),
+              localizacao: p.localizacao_atual || p.endereco || '-',
+              secretaria: p.secretaria_responsavel || '-',
+            }))}
+            filename="patrimonio-publico-ipubi"
+            columns={[
+              { key: 'tipo', label: 'Tipo' },
+              { key: 'descricao', label: 'Descrição' },
+              { key: 'situacao', label: 'Situação' },
+              { key: 'valor', label: 'Valor' },
+              { key: 'localizacao', label: 'Localização' },
+              { key: 'secretaria', label: 'Secretaria' },
+            ]}
+          />
         )}
       </div>
 

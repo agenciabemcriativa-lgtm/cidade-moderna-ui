@@ -28,6 +28,7 @@ import {
 } from "@/hooks/usePublicacoesOficiais";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { ExportListButtons } from "@/components/portal/ExportListButtons";
 
 const breadcrumbItems = [
   { label: "Publicações Oficiais" },
@@ -193,28 +194,54 @@ export default function PublicacoesOficiaisPage() {
               </Select>
             </div>
 
-            {/* Secretaria filter + Clear */}
-            <div className="flex flex-col md:flex-row gap-4 mt-4">
-              <div className="flex-1 md:max-w-xs">
-                <Select value={selectedSecretaria || "__all__"} onValueChange={(v) => setSelectedSecretaria(v === "__all__" ? "" : v)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Secretaria / Órgão" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="__all__">Todas as secretarias</SelectItem>
-                    {secretarias?.map((sec) => (
-                      <SelectItem key={sec.id} value={sec.id}>
-                        {sec.nome}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            {/* Secretaria filter + Clear + Export */}
+            <div className="flex flex-col md:flex-row gap-4 mt-4 justify-between">
+              <div className="flex flex-wrap gap-4 items-center">
+                <div className="w-full md:w-auto md:min-w-[200px]">
+                  <Select value={selectedSecretaria || "__all__"} onValueChange={(v) => setSelectedSecretaria(v === "__all__" ? "" : v)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Secretaria / Órgão" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__all__">Todas as secretarias</SelectItem>
+                      {secretarias?.map((sec) => (
+                        <SelectItem key={sec.id} value={sec.id}>
+                          {sec.nome}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              {hasFilters && (
-                <Button variant="outline" onClick={clearFilters}>
-                  Limpar filtros
-                </Button>
+                {hasFilters && (
+                  <Button variant="outline" onClick={clearFilters}>
+                    Limpar filtros
+                  </Button>
+                )}
+              </div>
+              
+              {publicacoes && publicacoes.length > 0 && (
+                <ExportListButtons
+                  data={publicacoes.map(p => ({
+                    numero: `${p.numero}/${p.ano}`,
+                    tipo: tipoLabels[p.tipo],
+                    titulo: p.titulo,
+                    ementa: p.ementa,
+                    situacao: situacaoLabels[p.situacao],
+                    data_publicacao: format(new Date(p.data_publicacao), 'dd/MM/yyyy', { locale: ptBR }),
+                    secretaria: p.secretaria_nome || '-',
+                  }))}
+                  filename={`publicacoes-oficiais-${selectedAno || 'todas'}`}
+                  columns={[
+                    { key: 'numero', label: 'Número' },
+                    { key: 'tipo', label: 'Tipo' },
+                    { key: 'titulo', label: 'Título' },
+                    { key: 'ementa', label: 'Ementa' },
+                    { key: 'situacao', label: 'Situação' },
+                    { key: 'data_publicacao', label: 'Data Publicação' },
+                    { key: 'secretaria', label: 'Secretaria' },
+                  ]}
+                />
               )}
             </div>
           </div>

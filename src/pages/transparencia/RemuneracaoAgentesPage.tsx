@@ -10,6 +10,7 @@ import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLay
 import { useRemuneracaoAgentes, CargoAgentePolitico, cargoAgentePoliticoLabels, mesesLabels } from '@/hooks/useRemuneracaoAgentes';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { ExportListButtons } from '@/components/portal/ExportListButtons';
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -96,29 +97,57 @@ export default function RemuneracaoAgentesPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-4 mb-6">
-        <Select value={ano} onValueChange={setAno}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Ano" />
-          </SelectTrigger>
-          <SelectContent>
-            {years.map((year) => (
-              <SelectItem key={year} value={String(year)}>{year}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <Select value={ano} onValueChange={setAno}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="Ano" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map((year) => (
+                <SelectItem key={year} value={String(year)}>{year}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select value={mes} onValueChange={setMes}>
-          <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="Mês" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os meses</SelectItem>
-            {Object.entries(mesesLabels).map(([value, label]) => (
-              <SelectItem key={value} value={value}>{label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Select value={mes} onValueChange={setMes}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Mês" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os meses</SelectItem>
+              {Object.entries(mesesLabels).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        
+        {agentes && agentes.length > 0 && (
+          <ExportListButtons
+            data={agentes.map(a => ({
+              nome: a.nome,
+              cargo: a.cargo_descricao || cargoAgentePoliticoLabels[a.cargo],
+              secretaria: a.secretaria || '-',
+              mes_ano: `${mesesLabels[a.mes_referencia]}/${a.ano_referencia}`,
+              subsidio_mensal: formatCurrency(a.subsidio_mensal),
+              verba_representacao: formatCurrency(a.verba_representacao),
+              outros_valores: formatCurrency(a.outros_valores),
+              total_bruto: formatCurrency(a.total_bruto || (a.subsidio_mensal + (a.verba_representacao || 0) + (a.outros_valores || 0))),
+            }))}
+            filename={`remuneracao-agentes-${ano}`}
+            columns={[
+              { key: 'nome', label: 'Nome' },
+              { key: 'cargo', label: 'Cargo' },
+              { key: 'secretaria', label: 'Secretaria' },
+              { key: 'mes_ano', label: 'Mês/Ano' },
+              { key: 'subsidio_mensal', label: 'Subsídio Mensal' },
+              { key: 'verba_representacao', label: 'Verba Repr.' },
+              { key: 'outros_valores', label: 'Outros' },
+              { key: 'total_bruto', label: 'Total Bruto' },
+            ]}
+          />
+        )}
       </div>
 
       {/* Data Table */}

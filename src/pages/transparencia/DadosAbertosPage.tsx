@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { ExportListButtons } from '@/components/portal/ExportListButtons';
 
 const formatoIcons: Record<string, React.ReactNode> = {
   csv: <FileSpreadsheet className="w-5 h-5 text-green-600" />,
@@ -127,25 +128,49 @@ export default function DadosAbertosPage() {
       </div>
 
       {/* Filter */}
-      <div className="flex items-center gap-4 mb-6">
-        <Select value={categoriaFilter} onValueChange={(v) => setCategoriaFilter(v as CategoriaDadosAbertos | 'all')}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Filtrar por categoria" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas as categorias</SelectItem>
-            {Object.entries(categoriaDadosAbertosLabels).map(([value, label]) => (
-              <SelectItem key={value} value={value}>{label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {categoriaFilter !== 'all' && (
-          <button 
-            onClick={() => setCategoriaFilter('all')}
-            className="text-sm text-primary hover:underline"
-          >
-            Limpar filtro
-          </button>
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="flex items-center gap-4">
+          <Select value={categoriaFilter} onValueChange={(v) => setCategoriaFilter(v as CategoriaDadosAbertos | 'all')}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Filtrar por categoria" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todas as categorias</SelectItem>
+              {Object.entries(categoriaDadosAbertosLabels).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {categoriaFilter !== 'all' && (
+            <button 
+              onClick={() => setCategoriaFilter('all')}
+              className="text-sm text-primary hover:underline"
+            >
+              Limpar filtro
+            </button>
+          )}
+        </div>
+        
+        {dados && dados.length > 0 && (
+          <ExportListButtons
+            data={dados.map(d => ({
+              titulo: d.titulo,
+              categoria: categoriaDadosAbertosLabels[d.categoria],
+              formato: formatoArquivoLabels[d.formato],
+              ultima_atualizacao: formatDate(d.ultima_atualizacao),
+              periodicidade: d.periodicidade || '-',
+              arquivo_url: d.arquivo_url,
+            }))}
+            filename="dados-abertos-ipubi"
+            columns={[
+              { key: 'titulo', label: 'Título' },
+              { key: 'categoria', label: 'Categoria' },
+              { key: 'formato', label: 'Formato' },
+              { key: 'ultima_atualizacao', label: 'Última Atualização' },
+              { key: 'periodicidade', label: 'Periodicidade' },
+              { key: 'arquivo_url', label: 'URL' },
+            ]}
+          />
         )}
       </div>
 
