@@ -140,6 +140,122 @@ export type Database = {
         }
         Relationships: []
       }
+      carta_servicos: {
+        Row: {
+          base_legal: string | null
+          canal_acesso: string | null
+          categoria: string
+          created_at: string | null
+          created_by: string | null
+          custos_taxas: string | null
+          descricao: string
+          destaque: boolean | null
+          documentos_necessarios: string | null
+          email: string | null
+          etapas_atendimento: string | null
+          forma_prestacao: string
+          gratuito: boolean | null
+          horario_atendimento: string | null
+          id: string
+          local_atendimento: string | null
+          mecanismo_consulta: string | null
+          ordem: number | null
+          orgao_responsavel: string | null
+          prazo_maximo: string | null
+          prazo_medio: string | null
+          prioridades_atendimento: string | null
+          procedimento_manifestacao: string | null
+          publicado: boolean | null
+          requisitos: string | null
+          secretaria_id: string | null
+          site_url: string | null
+          slug: string
+          telefone: string | null
+          tempo_espera_estimado: string | null
+          titulo: string
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          base_legal?: string | null
+          canal_acesso?: string | null
+          categoria: string
+          created_at?: string | null
+          created_by?: string | null
+          custos_taxas?: string | null
+          descricao: string
+          destaque?: boolean | null
+          documentos_necessarios?: string | null
+          email?: string | null
+          etapas_atendimento?: string | null
+          forma_prestacao?: string
+          gratuito?: boolean | null
+          horario_atendimento?: string | null
+          id?: string
+          local_atendimento?: string | null
+          mecanismo_consulta?: string | null
+          ordem?: number | null
+          orgao_responsavel?: string | null
+          prazo_maximo?: string | null
+          prazo_medio?: string | null
+          prioridades_atendimento?: string | null
+          procedimento_manifestacao?: string | null
+          publicado?: boolean | null
+          requisitos?: string | null
+          secretaria_id?: string | null
+          site_url?: string | null
+          slug: string
+          telefone?: string | null
+          tempo_espera_estimado?: string | null
+          titulo: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          base_legal?: string | null
+          canal_acesso?: string | null
+          categoria?: string
+          created_at?: string | null
+          created_by?: string | null
+          custos_taxas?: string | null
+          descricao?: string
+          destaque?: boolean | null
+          documentos_necessarios?: string | null
+          email?: string | null
+          etapas_atendimento?: string | null
+          forma_prestacao?: string
+          gratuito?: boolean | null
+          horario_atendimento?: string | null
+          id?: string
+          local_atendimento?: string | null
+          mecanismo_consulta?: string | null
+          ordem?: number | null
+          orgao_responsavel?: string | null
+          prazo_maximo?: string | null
+          prazo_medio?: string | null
+          prioridades_atendimento?: string | null
+          procedimento_manifestacao?: string | null
+          publicado?: boolean | null
+          requisitos?: string | null
+          secretaria_id?: string | null
+          site_url?: string | null
+          slug?: string
+          telefone?: string | null
+          tempo_espera_estimado?: string | null
+          titulo?: string
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "carta_servicos_secretaria_id_fkey"
+            columns: ["secretaria_id"]
+            isOneToOne: false
+            referencedRelation: "secretarias"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       configuracoes: {
         Row: {
           chave: string
