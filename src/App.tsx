@@ -24,6 +24,7 @@ import OrganogramaPage from "./pages/OrganogramaPage";
 import MapaSitePage from "./pages/MapaSitePage";
 import AcessibilidadePage from "./pages/AcessibilidadePage";
 import PerguntasFrequentesPage from "./pages/PerguntasFrequentesPage";
+import PoliticaPrivacidadePage from "./pages/PoliticaPrivacidadePage";
 import PublicacoesOficiaisPage from "./pages/PublicacoesOficiaisPage";
 import PublicacaoOficialPage from "./pages/PublicacaoOficialPage";
 import LegislacaoPage from "./pages/LegislacaoPage";
@@ -113,6 +114,7 @@ const App = () => (
             <Route path="/mapa-do-site" element={<MapaSitePage />} />
             <Route path="/acessibilidade" element={<AcessibilidadePage />} />
             <Route path="/perguntas-frequentes" element={<PerguntasFrequentesPage />} />
+            <Route path="/politica-de-privacidade" element={<PoliticaPrivacidadePage />} />
             <Route path="/transparencia" element={<TransparenciaPage />} />
             <Route path="/transparencia/despesas" element={<DespesasPage />} />
             <Route path="/transparencia/receitas" element={<ReceitasPage />} />

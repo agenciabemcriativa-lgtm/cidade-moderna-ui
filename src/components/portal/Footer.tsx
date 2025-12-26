@@ -28,6 +28,7 @@ const quickLinks = [
   { label: "Contato", href: "/contato", external: false },
   { label: "Acessibilidade", href: "/acessibilidade", external: false },
   { label: "Mapa do Site", href: "/mapa-do-site", external: false },
+  { label: "Política de Privacidade", href: "/politica-de-privacidade", external: false },
 ];
 
 const socialLinks = [
