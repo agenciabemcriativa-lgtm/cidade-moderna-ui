@@ -53,6 +53,7 @@ export function usePagination<T>(
   const handleSetCurrentPage = useCallback((page: number) => {
     const validPage = Math.max(1, Math.min(page, totalPages));
     setCurrentPage(validPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [totalPages]);
 
   const handleSetItemsPerPage = useCallback((items: number) => {
