@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
@@ -28,6 +28,8 @@ import {
   StatusLicitacao,
 } from "@/hooks/useLicitacoes";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ListPagination } from "@/components/ui/list-pagination";
+import { usePagination } from "@/hooks/usePagination";
 
 export default function LicitacoesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,6 +45,13 @@ export default function LicitacoesPage() {
     status: status as StatusLicitacao || undefined,
     busca: searchTerm || undefined,
   });
+
+  const pagination = usePagination(licitacoes, { initialItemsPerPage: 10 });
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [searchTerm, ano, modalidade, status]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,7 +194,7 @@ export default function LicitacoesPage() {
                   {licitacoes.length} processo(s) encontrado(s)
                 </p>
                 <div className="grid gap-4">
-                  {licitacoes.map((licitacao) => (
+                  {pagination.paginatedItems.map((licitacao) => (
                     <Link key={licitacao.id} to={`/licitacao/${licitacao.id}`}>
                       <Card className="hover:shadow-md transition-shadow cursor-pointer">
                         <CardContent className="p-6">
@@ -237,6 +246,19 @@ export default function LicitacoesPage() {
                     </Link>
                   ))}
                 </div>
+                <ListPagination
+                  currentPage={pagination.currentPage}
+                  totalPages={pagination.totalPages}
+                  totalItems={pagination.totalItems}
+                  startIndex={pagination.startIndex}
+                  endIndex={pagination.endIndex}
+                  itemsPerPage={pagination.itemsPerPage}
+                  onPageChange={pagination.setCurrentPage}
+                  onItemsPerPageChange={pagination.setItemsPerPage}
+                  isFirstPage={pagination.isFirstPage}
+                  isLastPage={pagination.isLastPage}
+                  itemLabel="processo"
+                />
               </>
             ) : (
               <Card>

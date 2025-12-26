@@ -6,7 +6,9 @@ import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { useNoticias } from "@/hooks/useNoticias";
 import { Calendar, Search, X } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import { ListPagination } from "@/components/ui/list-pagination";
+import { usePagination } from "@/hooks/usePagination";
 
 // Mapeamento de cores para garantir que o Tailwind inclua as classes
 const categoryColorMap: Record<string, string> = {
@@ -44,6 +46,13 @@ export default function NoticiasPage() {
         noticia.category.toLowerCase().includes(query)
     );
   }, [noticias, searchQuery]);
+
+  const pagination = usePagination(filteredNoticias, { initialItemsPerPage: 12 });
+
+  // Reset to page 1 when search changes
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [searchQuery]);
 
   const clearSearch = () => {
     setSearchParams({});
@@ -130,43 +139,60 @@ export default function NoticiasPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredNoticias?.map((noticia) => (
-                  <Link
-                    key={noticia.id}
-                    to={`/noticia/${noticia.slug}`}
-                    className="group bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
-                  >
-                    <div className="aspect-video overflow-hidden">
-                      <img
-                        src={noticia.image}
-                        alt={noticia.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span
-                          className={`text-xs font-semibold px-2.5 py-1.5 rounded-full text-white shadow-sm ${getCategoryColor(noticia.categoryColor)}`}
-                        >
-                          {noticia.category}
-                        </span>
-                        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <Calendar className="h-3.5 w-3.5" />
-                          {noticia.date}
-                        </span>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {pagination.paginatedItems?.map((noticia) => (
+                    <Link
+                      key={noticia.id}
+                      to={`/noticia/${noticia.slug}`}
+                      className="group bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
+                    >
+                      <div className="aspect-video overflow-hidden">
+                        <img
+                          src={noticia.image}
+                          alt={noticia.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
-                      <h3 className="font-bold text-foreground text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                        {noticia.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm line-clamp-3">
-                        {noticia.summary}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                      <div className="p-5">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span
+                            className={`text-xs font-semibold px-2.5 py-1.5 rounded-full text-white shadow-sm ${getCategoryColor(noticia.categoryColor)}`}
+                          >
+                            {noticia.category}
+                          </span>
+                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Calendar className="h-3.5 w-3.5" />
+                            {noticia.date}
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-foreground text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                          {noticia.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm line-clamp-3">
+                          {noticia.summary}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                {filteredNoticias && filteredNoticias.length > 0 && (
+                  <ListPagination
+                    currentPage={pagination.currentPage}
+                    totalPages={pagination.totalPages}
+                    totalItems={pagination.totalItems}
+                    startIndex={pagination.startIndex}
+                    endIndex={pagination.endIndex}
+                    itemsPerPage={pagination.itemsPerPage}
+                    onPageChange={pagination.setCurrentPage}
+                    onItemsPerPageChange={pagination.setItemsPerPage}
+                    isFirstPage={pagination.isFirstPage}
+                    isLastPage={pagination.isLastPage}
+                    itemLabel="notícia"
+                  />
+                )}
+              </>
             )}
           </div>
         </section>

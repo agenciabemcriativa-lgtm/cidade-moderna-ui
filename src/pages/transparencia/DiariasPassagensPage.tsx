@@ -11,6 +11,8 @@ import { useDiariasPassagens, TipoDiariaPassagem, tipoDiariaPassagemLabels } fro
 import { mesesLabels } from '@/hooks/useRemuneracaoAgentes';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { ListPagination } from '@/components/ui/list-pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -31,6 +33,13 @@ export default function DiariasPassagensPage() {
     mes !== 'all' ? Number(mes) : undefined,
     tipo !== 'all' ? tipo : undefined
   );
+
+  const pagination = usePagination(diarias, { initialItemsPerPage: 10 });
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    pagination.setCurrentPage(1);
+  }, [ano, mes, tipo]);
 
   useEffect(() => {
     document.title = 'Diárias e Passagens | Portal da Transparência - Ipubi';
@@ -200,7 +209,7 @@ export default function DiariasPassagensPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {diarias.map((diaria) => (
+                  {pagination.paginatedItems.map((diaria) => (
                     <TableRow key={diaria.id}>
                       <TableCell>
                         <div>
@@ -255,6 +264,19 @@ export default function DiariasPassagensPage() {
                 </TableBody>
               </Table>
             </div>
+            <ListPagination
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
+              totalItems={pagination.totalItems}
+              startIndex={pagination.startIndex}
+              endIndex={pagination.endIndex}
+              itemsPerPage={pagination.itemsPerPage}
+              onPageChange={pagination.setCurrentPage}
+              onItemsPerPageChange={pagination.setItemsPerPage}
+              isFirstPage={pagination.isFirstPage}
+              isLastPage={pagination.isLastPage}
+              itemLabel="registro"
+            />
           </CardContent>
         </Card>
       ) : (
