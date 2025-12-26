@@ -94,15 +94,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         {/* Sidebar */}
         <aside className={`
           fixed lg:static inset-y-0 left-0 z-50
-          w-64 bg-card border-r transform transition-transform duration-300
+          w-64 bg-card border-r transform transition-transform duration-300 flex flex-col
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
-          <div className="p-6 border-b hidden lg:block">
+          <div className="p-6 border-b hidden lg:block flex-shrink-0">
             <img src={brasaoIpubi} alt="Brasão de Ipubi" className="h-12 mx-auto" />
             <p className="text-center text-sm font-semibold mt-2">Painel Admin</p>
           </div>
           
-          <nav className="p-4 space-y-2">
+          <nav className="flex-1 overflow-y-auto p-4 space-y-1">
             {menuItems.map((item) => {
               const isActive = location.pathname === item.href;
               return (
@@ -110,20 +110,20 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   key={item.href}
                   to={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${
                     isActive 
                       ? "bg-primary text-primary-foreground" 
                       : "hover:bg-muted"
                   }`}
                 >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
+                  <item.icon className="h-5 w-5 flex-shrink-0" />
+                  <span className="font-medium text-sm">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
-          <div className="absolute bottom-0 left-0 right-0 p-4 border-t">
+          <div className="flex-shrink-0 p-4 border-t bg-card">
             <p className="text-xs text-muted-foreground mb-2 truncate">{user.email}</p>
             <Button variant="outline" className="w-full" onClick={handleSignOut}>
               <LogOut className="h-4 w-4 mr-2" />
