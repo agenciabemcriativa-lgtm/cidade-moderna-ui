@@ -27,6 +27,7 @@ const menuItems = [
   { icon: Newspaper, label: "Notícias", href: "/admin/noticias" },
   { icon: Building2, label: "Secretarias", href: "/admin/secretarias" },
   { icon: Landmark, label: "O Governo", href: "/admin/governo" },
+  { icon: Building2, label: "Estrutura Organizacional", href: "/admin/estrutura-organizacional" },
   { icon: MapPin, label: "Município", href: "/admin/municipio" },
   { icon: Users, label: "Atendimento", href: "/admin/atendimento" },
   { icon: FileText, label: "Licitações", href: "/admin/licitacoes" },

@@ -6,6 +6,7 @@ import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Building2, 
   Users, 
@@ -21,116 +22,36 @@ import {
   Mail,
   User,
   GitBranch,
-  ChevronRight
+  ChevronRight,
+  Shield,
+  Briefcase,
+  Scale
 } from "lucide-react";
+import {
+  useOrgaosAdministracao,
+  useUnidadesVinculadas,
+} from "@/hooks/useEstruturaOrganizacional";
 
-const orgaosAdministracao = [
-  {
-    nome: "Gabinete do Prefeito",
-    icone: Building2,
-    competencia: "Assessoramento direto ao Chefe do Poder Executivo Municipal na direção superior da administração municipal.",
-    responsavel: "Prefeito Municipal",
-    contato: "(87) 3831-1156",
-    email: "gabinete@ipubi.pe.gov.br",
-    baseLegal: "Lei Orgânica Municipal"
-  },
-  {
-    nome: "Secretaria Municipal de Administração",
-    icone: Users,
-    competencia: "Gestão de pessoal, recursos humanos, patrimônio público, serviços gerais e administração de contratos.",
-    responsavel: "Secretário(a) de Administração",
-    contato: "(87) 3831-1156",
-    email: "administracao@ipubi.pe.gov.br",
-    baseLegal: "Lei Municipal de Estrutura Administrativa"
-  },
-  {
-    nome: "Secretaria Municipal de Finanças",
-    icone: Wallet,
-    competencia: "Gestão financeira, orçamentária, tributária, contabilidade e controle fiscal do município.",
-    responsavel: "Secretário(a) de Finanças",
-    contato: "(87) 3831-1156",
-    email: "financas@ipubi.pe.gov.br",
-    baseLegal: "Lei Municipal de Estrutura Administrativa"
-  },
-  {
-    nome: "Secretaria Municipal de Saúde",
-    icone: Heart,
-    competencia: "Planejamento, coordenação e execução das políticas públicas de saúde no âmbito municipal.",
-    responsavel: "Secretário(a) de Saúde",
-    contato: "(87) 3831-1156",
-    email: "saude@ipubi.pe.gov.br",
-    baseLegal: "Lei Municipal de Estrutura Administrativa"
-  },
-  {
-    nome: "Secretaria Municipal de Educação",
-    icone: GraduationCap,
-    competencia: "Gestão da educação básica municipal, incluindo educação infantil e ensino fundamental.",
-    responsavel: "Secretário(a) de Educação",
-    contato: "(87) 3831-1156",
-    email: "educacao@ipubi.pe.gov.br",
-    baseLegal: "Lei Municipal de Estrutura Administrativa"
-  },
-  {
-    nome: "Secretaria Municipal de Assistência Social",
-    icone: HandHeart,
-    competencia: "Coordenação e execução das políticas de assistência social, proteção básica e especial.",
-    responsavel: "Secretário(a) de Assistência Social",
-    contato: "(87) 3831-1156",
-    email: "assistenciasocial@ipubi.pe.gov.br",
-    baseLegal: "Lei Municipal de Estrutura Administrativa"
-  },
-  {
-    nome: "Secretaria Municipal de Infraestrutura",
-    icone: HardHat,
-    competencia: "Obras públicas, urbanismo, transporte, manutenção de vias e equipamentos urbanos.",
-    responsavel: "Secretário(a) de Infraestrutura",
-    contato: "(87) 3831-1156",
-    email: "infraestrutura@ipubi.pe.gov.br",
-    baseLegal: "Lei Municipal de Estrutura Administrativa"
-  },
-  {
-    nome: "Secretaria Municipal de Agricultura",
-    icone: Wheat,
-    competencia: "Políticas de fomento à agricultura familiar, abastecimento e desenvolvimento rural.",
-    responsavel: "Secretário(a) de Agricultura",
-    contato: "(87) 3831-1156",
-    email: "agricultura@ipubi.pe.gov.br",
-    baseLegal: "Lei Municipal de Estrutura Administrativa"
-  },
-];
-
-const unidadesVinculadas = [
-  {
-    secretaria: "Secretaria Municipal de Saúde",
-    icone: Heart,
-    unidades: [
-      "Unidades Básicas de Saúde (UBS)",
-      "Centro de Atenção Psicossocial (CAPS)",
-      "Hospital/Unidade Mista",
-      "Academia da Saúde",
-      "Núcleo Ampliado de Saúde da Família (NASF)"
-    ]
-  },
-  {
-    secretaria: "Secretaria Municipal de Assistência Social",
-    icone: HandHeart,
-    unidades: [
-      "Centro de Referência de Assistência Social (CRAS)",
-      "Centro de Referência Especializado de Assistência Social (CREAS)",
-      "Conselho Tutelar"
-    ]
-  },
-  {
-    secretaria: "Secretaria Municipal de Educação",
-    icone: GraduationCap,
-    unidades: [
-      "Escolas Municipais",
-      "Creches e Centros de Educação Infantil"
-    ]
-  }
-];
+// Mapa de ícones
+const iconMap: Record<string, React.ElementType> = {
+  Building2,
+  Users,
+  Wallet,
+  Heart,
+  GraduationCap,
+  HandHeart,
+  HardHat,
+  Wheat,
+  Shield,
+  FileText,
+  Briefcase,
+  Scale,
+};
 
 export default function EstruturaOrganizacionalPage() {
+  const { data: orgaos, isLoading: loadingOrgaos } = useOrgaosAdministracao();
+  const { data: unidades, isLoading: loadingUnidades } = useUnidadesVinculadas();
+
   return (
     <div className="min-h-screen bg-background">
       <TopBar />
@@ -174,57 +95,86 @@ export default function EstruturaOrganizacionalPage() {
               </h2>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
-              {orgaosAdministracao.map((orgao, index) => {
-                const IconComponent = orgao.icone;
-                return (
-                  <Card key={index} className="hover:shadow-lg transition-shadow">
+            {loadingOrgaos ? (
+              <div className="grid md:grid-cols-2 gap-6">
+                {[...Array(4)].map((_, i) => (
+                  <Card key={i}>
                     <CardHeader className="pb-4">
                       <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-lg bg-primary/10">
-                          <IconComponent className="w-6 h-6 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-lg text-foreground">
-                            {orgao.nome}
-                          </CardTitle>
-                        </div>
+                        <Skeleton className="h-12 w-12 rounded-lg" />
+                        <Skeleton className="h-6 w-48" />
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {orgao.competencia}
-                      </p>
-                      
-                      <div className="space-y-2 pt-2 border-t border-border">
-                        <div className="flex items-center gap-2 text-sm">
-                          <User className="w-4 h-4 text-primary" />
-                          <span className="text-muted-foreground">Responsável:</span>
-                          <span className="text-foreground font-medium">{orgao.responsavel}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <Phone className="w-4 h-4 text-primary" />
-                          <span className="text-muted-foreground">Contato:</span>
-                          <span className="text-foreground">{orgao.contato}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <Mail className="w-4 h-4 text-primary" />
-                          <span className="text-muted-foreground">E-mail:</span>
-                          <a href={`mailto:${orgao.email}`} className="text-primary hover:underline">
-                            {orgao.email}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <FileText className="w-4 h-4 text-primary" />
-                          <span className="text-muted-foreground">Base Legal:</span>
-                          <span className="text-foreground">{orgao.baseLegal}</span>
-                        </div>
-                      </div>
+                    <CardContent>
+                      <Skeleton className="h-4 w-full mb-2" />
+                      <Skeleton className="h-4 w-3/4" />
                     </CardContent>
                   </Card>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-6">
+                {orgaos?.map((orgao) => {
+                  const IconComponent = iconMap[orgao.icone] || Building2;
+                  return (
+                    <Card key={orgao.id} className="hover:shadow-lg transition-shadow">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-start gap-4">
+                          <div className="p-3 rounded-lg bg-primary/10">
+                            <IconComponent className="w-6 h-6 text-primary" />
+                          </div>
+                          <div className="flex-1">
+                            <CardTitle className="text-lg text-foreground">
+                              {orgao.nome}
+                            </CardTitle>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {orgao.competencia && (
+                          <p className="text-muted-foreground text-sm leading-relaxed">
+                            {orgao.competencia}
+                          </p>
+                        )}
+                        
+                        <div className="space-y-2 pt-2 border-t border-border">
+                          {orgao.responsavel && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <User className="w-4 h-4 text-primary" />
+                              <span className="text-muted-foreground">Responsável:</span>
+                              <span className="text-foreground font-medium">{orgao.responsavel}</span>
+                            </div>
+                          )}
+                          {orgao.contato && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Phone className="w-4 h-4 text-primary" />
+                              <span className="text-muted-foreground">Contato:</span>
+                              <span className="text-foreground">{orgao.contato}</span>
+                            </div>
+                          )}
+                          {orgao.email && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Mail className="w-4 h-4 text-primary" />
+                              <span className="text-muted-foreground">E-mail:</span>
+                              <a href={`mailto:${orgao.email}`} className="text-primary hover:underline">
+                                {orgao.email}
+                              </a>
+                            </div>
+                          )}
+                          {orgao.base_legal && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <FileText className="w-4 h-4 text-primary" />
+                              <span className="text-muted-foreground">Base Legal:</span>
+                              <span className="text-foreground">{orgao.base_legal}</span>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
 
@@ -243,35 +193,56 @@ export default function EstruturaOrganizacionalPage() {
               Secretarias Municipais, responsáveis pela execução das políticas públicas no âmbito local.
             </p>
             
-            <div className="grid md:grid-cols-3 gap-6">
-              {unidadesVinculadas.map((item, index) => {
-                const IconComponent = item.icone;
-                return (
-                  <Card key={index} className="bg-card">
+            {loadingUnidades ? (
+              <div className="grid md:grid-cols-3 gap-6">
+                {[...Array(3)].map((_, i) => (
+                  <Card key={i}>
                     <CardHeader>
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <IconComponent className="w-5 h-5 text-primary" />
-                        </div>
-                        <CardTitle className="text-base text-foreground">
-                          {item.secretaria}
-                        </CardTitle>
+                        <Skeleton className="h-9 w-9 rounded-lg" />
+                        <Skeleton className="h-5 w-32" />
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-2">
-                        {item.unidades.map((unidade, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                            <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                            <span>{unidade}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <Skeleton className="h-4 w-full mb-2" />
+                      <Skeleton className="h-4 w-3/4" />
                     </CardContent>
                   </Card>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-6">
+                {unidades?.map((unidade) => {
+                  const IconComponent = iconMap[unidade.icone] || Building2;
+                  return (
+                    <Card key={unidade.id} className="bg-card">
+                      <CardHeader>
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-primary/10">
+                            <IconComponent className="w-5 h-5 text-primary" />
+                          </div>
+                          <CardTitle className="text-base text-foreground">
+                            {unidade.secretaria}
+                          </CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        {unidade.itens && unidade.itens.length > 0 && (
+                          <ul className="space-y-2">
+                            {unidade.itens.map((item) => (
+                              <li key={item.id} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                                <span>{item.nome}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
 
