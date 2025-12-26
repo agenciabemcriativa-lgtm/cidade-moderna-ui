@@ -17,7 +17,8 @@ import {
   MapPin,
   Users,
   BookOpen,
-  Shield
+  Shield,
+  HelpCircle
 } from "lucide-react";
 import { useState } from "react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
@@ -32,6 +33,7 @@ const menuItems = [
   { icon: FileText, label: "Diárias e Passagens", href: "/admin/diarias-passagens" },
   { icon: Users, label: "e-SIC", href: "/admin/esic" },
   { icon: Building2, label: "Estrutura Organizacional", href: "/admin/estrutura-organizacional" },
+  { icon: HelpCircle, label: "FAQ", href: "/admin/faq" },
   { icon: BookOpen, label: "Legislação", href: "/admin/legislacao" },
   { icon: FileText, label: "Licitações", href: "/admin/licitacoes" },
   { icon: MapPin, label: "Município", href: "/admin/municipio" },

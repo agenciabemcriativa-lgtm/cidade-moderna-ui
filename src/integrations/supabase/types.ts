@@ -671,6 +671,77 @@ export type Database = {
         }
         Relationships: []
       }
+      faq_categorias: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          icone: string
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          icone?: string
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          icone?: string
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      faq_perguntas: {
+        Row: {
+          ativo: boolean | null
+          categoria_id: string
+          created_at: string | null
+          id: string
+          ordem: number | null
+          pergunta: string
+          resposta: string
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          categoria_id: string
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          pergunta: string
+          resposta: string
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          categoria_id?: string
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          pergunta?: string
+          resposta?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "faq_perguntas_categoria_id_fkey"
+            columns: ["categoria_id"]
+            isOneToOne: false
+            referencedRelation: "faq_categorias"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       governo_itens: {
         Row: {
           ativo: boolean | null
