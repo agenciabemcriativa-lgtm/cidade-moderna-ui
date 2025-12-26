@@ -32,7 +32,7 @@ const relatoriosTipos = [
 ];
 
 const currentYear = new Date().getFullYear();
-const years = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4];
+const years = Array.from({ length: currentYear - 2013 }, (_, i) => currentYear - i);
 
 const tipoCardStyles: Record<TipoRelatorioFiscal, { bg: string; border: string; text: string; icon: string }> = {
   rreo: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-800', icon: 'text-blue-600' },
