@@ -29,6 +29,7 @@ const servicosCidadao: { category: string; items: ServicoItem[] }[] = [
   {
     category: "Serviços Digitais",
     items: [
+      { label: "Carta de Serviços", href: "/carta-de-servicos", external: false },
       { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
       { label: "Publicações Oficiais", href: "/publicacoes-oficiais", external: false },
       { label: "Licitações", href: "/licitacoes", external: false },
