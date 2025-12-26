@@ -11,6 +11,7 @@ import { useRemuneracaoAgentes, CargoAgentePolitico, cargoAgentePoliticoLabels, 
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { ExportListButtons } from '@/components/portal/ExportListButtons';
+import { LastUpdated } from '@/components/portal/LastUpdated';
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -63,6 +64,18 @@ export default function RemuneracaoAgentesPage() {
       title="Remuneração de Agentes Políticos"
       description="Subsídios mensais do Prefeito, Vice-Prefeito e Secretários Municipais"
     >
+      {/* Last Updated */}
+      {agentes && agentes.length > 0 && (
+        <div className="mb-6">
+          <LastUpdated 
+            date={agentes.reduce((latest, a) => 
+              a.updated_at && new Date(a.updated_at) > new Date(latest || 0) ? a.updated_at : latest, 
+              agentes[0].updated_at
+            )}
+          />
+        </div>
+      )}
+
       {/* Info Box */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
         <div className="flex items-start gap-3">

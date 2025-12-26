@@ -29,6 +29,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { ExportListButtons } from "@/components/portal/ExportListButtons";
+import { LastUpdated } from "@/components/portal/LastUpdated";
 
 const breadcrumbItems = [
   { label: "Publicações Oficiais" },
@@ -101,17 +102,30 @@ export default function PublicacoesOficiaisPage() {
         <section className="bg-gradient-to-br from-primary via-primary/90 to-secondary py-12 md:py-16">
           <div className="container mx-auto px-4">
             <Breadcrumbs items={breadcrumbItems} variant="light" className="mb-6" />
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <Scale className="h-8 w-8 text-white" />
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-white/10 rounded-lg">
+                    <Scale className="h-8 w-8 text-white" />
+                  </div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-white">
+                    Publicações Oficiais
+                  </h1>
+                </div>
+                <p className="text-white/90 max-w-2xl">
+                  Acesse leis, decretos, portarias e demais atos normativos do Município de Ipubi.
+                </p>
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">
-                Publicações Oficiais
-              </h1>
+              {publicacoes && publicacoes.length > 0 && (
+                <LastUpdated 
+                  date={publicacoes.reduce((latest, p) => 
+                    new Date(p.updated_at) > new Date(latest) ? p.updated_at : latest, 
+                    publicacoes[0].updated_at
+                  )}
+                  className="text-white/80"
+                />
+              )}
             </div>
-            <p className="text-white/90 max-w-2xl">
-              Acesse leis, decretos, portarias e demais atos normativos do Município de Ipubi.
-            </p>
           </div>
         </section>
 

@@ -24,6 +24,8 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useDocumentosLegislacao, DocumentoLegislacao } from "@/hooks/useDocumentosLegislacao";
+import { LastUpdated } from "@/components/portal/LastUpdated";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 
 const breadcrumbItems = [
   { label: "Legislação", href: "/legislacao" },

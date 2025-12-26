@@ -19,6 +19,7 @@ import {
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { ExportListButtons } from '@/components/portal/ExportListButtons';
+import { LastUpdated } from '@/components/portal/LastUpdated';
 
 const relatoriosTipos = [
   { value: 'rreo', label: 'RREO - Relatório Resumido' },
@@ -108,6 +109,17 @@ export default function RelatoriosPage() {
       title="Relatórios Fiscais"
       description="RREO, RGF, Pareceres do TCE e Prestação de Contas"
     >
+      {/* Last Updated */}
+      {relatorios && relatorios.length > 0 && (
+        <div className="mb-6">
+          <LastUpdated 
+            date={relatorios.reduce((latest, r) => 
+              r.updated_at && new Date(r.updated_at) > new Date(latest || 0) ? r.updated_at : latest, 
+              relatorios[0].updated_at
+            )}
+          />
+        </div>
+      )}
       {/* Cards de resumo por tipo */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {Object.entries(tipoRelatorioLabels).map(([key, label]) => {

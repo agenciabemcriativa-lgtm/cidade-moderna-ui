@@ -12,6 +12,7 @@ import { ptBR } from 'date-fns/locale';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { ExportListButtons } from '@/components/portal/ExportListButtons';
+import { LastUpdated } from '@/components/portal/LastUpdated';
 
 const formatoIcons: Record<string, React.ReactNode> = {
   csv: <FileSpreadsheet className="w-5 h-5 text-green-600" />,
@@ -89,6 +90,17 @@ export default function DadosAbertosPage() {
       title="Dados Abertos"
       description="Arquivos em formatos reutilizáveis para download e análise"
     >
+      {/* Last Updated */}
+      {dados && dados.length > 0 && (
+        <div className="mb-6">
+          <LastUpdated 
+            date={dados.reduce((latest, d) => 
+              d.updated_at && new Date(d.updated_at) > new Date(latest || 0) ? d.updated_at : latest, 
+              dados[0].updated_at
+            )}
+          />
+        </div>
+      )}
       {/* Info Box */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
         <div className="flex items-start gap-3">

@@ -14,6 +14,7 @@ import { ptBR } from 'date-fns/locale';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { ExportListButtons } from '@/components/portal/ExportListButtons';
+import { LastUpdated } from '@/components/portal/LastUpdated';
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -73,6 +74,17 @@ export default function DiariasPassagensPage() {
       title="Diárias e Passagens"
       description="Despesas com diárias e passagens de servidores e agentes públicos"
     >
+      {/* Last Updated */}
+      {diarias && diarias.length > 0 && (
+        <div className="mb-6">
+          <LastUpdated 
+            date={diarias.reduce((latest, d) => 
+              d.updated_at && new Date(d.updated_at) > new Date(latest || 0) ? d.updated_at : latest, 
+              diarias[0].updated_at
+            )}
+          />
+        </div>
+      )}
       {/* Info Box */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
         <div className="flex items-start gap-3">
