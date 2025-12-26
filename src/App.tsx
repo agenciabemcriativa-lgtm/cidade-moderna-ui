@@ -71,6 +71,7 @@ import AdminDadosAbertos from "./pages/admin/AdminDadosAbertos";
 import AdminESic from "./pages/admin/AdminESic";
 import AdminESicDetalhe from "./pages/admin/AdminESicDetalhe";
 import AdminReceitasCategorias from "./pages/admin/AdminReceitasCategorias";
+import AdminEstruturaOrganizacional from "./pages/admin/AdminEstruturaOrganizacional";
 
 const queryClient = new QueryClient();
 
@@ -149,6 +150,7 @@ const App = () => (
             <Route path="/admin/esic" element={<AdminESic />} />
             <Route path="/admin/esic/:id" element={<AdminESicDetalhe />} />
             <Route path="/admin/receitas-categorias" element={<AdminReceitasCategorias />} />
+            <Route path="/admin/estrutura-organizacional" element={<AdminEstruturaOrganizacional />} />
             
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

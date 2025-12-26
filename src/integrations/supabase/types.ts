@@ -991,6 +991,51 @@ export type Database = {
         }
         Relationships: []
       }
+      orgaos_administracao: {
+        Row: {
+          ativo: boolean | null
+          base_legal: string | null
+          competencia: string | null
+          contato: string | null
+          created_at: string | null
+          email: string | null
+          icone: string
+          id: string
+          nome: string
+          ordem: number | null
+          responsavel: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          base_legal?: string | null
+          competencia?: string | null
+          contato?: string | null
+          created_at?: string | null
+          email?: string | null
+          icone?: string
+          id?: string
+          nome: string
+          ordem?: number | null
+          responsavel?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          base_legal?: string | null
+          competencia?: string | null
+          contato?: string | null
+          created_at?: string | null
+          email?: string | null
+          icone?: string
+          id?: string
+          nome?: string
+          ordem?: number | null
+          responsavel?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       patrimonio_publico: {
         Row: {
           ano_fabricacao: number | null
@@ -1543,6 +1588,71 @@ export type Database = {
           url?: string
         }
         Relationships: []
+      }
+      unidades_vinculadas: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          icone: string
+          id: string
+          ordem: number | null
+          secretaria: string
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          icone?: string
+          id?: string
+          ordem?: number | null
+          secretaria: string
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          icone?: string
+          id?: string
+          ordem?: number | null
+          secretaria?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      unidades_vinculadas_itens: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          id: string
+          nome: string
+          ordem: number | null
+          unidade_vinculada_id: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          nome: string
+          ordem?: number | null
+          unidade_vinculada_id: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          id?: string
+          nome?: string
+          ordem?: number | null
+          unidade_vinculada_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "unidades_vinculadas_itens_unidade_vinculada_id_fkey"
+            columns: ["unidade_vinculada_id"]
+            isOneToOne: false
+            referencedRelation: "unidades_vinculadas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
