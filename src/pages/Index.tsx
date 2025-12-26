@@ -7,6 +7,7 @@ import { ServicesGrid } from "@/components/portal/ServicesGrid";
 import { NewsSection } from "@/components/portal/NewsSection";
 import { PublicacoesCarousel } from "@/components/portal/PublicacoesCarousel";
 import { Footer } from "@/components/portal/Footer";
+import { CookieConsent } from "@/components/portal/CookieConsent";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
         <PublicacoesCarousel />
       </main>
       <Footer id="rodape" />
+      <CookieConsent />
     </div>
   );
 };
