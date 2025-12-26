@@ -1,8 +1,10 @@
 import { Link, useParams } from "react-router-dom";
+import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
+import { ExportMetadataButtons } from "@/components/portal/ExportMetadataButtons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,9 +52,22 @@ export default function DocumentoLegislacaoPage() {
     { label: documento?.titulo || "Documento" },
   ];
 
+  const exportData = documento ? {
+    titulo: documento.titulo,
+    tipo: tipoDocumentoLabels[documento.tipo],
+    ano: documento.ano,
+    data_publicacao: documento.data_publicacao,
+    vigente: documento.vigente ? 'Sim' : 'Não',
+    descricao: documento.descricao || '',
+    observacoes: documento.observacoes || '',
+    arquivo_nome: documento.arquivo_nome,
+    arquivo_url: documento.arquivo_url,
+  } : {};
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
@@ -67,6 +82,7 @@ export default function DocumentoLegislacaoPage() {
   if (!documento) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
+        <AccessibilityBar />
         <TopBar />
         <Header />
         <main className="flex-1 container mx-auto px-4 py-8">
@@ -93,6 +109,7 @@ export default function DocumentoLegislacaoPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <AccessibilityBar />
       <TopBar />
       <Header />
       
@@ -196,6 +213,13 @@ export default function DocumentoLegislacaoPage() {
                     Baixar PDF
                   </Button>
                 </a>
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-muted-foreground mb-2">Exportar metadados em:</p>
+                  <ExportMetadataButtons 
+                    data={exportData} 
+                    filename={documento.titulo} 
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
