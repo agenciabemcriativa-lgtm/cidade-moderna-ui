@@ -45,7 +45,7 @@ import {
 } from '@/hooks/useRelatoriosFiscais';
 
 const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+const years = Array.from({ length: currentYear - 2013 }, (_, i) => currentYear - i);
 
 export default function AdminRelatoriosFiscais() {
   const [dialogOpen, setDialogOpen] = useState(false);
