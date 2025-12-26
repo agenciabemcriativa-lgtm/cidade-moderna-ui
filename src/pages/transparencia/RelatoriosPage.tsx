@@ -18,6 +18,7 @@ import {
 } from '@/hooks/useRelatoriosFiscais';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { ExportListButtons } from '@/components/portal/ExportListButtons';
 
 const relatoriosTipos = [
   { value: 'rreo', label: 'RREO - Relatório Resumido' },
@@ -152,16 +153,40 @@ export default function RelatoriosPage() {
       </Alert>
 
       {/* Filtros */}
-      <FilterBar
-        searchValue={search}
-        onSearchChange={setSearch}
-        searchPlaceholder="Buscar relatório..."
-        onClearFilters={clearFilters}
-        showClearButton={search !== '' || ano !== 'all' || tipo !== 'all'}
-      >
-        <YearFilter value={ano} onChange={setAno} years={years} />
-        <TypeFilter value={tipo} onChange={setTipo} options={relatoriosTipos} placeholder="Tipo" />
-      </FilterBar>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <FilterBar
+          searchValue={search}
+          onSearchChange={setSearch}
+          searchPlaceholder="Buscar relatório..."
+          onClearFilters={clearFilters}
+          showClearButton={search !== '' || ano !== 'all' || tipo !== 'all'}
+        >
+          <YearFilter value={ano} onChange={setAno} years={years} />
+          <TypeFilter value={tipo} onChange={setTipo} options={relatoriosTipos} placeholder="Tipo" />
+        </FilterBar>
+        
+        {filteredRelatorios && filteredRelatorios.length > 0 && (
+          <ExportListButtons
+            data={filteredRelatorios.map(r => ({
+              titulo: r.titulo,
+              tipo: tipoRelatorioLabels[r.tipo],
+              ano: r.ano,
+              periodo: r.bimestre ? bimestreLabels[r.bimestre] : r.quadrimestre ? quadrimestreLabels[r.quadrimestre] : r.exercicio || '-',
+              data_publicacao: format(new Date(r.data_publicacao), 'dd/MM/yyyy', { locale: ptBR }),
+              arquivo_url: r.arquivo_url,
+            }))}
+            filename={`relatorios-fiscais-${ano !== 'all' ? ano : 'todos'}`}
+            columns={[
+              { key: 'titulo', label: 'Título' },
+              { key: 'tipo', label: 'Tipo' },
+              { key: 'ano', label: 'Ano' },
+              { key: 'periodo', label: 'Período' },
+              { key: 'data_publicacao', label: 'Data Publicação' },
+              { key: 'arquivo_url', label: 'URL' },
+            ]}
+          />
+        )}
+      </div>
 
       {/* Lista de Relatórios */}
       {isLoading ? (

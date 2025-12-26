@@ -31,6 +31,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ListPagination } from "@/components/ui/list-pagination";
 import { usePagination } from "@/hooks/usePagination";
+import { ExportListButtons } from "@/components/portal/ExportListButtons";
 
 export default function LicitacoesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -126,49 +127,75 @@ export default function LicitacoesPage() {
                 </Button>
               </div>
               
-              <div className="flex flex-wrap gap-3 items-center">
-                <Filter className="w-5 h-5 text-muted-foreground" />
+              <div className="flex flex-wrap gap-3 items-center justify-between">
+                <div className="flex flex-wrap gap-3 items-center">
+                  <Filter className="w-5 h-5 text-muted-foreground" />
+                  
+                  <Select value={ano} onValueChange={setAno}>
+                    <SelectTrigger className="w-[140px] bg-background">
+                      <SelectValue placeholder="Ano" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os anos</SelectItem>
+                      {anos?.map((a) => (
+                        <SelectItem key={a} value={String(a)}>{a}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={modalidade} onValueChange={setModalidade}>
+                    <SelectTrigger className="w-[200px] bg-background">
+                      <SelectValue placeholder="Modalidade" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas as modalidades</SelectItem>
+                      {Object.entries(modalidadeLabels).map(([key, label]) => (
+                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={status} onValueChange={setStatus}>
+                    <SelectTrigger className="w-[160px] bg-background">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os status</SelectItem>
+                      {Object.entries(statusLabels).map(([key, label]) => (
+                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {(searchTerm || ano || modalidade || status) && (
+                    <Button variant="ghost" size="sm" onClick={clearFilters}>
+                      Limpar filtros
+                    </Button>
+                  )}
+                </div>
                 
-                <Select value={ano} onValueChange={setAno}>
-                  <SelectTrigger className="w-[140px] bg-background">
-                    <SelectValue placeholder="Ano" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos os anos</SelectItem>
-                    {anos?.map((a) => (
-                      <SelectItem key={a} value={String(a)}>{a}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={modalidade} onValueChange={setModalidade}>
-                  <SelectTrigger className="w-[200px] bg-background">
-                    <SelectValue placeholder="Modalidade" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas as modalidades</SelectItem>
-                    {Object.entries(modalidadeLabels).map(([key, label]) => (
-                      <SelectItem key={key} value={key}>{label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={status} onValueChange={setStatus}>
-                  <SelectTrigger className="w-[160px] bg-background">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos os status</SelectItem>
-                    {Object.entries(statusLabels).map(([key, label]) => (
-                      <SelectItem key={key} value={key}>{label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                {(searchTerm || ano || modalidade || status) && (
-                  <Button variant="ghost" size="sm" onClick={clearFilters}>
-                    Limpar filtros
-                  </Button>
+                {licitacoes && licitacoes.length > 0 && (
+                  <ExportListButtons
+                    data={licitacoes.map(l => ({
+                      numero_processo: l.numero_processo,
+                      modalidade: modalidadeLabels[l.modalidade],
+                      status: statusLabels[l.status],
+                      objeto: l.objeto,
+                      data_abertura: format(parseISO(l.data_abertura), 'dd/MM/yyyy', { locale: ptBR }),
+                      valor_estimado: formatCurrency(l.valor_estimado) || '-',
+                      secretaria: l.secretaria_nome || '-',
+                    }))}
+                    filename={`licitacoes-${ano || 'todas'}`}
+                    columns={[
+                      { key: 'numero_processo', label: 'Nº Processo' },
+                      { key: 'modalidade', label: 'Modalidade' },
+                      { key: 'status', label: 'Status' },
+                      { key: 'objeto', label: 'Objeto' },
+                      { key: 'data_abertura', label: 'Data Abertura' },
+                      { key: 'valor_estimado', label: 'Valor Estimado' },
+                      { key: 'secretaria', label: 'Secretaria' },
+                    ]}
+                  />
                 )}
               </div>
             </form>

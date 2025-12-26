@@ -7,12 +7,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Download, FileJson, FileSpreadsheet, FileCode, FileText } from "lucide-react";
 
-interface ExportMetadataButtonsProps {
-  data: Record<string, unknown>;
+interface ExportListButtonsProps {
+  data: Record<string, unknown>[];
   filename: string;
+  columns?: { key: string; label: string }[];
 }
 
-export function ExportMetadataButtons({ data, filename }: ExportMetadataButtonsProps) {
+export function ExportListButtons({ data, filename, columns }: ExportListButtonsProps) {
   const sanitizeFilename = (name: string) => {
     return name
       .toLowerCase()
@@ -32,14 +33,27 @@ export function ExportMetadataButtons({ data, filename }: ExportMetadataButtonsP
     URL.revokeObjectURL(url);
   };
 
+  const getColumnKeys = () => {
+    if (columns) return columns.map(c => c.key);
+    if (data.length === 0) return [];
+    return Object.keys(data[0]);
+  };
+
+  const getColumnLabels = () => {
+    if (columns) return columns.map(c => c.label);
+    return getColumnKeys();
+  };
+
   const exportAsJSON = () => {
     const jsonContent = JSON.stringify(data, null, 2);
     downloadFile(jsonContent, 'json', 'application/json');
   };
 
   const exportAsCSV = () => {
-    const headers = Object.keys(data);
-    const values = Object.values(data).map(value => {
+    const keys = getColumnKeys();
+    const labels = getColumnLabels();
+    
+    const escapeCSV = (value: unknown): string => {
       if (value === null || value === undefined) return '';
       if (typeof value === 'object') return JSON.stringify(value);
       const stringValue = String(value);
@@ -47,13 +61,13 @@ export function ExportMetadataButtons({ data, filename }: ExportMetadataButtonsP
         return `"${stringValue.replace(/"/g, '""')}"`;
       }
       return stringValue;
-    });
+    };
+
+    const rows = data.map(item => 
+      keys.map(key => escapeCSV(item[key])).join(',')
+    );
     
-    const csvContent = [
-      headers.join(','),
-      values.join(',')
-    ].join('\n');
-    
+    const csvContent = [labels.join(','), ...rows].join('\n');
     downloadFile(csvContent, 'csv', 'text/csv;charset=utf-8');
   };
 
@@ -69,24 +83,35 @@ export function ExportMetadataButtons({ data, filename }: ExportMetadataButtonsP
         .replace(/'/g, '&apos;');
     };
 
-    const xmlEntries = Object.entries(data)
-      .map(([key, value]) => {
+    const keys = getColumnKeys();
+    
+    const xmlItems = data.map(item => {
+      const fields = keys.map(key => {
         const safeKey = key.replace(/[^a-zA-Z0-9_]/g, '_');
-        return `    <${safeKey}>${escapeXml(value)}</${safeKey}>`;
-      })
-      .join('\n');
+        return `      <${safeKey}>${escapeXml(item[key])}</${safeKey}>`;
+      }).join('\n');
+      return `    <item>\n${fields}\n    </item>`;
+    }).join('\n');
 
     const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-<documento>
-${xmlEntries}
-</documento>`;
+<dados>
+  <registros>
+${xmlItems}
+  </registros>
+</dados>`;
     
     downloadFile(xmlContent, 'xml', 'application/xml');
   };
 
   const exportAsPDF = () => {
-    const entries = Object.entries(data);
+    const keys = getColumnKeys();
+    const labels = getColumnLabels();
     
+    // Create a simple HTML table for printing
+    const tableRows = data.map(item => 
+      `<tr>${keys.map(key => `<td style="border: 1px solid #ddd; padding: 8px;">${item[key] ?? '-'}</td>`).join('')}</tr>`
+    ).join('');
+
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -96,17 +121,22 @@ ${xmlEntries}
         <style>
           body { font-family: Arial, sans-serif; margin: 20px; }
           h1 { color: #333; font-size: 18px; margin-bottom: 20px; }
-          table { border-collapse: collapse; width: 100%; }
-          th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-          th { background-color: #f4f4f4; width: 30%; }
+          table { border-collapse: collapse; width: 100%; font-size: 12px; }
+          th { background-color: #f4f4f4; border: 1px solid #ddd; padding: 10px; text-align: left; }
+          td { border: 1px solid #ddd; padding: 8px; }
+          tr:nth-child(even) { background-color: #f9f9f9; }
           .footer { margin-top: 20px; font-size: 10px; color: #666; }
         </style>
       </head>
       <body>
         <h1>${filename}</h1>
+        <p style="font-size: 12px; color: #666;">Total de registros: ${data.length}</p>
         <table>
+          <thead>
+            <tr>${labels.map(label => `<th style="border: 1px solid #ddd; padding: 10px; background: #f4f4f4;">${label}</th>`).join('')}</tr>
+          </thead>
           <tbody>
-            ${entries.map(([key, value]) => `<tr><th>${key}</th><td>${value ?? '-'}</td></tr>`).join('')}
+            ${tableRows}
           </tbody>
         </table>
         <div class="footer">
@@ -127,12 +157,14 @@ ${xmlEntries}
     }
   };
 
+  if (data.length === 0) return null;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
           <Download className="h-4 w-4" />
-          Exportar Metadados
+          Exportar
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

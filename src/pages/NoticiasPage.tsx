@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo, useEffect } from "react";
 import { ListPagination } from "@/components/ui/list-pagination";
 import { usePagination } from "@/hooks/usePagination";
+import { ExportListButtons } from "@/components/portal/ExportListButtons";
 
 // Mapeamento de cores para garantir que o Tailwind inclua as classes
 const categoryColorMap: Record<string, string> = {
@@ -87,29 +88,51 @@ export default function NoticiasPage() {
         {/* News Grid */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
-            {/* Search indicator */}
-            {searchQuery && (
-              <div className="mb-8 flex items-center justify-between bg-card p-4 rounded-lg border border-border">
-                <div className="flex items-center gap-2 text-foreground">
-                  <Search className="h-5 w-5 text-muted-foreground" />
-                  <span>
-                    Resultados para: <strong>"{searchQuery}"</strong>
-                    {!isLoading && (
-                      <span className="text-muted-foreground ml-2">
-                        ({filteredNoticias?.length || 0} encontrado{filteredNoticias?.length !== 1 ? "s" : ""})
-                      </span>
-                    )}
-                  </span>
+            {/* Search indicator and Export */}
+            <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+              {searchQuery && (
+                <div className="flex items-center justify-between flex-1 bg-card p-4 rounded-lg border border-border">
+                  <div className="flex items-center gap-2 text-foreground">
+                    <Search className="h-5 w-5 text-muted-foreground" />
+                    <span>
+                      Resultados para: <strong>"{searchQuery}"</strong>
+                      {!isLoading && (
+                        <span className="text-muted-foreground ml-2">
+                          ({filteredNoticias?.length || 0} encontrado{filteredNoticias?.length !== 1 ? "s" : ""})
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <button
+                    onClick={clearSearch}
+                    className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                    Limpar
+                  </button>
                 </div>
-                <button
-                  onClick={clearSearch}
-                  className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <X className="h-4 w-4" />
-                  Limpar
-                </button>
-              </div>
-            )}
+              )}
+              
+              {filteredNoticias && filteredNoticias.length > 0 && (
+                <ExportListButtons
+                  data={filteredNoticias.map(n => ({
+                    titulo: n.title,
+                    resumo: n.summary,
+                    categoria: n.category,
+                    data: n.date,
+                    slug: n.slug,
+                  }))}
+                  filename="noticias-ipubi"
+                  columns={[
+                    { key: 'titulo', label: 'Título' },
+                    { key: 'resumo', label: 'Resumo' },
+                    { key: 'categoria', label: 'Categoria' },
+                    { key: 'data', label: 'Data' },
+                    { key: 'slug', label: 'Slug' },
+                  ]}
+                />
+              )}
+            </div>
 
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

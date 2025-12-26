@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ListPagination } from '@/components/ui/list-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { ExportListButtons } from '@/components/portal/ExportListButtons';
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -130,48 +131,76 @@ export default function DiariasPassagensPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-4 mb-6">
-        <Select value={ano} onValueChange={setAno}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Ano" />
-          </SelectTrigger>
-          <SelectContent>
-            {years.map((year) => (
-              <SelectItem key={year} value={String(year)}>{year}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <Select value={ano} onValueChange={setAno}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="Ano" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map((year) => (
+                <SelectItem key={year} value={String(year)}>{year}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select value={mes} onValueChange={setMes}>
-          <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="Mês" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os meses</SelectItem>
-            {Object.entries(mesesLabels).map(([value, label]) => (
-              <SelectItem key={value} value={value}>{label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Select value={mes} onValueChange={setMes}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Mês" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os meses</SelectItem>
+              {Object.entries(mesesLabels).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select value={tipo} onValueChange={(v) => setTipo(v as TipoDiariaPassagem | 'all')}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Tipo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os tipos</SelectItem>
-            {Object.entries(tipoDiariaPassagemLabels).map(([value, label]) => (
-              <SelectItem key={value} value={value}>{label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Select value={tipo} onValueChange={(v) => setTipo(v as TipoDiariaPassagem | 'all')}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Tipo" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os tipos</SelectItem>
+              {Object.entries(tipoDiariaPassagemLabels).map(([value, label]) => (
+                <SelectItem key={value} value={value}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <button 
-          onClick={clearFilters}
-          className="text-sm text-primary hover:underline"
-        >
-          Limpar filtros
-        </button>
+          <button 
+            onClick={clearFilters}
+            className="text-sm text-primary hover:underline"
+          >
+            Limpar filtros
+          </button>
+        </div>
+        
+        {diarias && diarias.length > 0 && (
+          <ExportListButtons
+            data={diarias.map(d => ({
+              beneficiario: d.beneficiario_nome,
+              cargo: d.beneficiario_cargo || '-',
+              tipo: tipoDiariaPassagemLabels[d.tipo],
+              destino: d.destino,
+              finalidade: d.finalidade,
+              data_inicio: formatDate(d.data_inicio),
+              data_fim: formatDate(d.data_fim),
+              valor_total: formatCurrency(d.valor_total),
+            }))}
+            filename={`diarias-passagens-${ano}`}
+            columns={[
+              { key: 'beneficiario', label: 'Beneficiário' },
+              { key: 'cargo', label: 'Cargo' },
+              { key: 'tipo', label: 'Tipo' },
+              { key: 'destino', label: 'Destino' },
+              { key: 'finalidade', label: 'Finalidade' },
+              { key: 'data_inicio', label: 'Data Início' },
+              { key: 'data_fim', label: 'Data Fim' },
+              { key: 'valor_total', label: 'Valor Total' },
+            ]}
+          />
+        )}
       </div>
 
       {/* Data Table */}
