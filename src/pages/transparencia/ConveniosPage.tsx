@@ -1,6 +1,4 @@
-import { ExternalLink } from 'lucide-react';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
-import { Button } from '@/components/ui/button';
 
 const conveniosLinks = [
   {
@@ -38,15 +36,9 @@ export default function ConveniosPage() {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block"
+            className="block w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 px-6 rounded-md transition-colors"
           >
-            <Button
-              variant="default"
-              className="w-full justify-start text-left h-auto py-4 px-6 text-base font-medium"
-            >
-              {link.titulo}
-              <ExternalLink className="w-4 h-4 ml-auto flex-shrink-0" />
-            </Button>
+            <span className="text-base font-medium">{link.titulo}</span>
           </a>
         ))}
       </div>
