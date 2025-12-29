@@ -45,10 +45,12 @@ import RemuneracaoAgentesPage from "./pages/transparencia/RemuneracaoAgentesPage
 import DiariasPassagensPage from "./pages/transparencia/DiariasPassagensPage";
 import PatrimonioPublicoPage from "./pages/transparencia/PatrimonioPublicoPage";
 import DadosAbertosPage from "./pages/transparencia/DadosAbertosPage";
+import FolhaPagamentoPage from "./pages/transparencia/FolhaPagamentoPage";
 import ESicPage from "./pages/transparencia/ESicPage";
 import ESicNovaSolicitacaoPage from "./pages/transparencia/ESicNovaSolicitacaoPage";
 import ESicConsultarPage from "./pages/transparencia/ESicConsultarPage";
 import NotFound from "./pages/NotFound";
+import AdminFolhaPagamento from "./pages/admin/AdminFolhaPagamento";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -132,6 +134,7 @@ const App = () => (
             <Route path="/transparencia/diarias-passagens" element={<DiariasPassagensPage />} />
             <Route path="/transparencia/patrimonio" element={<PatrimonioPublicoPage />} />
             <Route path="/transparencia/dados-abertos" element={<DadosAbertosPage />} />
+            <Route path="/transparencia/folha-pagamento" element={<FolhaPagamentoPage />} />
             <Route path="/transparencia/esic" element={<ESicPage />} />
             <Route path="/transparencia/esic/nova-solicitacao" element={<ESicNovaSolicitacaoPage />} />
             <Route path="/transparencia/esic/consultar" element={<ESicConsultarPage />} />
@@ -163,7 +166,7 @@ const App = () => (
             <Route path="/admin/estrutura-organizacional" element={<AdminEstruturaOrganizacional />} />
             <Route path="/admin/faq" element={<AdminFaq />} />
             <Route path="/admin/carta-servicos" element={<AdminCartaServicos />} />
-            
+            <Route path="/admin/folha-pagamento" element={<AdminFolhaPagamento />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
