@@ -74,12 +74,25 @@ export default function AdminEmendasParlamentares() {
       return;
     }
 
+    // Gerar arquivo_nome a partir da URL
+    const urlParts = formData.arquivo_url?.split('/') || [];
+    const arquivoNome = urlParts[urlParts.length - 1] || 'documento.pdf';
+    
+    // Usar data de postagem como data de referência
+    const dataReferencia = formData.data_postagem || new Date().toISOString().split('T')[0];
+
+    const dadosParaSalvar = {
+      ...formData,
+      arquivo_nome: arquivoNome,
+      data_referencia: dataReferencia,
+    };
+
     try {
       if (editingEmenda) {
-        await updateEmenda.mutateAsync({ id: editingEmenda.id, ...formData } as any);
+        await updateEmenda.mutateAsync({ id: editingEmenda.id, ...dadosParaSalvar } as any);
         toast.success('Emenda atualizada com sucesso');
       } else {
-        await createEmenda.mutateAsync(formData as EmendaParlamentarInsert);
+        await createEmenda.mutateAsync(dadosParaSalvar as EmendaParlamentarInsert);
         toast.success('Emenda cadastrada com sucesso');
       }
       setDialogOpen(false);
