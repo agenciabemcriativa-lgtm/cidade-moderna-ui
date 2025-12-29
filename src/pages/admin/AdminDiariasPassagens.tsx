@@ -156,15 +156,31 @@ export default function AdminDiariasPassagens() {
       return;
     }
 
-    // Função para converter valor brasileiro (1.234,56) ou americano (1234.56) para número
+    // Função para converter valor brasileiro (1.234,56) para número
     const parseValorBrasileiro = (valor: string): number => {
       if (!valor) return 0;
-      // Se contém vírgula, assume formato brasileiro
-      if (valor.includes(',')) {
-        return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+      
+      // Remove espaços
+      const valorLimpo = valor.trim();
+      
+      // Se contém vírgula, assume formato brasileiro (ex: 500,00 ou 1.234,56)
+      if (valorLimpo.includes(',')) {
+        // Remove pontos de milhar e substitui vírgula por ponto decimal
+        return parseFloat(valorLimpo.replace(/\./g, '').replace(',', '.')) || 0;
       }
-      // Caso contrário, assume formato americano/numérico simples
-      return parseFloat(valor.replace(/[^\d.-]/g, '')) || 0;
+      
+      // Se contém ponto e os últimos 2-3 dígitos são após o ponto, é decimal americano
+      const pontoIndex = valorLimpo.lastIndexOf('.');
+      if (pontoIndex !== -1) {
+        const decimais = valorLimpo.substring(pontoIndex + 1);
+        // Se tem 1, 2 ou 3 dígitos após o ponto, trata como decimal
+        if (decimais.length <= 3 && /^\d+$/.test(decimais)) {
+          return parseFloat(valorLimpo.replace(/[^\d.]/g, '')) || 0;
+        }
+      }
+      
+      // Caso seja apenas número inteiro (ex: 500)
+      return parseFloat(valorLimpo.replace(/[^\d]/g, '')) || 0;
     };
 
     try {
