@@ -81,18 +81,21 @@ export default function AdminFolhaPagamento() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!formData.titulo.trim()) {
+      toast.error('Preencha o título.');
+      return;
+    }
+
     if (!formData.arquivo_url) {
       toast.error('Preencha o link do arquivo.');
       return;
     }
 
-    // Gerar título e nome do arquivo automaticamente
-    const titulo = `Folha de Pagamento - ${categoriasLabels[formData.categoria]} - ${mesesLabels[formData.mes_referencia]}/${formData.ano_referencia}`;
+    // Gerar nome do arquivo automaticamente
     const arquivo_nome = `folha-${formData.categoria}-${formData.mes_referencia}-${formData.ano_referencia}.pdf`;
     
     const dataToSubmit = {
       ...formData,
-      titulo,
       arquivo_nome,
     };
 
@@ -156,6 +159,15 @@ export default function AdminFolhaPagamento() {
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="titulo">Título *</Label>
+                  <Input
+                    id="titulo"
+                    value={formData.titulo}
+                    onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+                    placeholder="Ex: Folha de Pagamento - Janeiro/2025"
+                  />
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="mes">Mês *</Label>
