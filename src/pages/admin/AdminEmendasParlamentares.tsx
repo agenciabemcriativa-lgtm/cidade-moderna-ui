@@ -69,7 +69,7 @@ export default function AdminEmendasParlamentares() {
   };
 
   const handleSave = async () => {
-    if (!formData.titulo || !formData.arquivo_url || !formData.arquivo_nome || !formData.data_referencia) {
+    if (!formData.titulo || !formData.arquivo_url) {
       toast.error('Preencha todos os campos obrigatórios');
       return;
     }
@@ -226,27 +226,6 @@ export default function AdminEmendasParlamentares() {
                     value={formData.arquivo_url}
                     onChange={(e) => setFormData({ ...formData, arquivo_url: e.target.value })}
                     placeholder="https://..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="arquivo_nome">Nome do Arquivo *</Label>
-                  <Input
-                    id="arquivo_nome"
-                    value={formData.arquivo_nome}
-                    onChange={(e) => setFormData({ ...formData, arquivo_nome: e.target.value })}
-                    placeholder="documento.pdf"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="data_referencia">Data de Referência *</Label>
-                  <Input
-                    id="data_referencia"
-                    type="date"
-                    value={formData.data_referencia}
-                    onChange={(e) => setFormData({ ...formData, data_referencia: e.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
