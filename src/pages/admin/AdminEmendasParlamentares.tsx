@@ -77,12 +77,23 @@ export default function AdminEmendasParlamentares() {
     // Gerar arquivo_nome a partir da URL
     const urlParts = formData.arquivo_url?.split('/') || [];
     const arquivoNome = urlParts[urlParts.length - 1] || 'documento.pdf';
-    
-    // Usar data de postagem como data de referência
-    const dataReferencia = formData.data_postagem || new Date().toISOString().split('T')[0];
+
+    const today = new Date().toISOString().split('T')[0];
+
+    // Se o usuário limpar o campo de data, o input envia string vazia ("")
+    const dataPostagem = formData.data_postagem && String(formData.data_postagem).trim() !== ''
+      ? String(formData.data_postagem)
+      : today;
+
+    // Como a tabela exige data_referencia, usamos a data de postagem
+    const dataReferencia = dataPostagem;
+
+    const anoReferencia = Number(formData.ano_referencia) || new Date().getFullYear();
 
     const dadosParaSalvar = {
       ...formData,
+      ano_referencia: anoReferencia,
+      data_postagem: dataPostagem,
       arquivo_nome: arquivoNome,
       data_referencia: dataReferencia,
     };
@@ -96,8 +107,8 @@ export default function AdminEmendasParlamentares() {
         toast.success('Emenda cadastrada com sucesso');
       }
       setDialogOpen(false);
-    } catch (error) {
-      toast.error('Erro ao salvar emenda');
+    } catch (error: any) {
+      toast.error(error?.message ? `Erro ao salvar emenda: ${error.message}` : 'Erro ao salvar emenda');
     }
   };
 
@@ -215,8 +226,14 @@ export default function AdminEmendasParlamentares() {
                   <Input
                     id="ano"
                     type="number"
-                    value={formData.ano_referencia}
-                    onChange={(e) => setFormData({ ...formData, ano_referencia: parseInt(e.target.value) })}
+                    value={Number.isFinite(formData.ano_referencia as number) ? formData.ano_referencia : ''}
+                    onChange={(e) => {
+                      const raw = e.target.value;
+                      setFormData({
+                        ...formData,
+                        ano_referencia: raw === '' ? undefined : parseInt(raw, 10),
+                      });
+                    }}
                   />
                 </div>
               </div>
