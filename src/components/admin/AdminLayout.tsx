@@ -36,6 +36,7 @@ const menuItems = [
   { icon: Users, label: "e-SIC", href: "/admin/esic" },
   { icon: Building2, label: "Estrutura Organizacional", href: "/admin/estrutura-organizacional" },
   { icon: HelpCircle, label: "FAQ", href: "/admin/faq" },
+  { icon: Users, label: "Folha de Pagamento", href: "/admin/folha-pagamento" },
   { icon: BookOpen, label: "Legislação", href: "/admin/legislacao" },
   { icon: FileText, label: "Licitações", href: "/admin/licitacoes" },
   { icon: MapPin, label: "Município", href: "/admin/municipio" },
