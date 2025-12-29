@@ -33,6 +33,8 @@ const menuItems = [
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },
   { icon: FileText, label: "Dados Abertos", href: "/admin/dados-abertos" },
   { icon: FileText, label: "Diárias e Passagens", href: "/admin/diarias-passagens" },
+  { icon: FileText, label: "Documentos Pessoal", href: "/admin/documentos-pessoal" },
+  { icon: Landmark, label: "Emendas Parlamentares", href: "/admin/emendas-parlamentares" },
   { icon: Users, label: "e-SIC", href: "/admin/esic" },
   { icon: Building2, label: "Estrutura Organizacional", href: "/admin/estrutura-organizacional" },
   { icon: HelpCircle, label: "FAQ", href: "/admin/faq" },
