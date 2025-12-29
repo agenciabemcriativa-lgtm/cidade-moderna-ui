@@ -120,6 +120,12 @@ export default function AdminDiariasPassagens() {
   };
 
   const openEditDialog = (diaria: DiariaPassagem) => {
+    // Função para formatar número para formato brasileiro
+    const formatarValorBrasileiro = (valor: number | null): string => {
+      if (!valor) return '';
+      return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
     setEditingDiaria(diaria);
     setFormData({
       tipo: diaria.tipo,
@@ -132,8 +138,8 @@ export default function AdminDiariasPassagens() {
       data_inicio: diaria.data_inicio,
       data_fim: diaria.data_fim,
       quantidade_dias: diaria.quantidade_dias || 1,
-      valor_unitario: diaria.valor_unitario?.toString() || '',
-      valor_total: diaria.valor_total.toString(),
+      valor_unitario: formatarValorBrasileiro(diaria.valor_unitario),
+      valor_total: formatarValorBrasileiro(diaria.valor_total),
       numero_portaria: diaria.numero_portaria || '',
       mes_referencia: diaria.mes_referencia,
       ano_referencia: diaria.ano_referencia,
@@ -150,6 +156,13 @@ export default function AdminDiariasPassagens() {
       return;
     }
 
+    // Função para converter valor brasileiro (1.234,56) para número
+    const parseValorBrasileiro = (valor: string): number => {
+      if (!valor) return 0;
+      // Remove pontos de milhar e substitui vírgula por ponto
+      return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+    };
+
     try {
       const payload = {
         tipo: formData.tipo,
@@ -162,8 +175,8 @@ export default function AdminDiariasPassagens() {
         data_inicio: formData.data_inicio,
         data_fim: formData.data_fim,
         quantidade_dias: formData.quantidade_dias,
-        valor_unitario: formData.valor_unitario ? parseFloat(formData.valor_unitario) : null,
-        valor_total: parseFloat(formData.valor_total),
+        valor_unitario: formData.valor_unitario ? parseValorBrasileiro(formData.valor_unitario) : null,
+        valor_total: parseValorBrasileiro(formData.valor_total),
         numero_portaria: formData.numero_portaria || null,
         mes_referencia: formData.mes_referencia,
         ano_referencia: formData.ano_referencia,
@@ -490,19 +503,29 @@ export default function AdminDiariasPassagens() {
                 <div className="space-y-2">
                   <Label>Valor Unitário (R$)</Label>
                   <Input
-                    type="number"
-                    step="0.01"
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0,00"
                     value={formData.valor_unitario}
-                    onChange={(e) => setFormData({ ...formData, valor_unitario: e.target.value })}
+                    onChange={(e) => {
+                      // Permite apenas números, vírgula e ponto
+                      const value = e.target.value.replace(/[^\d,.-]/g, '');
+                      setFormData({ ...formData, valor_unitario: value });
+                    }}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Valor Total (R$) *</Label>
                   <Input
-                    type="number"
-                    step="0.01"
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0,00"
                     value={formData.valor_total}
-                    onChange={(e) => setFormData({ ...formData, valor_total: e.target.value })}
+                    onChange={(e) => {
+                      // Permite apenas números, vírgula e ponto
+                      const value = e.target.value.replace(/[^\d,.-]/g, '');
+                      setFormData({ ...formData, valor_total: value });
+                    }}
                   />
                 </div>
                 <div className="space-y-2">
