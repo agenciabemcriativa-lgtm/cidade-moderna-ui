@@ -513,6 +513,54 @@ export type Database = {
           },
         ]
       }
+      documentos_pessoal: {
+        Row: {
+          ano_referencia: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at: string | null
+          data_postagem: string
+          descricao: string | null
+          id: string
+          mes_referencia: number
+          observacoes: string | null
+          publicado: boolean | null
+          tipo: Database["public"]["Enums"]["tipo_documento_pessoal"]
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ano_referencia: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at?: string | null
+          data_postagem?: string
+          descricao?: string | null
+          id?: string
+          mes_referencia: number
+          observacoes?: string | null
+          publicado?: boolean | null
+          tipo: Database["public"]["Enums"]["tipo_documento_pessoal"]
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ano_referencia?: number
+          arquivo_nome?: string
+          arquivo_url?: string
+          created_at?: string | null
+          data_postagem?: string
+          descricao?: string | null
+          id?: string
+          mes_referencia?: number
+          observacoes?: string | null
+          publicado?: boolean | null
+          tipo?: Database["public"]["Enums"]["tipo_documento_pessoal"]
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       esic_anexos: {
         Row: {
           created_at: string
@@ -2014,6 +2062,11 @@ export type Database = {
         | "impugnacao"
         | "esclarecimento"
         | "outros"
+      tipo_documento_pessoal:
+        | "estagiarios"
+        | "remuneracao_cargo"
+        | "servidores"
+        | "lista_nominal_cargo"
       tipo_publicacao:
         | "lei"
         | "decreto"
@@ -2255,6 +2308,12 @@ export const Constants = {
         "impugnacao",
         "esclarecimento",
         "outros",
+      ],
+      tipo_documento_pessoal: [
+        "estagiarios",
+        "remuneracao_cargo",
+        "servidores",
+        "lista_nominal_cargo",
       ],
       tipo_publicacao: [
         "lei",
