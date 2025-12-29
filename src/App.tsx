@@ -82,7 +82,8 @@ import CartaServicosPage from "./pages/CartaServicosPage";
 import CartaServicoDetalhePage from "./pages/CartaServicoDetalhePage";
 import AdminCartaServicos from "./pages/admin/AdminCartaServicos";
 import AdminDocumentosPessoal from "./pages/admin/AdminDocumentosPessoal";
-
+import AdminEmendasParlamentares from "./pages/admin/AdminEmendasParlamentares";
+import EmendasParlamentaresPage from "./pages/transparencia/EmendasParlamentaresPage";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -138,6 +139,7 @@ const App = () => (
             <Route path="/transparencia/dados-abertos" element={<DadosAbertosPage />} />
             <Route path="/transparencia/folha-pagamento" element={<FolhaPagamentoPage />} />
             <Route path="/transparencia/documentos/:tipo" element={<DocumentosPessoalPage />} />
+            <Route path="/transparencia/emendas-parlamentares" element={<EmendasParlamentaresPage />} />
             <Route path="/transparencia/esic" element={<ESicPage />} />
             <Route path="/transparencia/esic/nova-solicitacao" element={<ESicNovaSolicitacaoPage />} />
             <Route path="/transparencia/esic/consultar" element={<ESicConsultarPage />} />
@@ -171,6 +173,7 @@ const App = () => (
             <Route path="/admin/carta-servicos" element={<AdminCartaServicos />} />
             <Route path="/admin/folha-pagamento" element={<AdminFolhaPagamento />} />
             <Route path="/admin/documentos-pessoal" element={<AdminDocumentosPessoal />} />
+            <Route path="/admin/emendas-parlamentares" element={<AdminEmendasParlamentares />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
