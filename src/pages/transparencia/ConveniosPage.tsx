@@ -1,6 +1,4 @@
-import { ExternalLink } from 'lucide-react';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
-import { Button } from '@/components/ui/button';
 
 const conveniosLinks = [
   {
@@ -31,22 +29,17 @@ export default function ConveniosPage() {
       title="Convênios e Transferências"
       description="Consulte os convênios, transferências e parcerias firmadas pelo município"
     >
-      <div className="space-y-3">
+      <div className="space-y-2">
         {conveniosLinks.map((link, index) => (
           <a
             key={index}
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block"
+            className="flex items-start gap-2 text-primary hover:text-primary/80 hover:underline transition-colors py-1"
           >
-            <Button
-              variant="default"
-              className="w-full justify-start text-left h-auto py-4 px-6 text-base font-medium"
-            >
-              {link.titulo}
-              <ExternalLink className="w-4 h-4 ml-auto flex-shrink-0" />
-            </Button>
+            <span className="flex-shrink-0">→</span>
+            <span>{link.titulo}</span>
           </a>
         ))}
       </div>
