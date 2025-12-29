@@ -865,6 +865,7 @@ export type Database = {
           arquivo_url: string
           categoria: string
           created_at: string | null
+          data_postagem: string
           descricao: string | null
           id: string
           mes_referencia: number
@@ -879,6 +880,7 @@ export type Database = {
           arquivo_url: string
           categoria?: string
           created_at?: string | null
+          data_postagem?: string
           descricao?: string | null
           id?: string
           mes_referencia: number
@@ -893,6 +895,7 @@ export type Database = {
           arquivo_url?: string
           categoria?: string
           created_at?: string | null
+          data_postagem?: string
           descricao?: string | null
           id?: string
           mes_referencia?: number
