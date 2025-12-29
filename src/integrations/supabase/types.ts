@@ -863,6 +863,7 @@ export type Database = {
           ano_referencia: number
           arquivo_nome: string
           arquivo_url: string
+          categoria: string
           created_at: string | null
           descricao: string | null
           id: string
@@ -876,6 +877,7 @@ export type Database = {
           ano_referencia: number
           arquivo_nome: string
           arquivo_url: string
+          categoria?: string
           created_at?: string | null
           descricao?: string | null
           id?: string
@@ -889,6 +891,7 @@ export type Database = {
           ano_referencia?: number
           arquivo_nome?: string
           arquivo_url?: string
+          categoria?: string
           created_at?: string | null
           descricao?: string | null
           id?: string

@@ -6,7 +6,7 @@ import { Header } from '@/components/portal/Header';
 import { Breadcrumbs } from '@/components/portal/Breadcrumbs';
 import { Footer } from '@/components/portal/Footer';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
-import { useFolhaPagamento, mesesLabels } from '@/hooks/useFolhaPagamento';
+import { useFolhaPagamento, mesesLabels, categoriasLabels, CategoriaFolha } from '@/hooks/useFolhaPagamento';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -103,25 +103,24 @@ export default function FolhaPagamentoPage() {
                         <FileText className="h-6 w-6 text-primary" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-foreground">
-                          {doc.titulo}
-                        </h3>
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                          <h3 className="font-semibold text-foreground">
+                            {mesesLabels[doc.mes_referencia]} / {doc.ano_referencia}
+                          </h3>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                            doc.categoria === 'educacao' 
+                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                              : 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
+                          }`}>
+                            {categoriasLabels[doc.categoria as CategoriaFolha] || doc.categoria}
+                          </span>
+                        </div>
                         <div className="flex flex-wrap gap-2 mt-1">
                           <span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
                             <Calendar className="h-4 w-4" />
-                            {mesesLabels[doc.mes_referencia]} / {doc.ano_referencia}
+                            Folha de Pagamento
                           </span>
                         </div>
-                        {doc.descricao && (
-                          <p className="text-sm text-muted-foreground mt-2">
-                            {doc.descricao}
-                          </p>
-                        )}
-                        {doc.created_at && (
-                          <p className="text-xs text-muted-foreground mt-2">
-                            Publicado em: {format(new Date(doc.created_at), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-                          </p>
-                        )}
                       </div>
                     </div>
                     <div className="flex gap-2 md:flex-col">
