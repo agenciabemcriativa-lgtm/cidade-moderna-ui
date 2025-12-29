@@ -92,7 +92,7 @@ export default function MapaSitePage() {
       title: "Licitações",
       icon: <FileText className="w-5 h-5" />,
       links: [
-        { label: "Licitações e Contratos", href: "/licitacoes" },
+        { label: "Licitações", href: "/licitacoes" },
       ],
     },
     {
