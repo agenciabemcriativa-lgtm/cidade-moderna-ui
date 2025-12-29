@@ -179,64 +179,33 @@ export default function TransparenciaPage() {
           </CardHeader>
           <CardContent className="pt-0">
             <Separator className="mb-3 bg-gray-200" />
-            {category.titulo.toLowerCase().includes('convênios') ? (
-              <div className="space-y-3">
-                {category.itens.map((item) => (
-                  <div key={item.id}>
-                    {item.externo ? (
-                      <Button
-                        asChild
-                        size="lg"
-                        className="w-full justify-start text-left h-auto py-4 px-6 text-base font-medium"
-                      >
-                        <a href={item.url} target="_blank" rel="noopener noreferrer">
-                          {item.titulo}
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button
-                        asChild
-                        size="lg"
-                        className="w-full justify-start text-left h-auto py-4 px-6 text-base font-medium"
-                      >
-                        <Link to={item.url}>{item.titulo}</Link>
-                      </Button>
-                    )}
-                  </div>
-                ))}
-                {category.itens.length === 0 && (
-                  <div className="text-sm text-gray-400 italic">Nenhum item cadastrado</div>
-                )}
-              </div>
-            ) : (
-              <ul className="space-y-1.5">
-                {category.itens.map((item) => (
-                  <li key={item.id}>
-                    {item.externo ? (
-                      <a
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between text-sm text-primary hover:text-primary/80 hover:underline transition-colors group py-1 px-2 -mx-2 rounded hover:bg-primary/5"
-                      >
-                        <span className="font-medium">→ {item.titulo}</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary" />
-                      </a>
-                    ) : (
-                      <Link
-                        to={item.url}
-                        className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
-                      >
-                        <span className="font-medium">→ {item.titulo}</span>
-                      </Link>
-                    )}
-                  </li>
-                ))}
-                {category.itens.length === 0 && (
-                  <li className="text-sm text-gray-400 italic">Nenhum item cadastrado</li>
-                )}
-              </ul>
-            )}
+            <ul className="space-y-1.5">
+              {category.itens.map((item) => (
+                <li key={item.id}>
+                  {item.externo ? (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between text-sm text-primary hover:text-primary/80 hover:underline transition-colors group py-1 px-2 -mx-2 rounded hover:bg-primary/5"
+                    >
+                      <span className="font-medium">→ {item.titulo}</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary" />
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.url}
+                      className="flex items-center text-sm text-primary hover:text-primary/80 hover:underline transition-colors py-1 px-2 -mx-2 rounded hover:bg-primary/5"
+                    >
+                      <span className="font-medium">→ {item.titulo}</span>
+                    </Link>
+                  )}
+                </li>
+              ))}
+              {category.itens.length === 0 && (
+                <li className="text-sm text-gray-400 italic">Nenhum item cadastrado</li>
+              )}
+            </ul>
           </CardContent>
         </Card>
       );
