@@ -16,6 +16,7 @@ export interface FolhaPagamento {
   arquivo_url: string;
   arquivo_nome: string;
   categoria: string;
+  data_postagem: string;
   descricao: string | null;
   observacoes: string | null;
   publicado: boolean | null;
@@ -30,6 +31,7 @@ export interface FolhaPagamentoInput {
   arquivo_url: string;
   arquivo_nome: string;
   categoria: CategoriaFolha;
+  data_postagem: string;
   descricao?: string | null;
   observacoes?: string | null;
   publicado?: boolean;

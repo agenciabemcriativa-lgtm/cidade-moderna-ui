@@ -41,6 +41,7 @@ export default function AdminFolhaPagamento() {
     arquivo_url: '',
     arquivo_nome: '',
     categoria: 'prefeitura',
+    data_postagem: format(new Date(), 'yyyy-MM-dd'),
     publicado: true,
   });
 
@@ -52,6 +53,7 @@ export default function AdminFolhaPagamento() {
       arquivo_url: '',
       arquivo_nome: '',
       categoria: 'prefeitura',
+      data_postagem: format(new Date(), 'yyyy-MM-dd'),
       publicado: true,
     });
     setEditingDoc(null);
@@ -67,6 +69,7 @@ export default function AdminFolhaPagamento() {
         arquivo_url: doc.arquivo_url,
         arquivo_nome: doc.arquivo_nome,
         categoria: (doc.categoria as CategoriaFolha) || 'prefeitura',
+        data_postagem: doc.data_postagem || format(new Date(), 'yyyy-MM-dd'),
         publicado: doc.publicado ?? true,
       });
     } else {
@@ -192,7 +195,7 @@ export default function AdminFolhaPagamento() {
                     </Select>
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div>
                     <Label htmlFor="categoria">Categoria *</Label>
                     <Select
                       value={formData.categoria}
@@ -206,6 +209,16 @@ export default function AdminFolhaPagamento() {
                         <SelectItem value="educacao">Educação</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="data_postagem">Data de Postagem *</Label>
+                    <Input
+                      id="data_postagem"
+                      type="date"
+                      value={formData.data_postagem}
+                      onChange={(e) => setFormData({ ...formData, data_postagem: e.target.value })}
+                    />
                   </div>
 
                   <div className="md:col-span-2">
@@ -300,6 +313,7 @@ export default function AdminFolhaPagamento() {
                     <TableRow>
                       <TableHead>Referência</TableHead>
                       <TableHead>Categoria</TableHead>
+                      <TableHead>Data Postagem</TableHead>
                       <TableHead>Arquivo</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead className="text-right">Ações</TableHead>
@@ -319,6 +333,9 @@ export default function AdminFolhaPagamento() {
                           }`}>
                             {categoriasLabels[doc.categoria as CategoriaFolha] || doc.categoria}
                           </span>
+                        </TableCell>
+                        <TableCell>
+                          {doc.data_postagem ? format(new Date(doc.data_postagem), 'dd/MM/yyyy', { locale: ptBR }) : '-'}
                         </TableCell>
                         <TableCell>
                           <Button
