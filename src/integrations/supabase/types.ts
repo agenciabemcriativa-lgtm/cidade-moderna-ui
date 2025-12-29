@@ -860,79 +860,43 @@ export type Database = {
       }
       folha_pagamento: {
         Row: {
-          adicionais: number | null
           ano_referencia: number
-          carga_horaria: number | null
-          cargo: string
+          arquivo_nome: string
+          arquivo_url: string
           created_at: string | null
-          gratificacoes: number | null
+          descricao: string | null
           id: string
-          inss: number | null
-          irrf: number | null
-          matricula: string | null
           mes_referencia: number
-          nome_servidor: string
           observacoes: string | null
-          outros_descontos: number | null
-          outros_proventos: number | null
           publicado: boolean | null
-          salario_base: number
-          salario_liquido: number | null
-          secretaria: string | null
-          total_bruto: number | null
-          total_descontos: number | null
+          titulo: string
           updated_at: string | null
-          vinculo: string | null
         }
         Insert: {
-          adicionais?: number | null
           ano_referencia: number
-          carga_horaria?: number | null
-          cargo: string
+          arquivo_nome: string
+          arquivo_url: string
           created_at?: string | null
-          gratificacoes?: number | null
+          descricao?: string | null
           id?: string
-          inss?: number | null
-          irrf?: number | null
-          matricula?: string | null
           mes_referencia: number
-          nome_servidor: string
           observacoes?: string | null
-          outros_descontos?: number | null
-          outros_proventos?: number | null
           publicado?: boolean | null
-          salario_base: number
-          salario_liquido?: number | null
-          secretaria?: string | null
-          total_bruto?: number | null
-          total_descontos?: number | null
+          titulo: string
           updated_at?: string | null
-          vinculo?: string | null
         }
         Update: {
-          adicionais?: number | null
           ano_referencia?: number
-          carga_horaria?: number | null
-          cargo?: string
+          arquivo_nome?: string
+          arquivo_url?: string
           created_at?: string | null
-          gratificacoes?: number | null
+          descricao?: string | null
           id?: string
-          inss?: number | null
-          irrf?: number | null
-          matricula?: string | null
           mes_referencia?: number
-          nome_servidor?: string
           observacoes?: string | null
-          outros_descontos?: number | null
-          outros_proventos?: number | null
           publicado?: boolean | null
-          salario_base?: number
-          salario_liquido?: number | null
-          secretaria?: string | null
-          total_bruto?: number | null
-          total_descontos?: number | null
+          titulo?: string
           updated_at?: string | null
-          vinculo?: string | null
         }
         Relationships: []
       }

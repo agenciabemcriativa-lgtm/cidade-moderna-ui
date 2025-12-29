@@ -1,249 +1,297 @@
 import { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useFolhaPagamento, useCreateFolhaPagamento, useUpdateFolhaPagamento, useDeleteFolhaPagamento, mesesLabels, FolhaPagamento, FolhaPagamentoInput } from '@/hooks/useFolhaPagamento';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Plus, Pencil, Trash2, Users, Search, Upload } from 'lucide-react';
 import { toast } from 'sonner';
-import { 
-  useFolhaPagamento, 
-  useCreateFolhaPagamento, 
-  useUpdateFolhaPagamento, 
-  useDeleteFolhaPagamento,
-  FolhaPagamento,
-  mesesLabels,
-  vinculoLabels
-} from '@/hooks/useFolhaPagamento';
+import { Plus, Pencil, Trash2, FileText, ExternalLink, Search } from 'lucide-react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+const anos = Array.from({ length: 10 }, (_, i) => currentYear - i);
+const meses = Array.from({ length: 12 }, (_, i) => i + 1);
 
 export default function AdminFolhaPagamento() {
-  const [ano, setAno] = useState<number>(currentYear);
-  const [mes, setMes] = useState<number>(new Date().getMonth() + 1);
-  const [busca, setBusca] = useState('');
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<FolhaPagamento | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<FolhaPagamento | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingDoc, setEditingDoc] = useState<FolhaPagamento | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [anoFiltro, setAnoFiltro] = useState<string>('all');
 
-  const { data: servidores, isLoading } = useFolhaPagamento(ano, mes, true);
+  const { data: documentos, isLoading } = useFolhaPagamento(
+    anoFiltro !== 'all' ? parseInt(anoFiltro) : undefined,
+    true
+  );
   const createMutation = useCreateFolhaPagamento();
   const updateMutation = useUpdateFolhaPagamento();
   const deleteMutation = useDeleteFolhaPagamento();
 
-  const [formData, setFormData] = useState({
-    nome_servidor: '',
-    matricula: '',
-    cargo: '',
-    secretaria: '',
-    vinculo: 'efetivo',
-    carga_horaria: 40,
-    salario_base: '',
-    gratificacoes: '',
-    adicionais: '',
-    outros_proventos: '',
-    inss: '',
-    irrf: '',
-    outros_descontos: '',
-    mes_referencia: mes,
-    ano_referencia: ano,
+  const [formData, setFormData] = useState<FolhaPagamentoInput>({
+    titulo: '',
+    mes_referencia: new Date().getMonth() + 1,
+    ano_referencia: currentYear,
+    arquivo_url: '',
+    arquivo_nome: '',
+    descricao: '',
     observacoes: '',
     publicado: true,
   });
 
-  const servidoresFiltrados = servidores?.filter(s =>
-    s.nome_servidor.toLowerCase().includes(busca.toLowerCase()) ||
-    s.cargo.toLowerCase().includes(busca.toLowerCase()) ||
-    s.secretaria?.toLowerCase().includes(busca.toLowerCase())
-  ) || [];
-
-  const formatCurrency = (value: number | null) => {
-    if (!value) return 'R$ 0,00';
-    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  };
-
-  const parseValorBrasileiro = (valor: string): number => {
-    if (!valor) return 0;
-    return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
-  };
-
-  const formatarValorBrasileiro = (valor: number | null): string => {
-    if (!valor) return '';
-    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  };
-
   const resetForm = () => {
     setFormData({
-      nome_servidor: '',
-      matricula: '',
-      cargo: '',
-      secretaria: '',
-      vinculo: 'efetivo',
-      carga_horaria: 40,
-      salario_base: '',
-      gratificacoes: '',
-      adicionais: '',
-      outros_proventos: '',
-      inss: '',
-      irrf: '',
-      outros_descontos: '',
-      mes_referencia: mes,
-      ano_referencia: ano,
+      titulo: '',
+      mes_referencia: new Date().getMonth() + 1,
+      ano_referencia: currentYear,
+      arquivo_url: '',
+      arquivo_nome: '',
+      descricao: '',
       observacoes: '',
       publicado: true,
     });
-    setEditingItem(null);
+    setEditingDoc(null);
   };
 
-  const openNewDialog = () => {
-    resetForm();
-    setDialogOpen(true);
+  const handleOpenDialog = (doc?: FolhaPagamento) => {
+    if (doc) {
+      setEditingDoc(doc);
+      setFormData({
+        titulo: doc.titulo,
+        mes_referencia: doc.mes_referencia,
+        ano_referencia: doc.ano_referencia,
+        arquivo_url: doc.arquivo_url,
+        arquivo_nome: doc.arquivo_nome,
+        descricao: doc.descricao || '',
+        observacoes: doc.observacoes || '',
+        publicado: doc.publicado ?? true,
+      });
+    } else {
+      resetForm();
+    }
+    setIsDialogOpen(true);
   };
 
-  const openEditDialog = (item: FolhaPagamento) => {
-    setEditingItem(item);
-    setFormData({
-      nome_servidor: item.nome_servidor,
-      matricula: item.matricula || '',
-      cargo: item.cargo,
-      secretaria: item.secretaria || '',
-      vinculo: item.vinculo || 'efetivo',
-      carga_horaria: item.carga_horaria || 40,
-      salario_base: formatarValorBrasileiro(item.salario_base),
-      gratificacoes: formatarValorBrasileiro(item.gratificacoes),
-      adicionais: formatarValorBrasileiro(item.adicionais),
-      outros_proventos: formatarValorBrasileiro(item.outros_proventos),
-      inss: formatarValorBrasileiro(item.inss),
-      irrf: formatarValorBrasileiro(item.irrf),
-      outros_descontos: formatarValorBrasileiro(item.outros_descontos),
-      mes_referencia: item.mes_referencia,
-      ano_referencia: item.ano_referencia,
-      observacoes: item.observacoes || '',
-      publicado: item.publicado ?? true,
-    });
-    setDialogOpen(true);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const handleSave = async () => {
-    if (!formData.nome_servidor || !formData.cargo || !formData.salario_base) {
-      toast.error('Preencha os campos obrigatórios');
+    if (!formData.titulo || !formData.arquivo_url || !formData.arquivo_nome) {
+      toast.error('Preencha todos os campos obrigatórios.');
       return;
     }
 
     try {
-      const payload = {
-        nome_servidor: formData.nome_servidor,
-        matricula: formData.matricula || null,
-        cargo: formData.cargo,
-        secretaria: formData.secretaria || null,
-        vinculo: formData.vinculo,
-        carga_horaria: formData.carga_horaria,
-        salario_base: parseValorBrasileiro(formData.salario_base),
-        gratificacoes: parseValorBrasileiro(formData.gratificacoes),
-        adicionais: parseValorBrasileiro(formData.adicionais),
-        outros_proventos: parseValorBrasileiro(formData.outros_proventos),
-        inss: parseValorBrasileiro(formData.inss),
-        irrf: parseValorBrasileiro(formData.irrf),
-        outros_descontos: parseValorBrasileiro(formData.outros_descontos),
-        mes_referencia: formData.mes_referencia,
-        ano_referencia: formData.ano_referencia,
-        observacoes: formData.observacoes || null,
-        publicado: formData.publicado,
-      };
-
-      if (editingItem) {
-        await updateMutation.mutateAsync({ id: editingItem.id, ...payload });
-        toast.success('Registro atualizado com sucesso!');
+      if (editingDoc) {
+        await updateMutation.mutateAsync({ id: editingDoc.id, ...formData });
+        toast.success('Documento atualizado com sucesso!');
       } else {
-        await createMutation.mutateAsync(payload);
-        toast.success('Registro criado com sucesso!');
+        await createMutation.mutateAsync(formData);
+        toast.success('Documento cadastrado com sucesso!');
       }
-      setDialogOpen(false);
+      setIsDialogOpen(false);
       resetForm();
-    } catch (error) {
-      toast.error('Erro ao salvar registro');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao salvar documento.';
+      toast.error(errorMessage);
     }
   };
 
-  const handleDelete = async () => {
-    if (!itemToDelete) return;
+  const handleDelete = async (id: string) => {
+    if (!confirm('Tem certeza que deseja excluir este documento?')) return;
+
     try {
-      await deleteMutation.mutateAsync(itemToDelete.id);
-      toast.success('Registro excluído com sucesso!');
-      setDeleteDialogOpen(false);
-      setItemToDelete(null);
-    } catch (error) {
-      toast.error('Erro ao excluir registro');
+      await deleteMutation.mutateAsync(id);
+      toast.success('Documento excluído com sucesso!');
+    } catch {
+      toast.error('Erro ao excluir documento.');
     }
   };
+
+  const filteredDocs = documentos?.filter((doc) => {
+    const matchSearch = doc.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doc.arquivo_nome.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchSearch;
+  });
 
   return (
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Users className="h-6 w-6" />
-              Folha de Pagamento
-            </h1>
-            <p className="text-muted-foreground">Gerencie a folha de pagamento dos servidores</p>
+            <h1 className="text-2xl font-bold text-foreground">Folha de Pagamento</h1>
+            <p className="text-muted-foreground">
+              Gerencie os documentos mensais da folha de pagamento
+            </p>
           </div>
-          <Button onClick={openNewDialog}>
-            <Plus className="h-4 w-4 mr-2" />
-            Novo Registro
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={() => handleOpenDialog()}>
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Documento
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>
+                  {editingDoc ? 'Editar Documento' : 'Novo Documento'}
+                </DialogTitle>
+                <DialogDescription>
+                  Preencha os dados do documento da folha de pagamento
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="md:col-span-2">
+                    <Label htmlFor="titulo">Título *</Label>
+                    <Input
+                      id="titulo"
+                      value={formData.titulo}
+                      onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+                      placeholder="Ex: Folha de Pagamento - Janeiro 2025"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="mes">Mês de Referência *</Label>
+                    <Select
+                      value={formData.mes_referencia.toString()}
+                      onValueChange={(value) => setFormData({ ...formData, mes_referencia: parseInt(value) })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o mês" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {meses.map((mes) => (
+                          <SelectItem key={mes} value={mes.toString()}>
+                            {mesesLabels[mes]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="ano">Ano de Referência *</Label>
+                    <Select
+                      value={formData.ano_referencia.toString()}
+                      onValueChange={(value) => setFormData({ ...formData, ano_referencia: parseInt(value) })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o ano" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {anos.map((ano) => (
+                          <SelectItem key={ano} value={ano.toString()}>
+                            {ano}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <Label htmlFor="arquivo_url">URL do Arquivo *</Label>
+                    <Input
+                      id="arquivo_url"
+                      type="url"
+                      value={formData.arquivo_url}
+                      onChange={(e) => setFormData({ ...formData, arquivo_url: e.target.value })}
+                      placeholder="https://exemplo.com/documento.pdf"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <Label htmlFor="arquivo_nome">Nome do Arquivo *</Label>
+                    <Input
+                      id="arquivo_nome"
+                      value={formData.arquivo_nome}
+                      onChange={(e) => setFormData({ ...formData, arquivo_nome: e.target.value })}
+                      placeholder="folha-pagamento-janeiro-2025.pdf"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <Label htmlFor="descricao">Descrição</Label>
+                    <Textarea
+                      id="descricao"
+                      value={formData.descricao || ''}
+                      onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+                      placeholder="Descrição do documento..."
+                      rows={3}
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <Label htmlFor="observacoes">Observações</Label>
+                    <Textarea
+                      id="observacoes"
+                      value={formData.observacoes || ''}
+                      onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
+                      placeholder="Observações adicionais..."
+                      rows={2}
+                    />
+                  </div>
+
+                  <div className="md:col-span-2 flex items-center gap-2">
+                    <Switch
+                      id="publicado"
+                      checked={formData.publicado}
+                      onCheckedChange={(checked) => setFormData({ ...formData, publicado: checked })}
+                    />
+                    <Label htmlFor="publicado">Publicado</Label>
+                  </div>
+                </div>
+
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                    Cancelar
+                  </Button>
+                  <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
+                    {createMutation.isPending || updateMutation.isPending ? 'Salvando...' : 'Salvar'}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Filtros */}
         <Card>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <Label>Ano</Label>
-                <Select value={ano.toString()} onValueChange={(v) => setAno(parseInt(v))}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map(y => (
-                      <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Mês</Label>
-                <Select value={mes.toString()} onValueChange={(v) => setMes(parseInt(v))}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(mesesLabels).map(([value, label]) => (
-                      <SelectItem key={value} value={value}>{label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="md:col-span-2">
-                <Label>Buscar</Label>
+            <div className="flex flex-wrap gap-4 items-end">
+              <div className="flex-1 min-w-[200px]">
+                <Label className="mb-2 block">Buscar</Label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Nome, cargo ou secretaria..."
-                    value={busca}
-                    onChange={(e) => setBusca(e.target.value)}
-                    className="pl-10"
+                    placeholder="Buscar por título ou arquivo..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9"
                   />
                 </div>
+              </div>
+              <div className="min-w-[180px]">
+                <Label className="mb-2 block">Ano</Label>
+                <Select value={anoFiltro} onValueChange={setAnoFiltro}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Todos os anos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os anos</SelectItem>
+                    {anos.map((ano) => (
+                      <SelectItem key={ano} value={ano.toString()}>
+                        {ano}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </CardContent>
@@ -252,71 +300,81 @@ export default function AdminFolhaPagamento() {
         {/* Tabela */}
         <Card>
           <CardHeader>
-            <CardTitle>{mesesLabels[mes]}/{ano} - {servidoresFiltrados.length} registros</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Documentos Cadastrados
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
               <div className="space-y-3">
-                {[...Array(5)].map((_, i) => (
-                  <Skeleton key={i} className="h-12 w-full" />
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Skeleton key={i} className="h-12" />
                 ))}
               </div>
-            ) : servidoresFiltrados.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>Nenhum registro encontrado.</p>
-              </div>
-            ) : (
+            ) : filteredDocs && filteredDocs.length > 0 ? (
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Servidor</TableHead>
-                      <TableHead>Cargo</TableHead>
-                      <TableHead>Secretaria</TableHead>
-                      <TableHead>Vínculo</TableHead>
-                      <TableHead className="text-right">Salário Base</TableHead>
-                      <TableHead className="text-right">Líquido</TableHead>
+                      <TableHead>Título</TableHead>
+                      <TableHead>Referência</TableHead>
+                      <TableHead>Arquivo</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Data Cadastro</TableHead>
                       <TableHead className="text-right">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {servidoresFiltrados.map((servidor) => (
-                      <TableRow key={servidor.id}>
+                    {filteredDocs.map((doc) => (
+                      <TableRow key={doc.id}>
+                        <TableCell className="font-medium">{doc.titulo}</TableCell>
                         <TableCell>
-                          <div>
-                            <p className="font-medium">{servidor.nome_servidor}</p>
-                            {servidor.matricula && (
-                              <p className="text-xs text-muted-foreground">Mat: {servidor.matricula}</p>
-                            )}
-                          </div>
+                          {mesesLabels[doc.mes_referencia]} / {doc.ano_referencia}
                         </TableCell>
-                        <TableCell>{servidor.cargo}</TableCell>
-                        <TableCell>{servidor.secretaria || '-'}</TableCell>
                         <TableCell>
-                          <Badge variant="outline">
-                            {vinculoLabels[servidor.vinculo || 'efetivo'] || servidor.vinculo}
-                          </Badge>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => window.open(doc.arquivo_url, '_blank')}
+                            className="text-primary hover:text-primary/80"
+                          >
+                            <ExternalLink className="h-4 w-4 mr-1" />
+                            Ver
+                          </Button>
                         </TableCell>
-                        <TableCell className="text-right">{formatCurrency(servidor.salario_base)}</TableCell>
-                        <TableCell className="text-right font-bold">{formatCurrency(servidor.salario_liquido)}</TableCell>
                         <TableCell>
-                          <Badge variant={servidor.publicado ? 'default' : 'secondary'}>
-                            {servidor.publicado ? 'Publicado' : 'Rascunho'}
-                          </Badge>
+                          <span
+                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              doc.publicado
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                                : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
+                            }`}
+                          >
+                            {doc.publicado ? 'Publicado' : 'Rascunho'}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          {doc.created_at
+                            ? format(new Date(doc.created_at), 'dd/MM/yyyy', { locale: ptBR })
+                            : '-'}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
-                            <Button variant="ghost" size="icon" onClick={() => openEditDialog(servidor)}>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleOpenDialog(doc)}
+                            >
                               <Pencil className="h-4 w-4" />
                             </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              onClick={() => { setItemToDelete(servidor); setDeleteDialogOpen(true); }}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleDelete(doc.id)}
+                              className="text-destructive hover:text-destructive"
                             >
-                              <Trash2 className="h-4 w-4 text-destructive" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
                         </TableCell>
@@ -325,252 +383,16 @@ export default function AdminFolhaPagamento() {
                   </TableBody>
                 </Table>
               </div>
+            ) : (
+              <div className="text-center py-12">
+                <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">
+                  Nenhum documento encontrado.
+                </p>
+              </div>
             )}
           </CardContent>
         </Card>
-
-        {/* Dialog de Edição */}
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{editingItem ? 'Editar Registro' : 'Novo Registro'}</DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Nome do Servidor *</Label>
-                  <Input
-                    value={formData.nome_servidor}
-                    onChange={(e) => setFormData({ ...formData, nome_servidor: e.target.value })}
-                    placeholder="Nome completo"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Matrícula</Label>
-                  <Input
-                    value={formData.matricula}
-                    onChange={(e) => setFormData({ ...formData, matricula: e.target.value })}
-                    placeholder="Número da matrícula"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Cargo *</Label>
-                  <Input
-                    value={formData.cargo}
-                    onChange={(e) => setFormData({ ...formData, cargo: e.target.value })}
-                    placeholder="Cargo ocupado"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Secretaria</Label>
-                  <Input
-                    value={formData.secretaria}
-                    onChange={(e) => setFormData({ ...formData, secretaria: e.target.value })}
-                    placeholder="Secretaria de lotação"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label>Vínculo</Label>
-                  <Select value={formData.vinculo} onValueChange={(v) => setFormData({ ...formData, vinculo: v })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(vinculoLabels).map(([value, label]) => (
-                        <SelectItem key={value} value={value}>{label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Carga Horária</Label>
-                  <Input
-                    type="number"
-                    value={formData.carga_horaria}
-                    onChange={(e) => setFormData({ ...formData, carga_horaria: parseInt(e.target.value) || 40 })}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-2">
-                    <Label>Mês *</Label>
-                    <Select value={formData.mes_referencia.toString()} onValueChange={(v) => setFormData({ ...formData, mes_referencia: parseInt(v) })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(mesesLabels).map(([value, label]) => (
-                          <SelectItem key={value} value={value}>{label}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Ano *</Label>
-                    <Select value={formData.ano_referencia.toString()} onValueChange={(v) => setFormData({ ...formData, ano_referencia: parseInt(v) })}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {years.map(y => (
-                          <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t pt-4">
-                <h4 className="font-medium mb-3 text-green-600">Proventos</h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-2">
-                    <Label>Salário Base (R$) *</Label>
-                    <Input
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="0,00"
-                      value={formData.salario_base}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/[^\d,.-]/g, '');
-                        setFormData({ ...formData, salario_base: value });
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Gratificações (R$)</Label>
-                    <Input
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="0,00"
-                      value={formData.gratificacoes}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/[^\d,.-]/g, '');
-                        setFormData({ ...formData, gratificacoes: value });
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Adicionais (R$)</Label>
-                    <Input
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="0,00"
-                      value={formData.adicionais}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/[^\d,.-]/g, '');
-                        setFormData({ ...formData, adicionais: value });
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Outros Proventos (R$)</Label>
-                    <Input
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="0,00"
-                      value={formData.outros_proventos}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/[^\d,.-]/g, '');
-                        setFormData({ ...formData, outros_proventos: value });
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t pt-4">
-                <h4 className="font-medium mb-3 text-red-600">Descontos</h4>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label>INSS (R$)</Label>
-                    <Input
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="0,00"
-                      value={formData.inss}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/[^\d,.-]/g, '');
-                        setFormData({ ...formData, inss: value });
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>IRRF (R$)</Label>
-                    <Input
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="0,00"
-                      value={formData.irrf}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/[^\d,.-]/g, '');
-                        setFormData({ ...formData, irrf: value });
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Outros Descontos (R$)</Label>
-                    <Input
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="0,00"
-                      value={formData.outros_descontos}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/[^\d,.-]/g, '');
-                        setFormData({ ...formData, outros_descontos: value });
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Observações</Label>
-                <Textarea
-                  value={formData.observacoes}
-                  onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-                  placeholder="Observações adicionais..."
-                  rows={2}
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Switch
-                  checked={formData.publicado}
-                  onCheckedChange={(checked) => setFormData({ ...formData, publicado: checked })}
-                />
-                <Label>Publicado</Label>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancelar</Button>
-              <Button onClick={handleSave} disabled={createMutation.isPending || updateMutation.isPending}>
-                {editingItem ? 'Salvar' : 'Criar'}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-
-        {/* Dialog de Exclusão */}
-        <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Confirmar Exclusão</DialogTitle>
-            </DialogHeader>
-            <p>Deseja realmente excluir o registro de <strong>{itemToDelete?.nome_servidor}</strong>?</p>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancelar</Button>
-              <Button variant="destructive" onClick={handleDelete} disabled={deleteMutation.isPending}>
-                Excluir
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </div>
     </AdminLayout>
   );
