@@ -1,6 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+export type CategoriaFolha = 'prefeitura' | 'educacao';
+
+export const categoriasLabels: Record<CategoriaFolha, string> = {
+  prefeitura: 'Prefeitura',
+  educacao: 'Educação',
+};
+
 export interface FolhaPagamento {
   id: string;
   titulo: string;
@@ -8,6 +15,7 @@ export interface FolhaPagamento {
   ano_referencia: number;
   arquivo_url: string;
   arquivo_nome: string;
+  categoria: string;
   descricao: string | null;
   observacoes: string | null;
   publicado: boolean | null;
@@ -21,6 +29,7 @@ export interface FolhaPagamentoInput {
   ano_referencia: number;
   arquivo_url: string;
   arquivo_nome: string;
+  categoria: CategoriaFolha;
   descricao?: string | null;
   observacoes?: string | null;
   publicado?: boolean;

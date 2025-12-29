@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { useFolhaPagamento, useCreateFolhaPagamento, useUpdateFolhaPagamento, useDeleteFolhaPagamento, mesesLabels, FolhaPagamento, FolhaPagamentoInput } from '@/hooks/useFolhaPagamento';
+import { useFolhaPagamento, useCreateFolhaPagamento, useUpdateFolhaPagamento, useDeleteFolhaPagamento, mesesLabels, categoriasLabels, CategoriaFolha, FolhaPagamento, FolhaPagamentoInput } from '@/hooks/useFolhaPagamento';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -40,8 +40,7 @@ export default function AdminFolhaPagamento() {
     ano_referencia: currentYear,
     arquivo_url: '',
     arquivo_nome: '',
-    descricao: '',
-    observacoes: '',
+    categoria: 'prefeitura',
     publicado: true,
   });
 
@@ -52,8 +51,7 @@ export default function AdminFolhaPagamento() {
       ano_referencia: currentYear,
       arquivo_url: '',
       arquivo_nome: '',
-      descricao: '',
-      observacoes: '',
+      categoria: 'prefeitura',
       publicado: true,
     });
     setEditingDoc(null);
@@ -68,8 +66,7 @@ export default function AdminFolhaPagamento() {
         ano_referencia: doc.ano_referencia,
         arquivo_url: doc.arquivo_url,
         arquivo_nome: doc.arquivo_nome,
-        descricao: doc.descricao || '',
-        observacoes: doc.observacoes || '',
+        categoria: (doc.categoria as CategoriaFolha) || 'prefeitura',
         publicado: doc.publicado ?? true,
       });
     } else {
@@ -81,17 +78,27 @@ export default function AdminFolhaPagamento() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.titulo || !formData.arquivo_url || !formData.arquivo_nome) {
-      toast.error('Preencha todos os campos obrigatórios.');
+    if (!formData.arquivo_url) {
+      toast.error('Preencha o link do arquivo.');
       return;
     }
 
+    // Gerar título e nome do arquivo automaticamente
+    const titulo = `Folha de Pagamento - ${categoriasLabels[formData.categoria]} - ${mesesLabels[formData.mes_referencia]}/${formData.ano_referencia}`;
+    const arquivo_nome = `folha-${formData.categoria}-${formData.mes_referencia}-${formData.ano_referencia}.pdf`;
+    
+    const dataToSubmit = {
+      ...formData,
+      titulo,
+      arquivo_nome,
+    };
+
     try {
       if (editingDoc) {
-        await updateMutation.mutateAsync({ id: editingDoc.id, ...formData });
+        await updateMutation.mutateAsync({ id: editingDoc.id, ...dataToSubmit });
         toast.success('Documento atualizado com sucesso!');
       } else {
-        await createMutation.mutateAsync(formData);
+        await createMutation.mutateAsync(dataToSubmit);
         toast.success('Documento cadastrado com sucesso!');
       }
       setIsDialogOpen(false);
@@ -147,18 +154,8 @@ export default function AdminFolhaPagamento() {
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <Label htmlFor="titulo">Título *</Label>
-                    <Input
-                      id="titulo"
-                      value={formData.titulo}
-                      onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
-                      placeholder="Ex: Folha de Pagamento - Janeiro 2025"
-                    />
-                  </div>
-
                   <div>
-                    <Label htmlFor="mes">Mês de Referência *</Label>
+                    <Label htmlFor="mes">Mês *</Label>
                     <Select
                       value={formData.mes_referencia.toString()}
                       onValueChange={(value) => setFormData({ ...formData, mes_referencia: parseInt(value) })}
@@ -177,7 +174,7 @@ export default function AdminFolhaPagamento() {
                   </div>
 
                   <div>
-                    <Label htmlFor="ano">Ano de Referência *</Label>
+                    <Label htmlFor="ano">Ano *</Label>
                     <Select
                       value={formData.ano_referencia.toString()}
                       onValueChange={(value) => setFormData({ ...formData, ano_referencia: parseInt(value) })}
@@ -196,45 +193,29 @@ export default function AdminFolhaPagamento() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <Label htmlFor="arquivo_url">URL do Arquivo *</Label>
+                    <Label htmlFor="categoria">Categoria *</Label>
+                    <Select
+                      value={formData.categoria}
+                      onValueChange={(value) => setFormData({ ...formData, categoria: value as CategoriaFolha })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione a categoria" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="prefeitura">Prefeitura</SelectItem>
+                        <SelectItem value="educacao">Educação</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <Label htmlFor="arquivo_url">Link do Arquivo (PDF) *</Label>
                     <Input
                       id="arquivo_url"
                       type="url"
                       value={formData.arquivo_url}
                       onChange={(e) => setFormData({ ...formData, arquivo_url: e.target.value })}
-                      placeholder="https://exemplo.com/documento.pdf"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <Label htmlFor="arquivo_nome">Nome do Arquivo *</Label>
-                    <Input
-                      id="arquivo_nome"
-                      value={formData.arquivo_nome}
-                      onChange={(e) => setFormData({ ...formData, arquivo_nome: e.target.value })}
-                      placeholder="folha-pagamento-janeiro-2025.pdf"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <Label htmlFor="descricao">Descrição</Label>
-                    <Textarea
-                      id="descricao"
-                      value={formData.descricao || ''}
-                      onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
-                      placeholder="Descrição do documento..."
-                      rows={3}
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <Label htmlFor="observacoes">Observações</Label>
-                    <Textarea
-                      id="observacoes"
-                      value={formData.observacoes || ''}
-                      onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-                      placeholder="Observações adicionais..."
-                      rows={2}
+                      placeholder="Cole aqui o link do arquivo PDF"
                     />
                   </div>
 
@@ -317,20 +298,27 @@ export default function AdminFolhaPagamento() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Título</TableHead>
                       <TableHead>Referência</TableHead>
+                      <TableHead>Categoria</TableHead>
                       <TableHead>Arquivo</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Data Cadastro</TableHead>
                       <TableHead className="text-right">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredDocs.map((doc) => (
                       <TableRow key={doc.id}>
-                        <TableCell className="font-medium">{doc.titulo}</TableCell>
-                        <TableCell>
+                        <TableCell className="font-medium">
                           {mesesLabels[doc.mes_referencia]} / {doc.ano_referencia}
+                        </TableCell>
+                        <TableCell>
+                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                            doc.categoria === 'educacao' 
+                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                              : 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
+                          }`}>
+                            {categoriasLabels[doc.categoria as CategoriaFolha] || doc.categoria}
+                          </span>
                         </TableCell>
                         <TableCell>
                           <Button
@@ -353,11 +341,6 @@ export default function AdminFolhaPagamento() {
                           >
                             {doc.publicado ? 'Publicado' : 'Rascunho'}
                           </span>
-                        </TableCell>
-                        <TableCell>
-                          {doc.created_at
-                            ? format(new Date(doc.created_at), 'dd/MM/yyyy', { locale: ptBR })
-                            : '-'}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
