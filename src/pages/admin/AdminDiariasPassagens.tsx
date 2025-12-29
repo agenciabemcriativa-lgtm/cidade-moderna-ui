@@ -156,11 +156,15 @@ export default function AdminDiariasPassagens() {
       return;
     }
 
-    // Função para converter valor brasileiro (1.234,56) para número
+    // Função para converter valor brasileiro (1.234,56) ou americano (1234.56) para número
     const parseValorBrasileiro = (valor: string): number => {
       if (!valor) return 0;
-      // Remove pontos de milhar e substitui vírgula por ponto
-      return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+      // Se contém vírgula, assume formato brasileiro
+      if (valor.includes(',')) {
+        return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+      }
+      // Caso contrário, assume formato americano/numérico simples
+      return parseFloat(valor.replace(/[^\d.-]/g, '')) || 0;
     };
 
     try {

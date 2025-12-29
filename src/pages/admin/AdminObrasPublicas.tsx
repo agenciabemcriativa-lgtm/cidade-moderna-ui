@@ -121,6 +121,12 @@ export default function AdminObrasPublicas() {
     setDialogOpen(true);
   };
 
+  // Função para formatar número para formato brasileiro
+  const formatarValorBrasileiro = (valor: number | null): string => {
+    if (!valor) return '';
+    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
   const openEditDialog = (obra: ObraPublica) => {
     setEditingObra(obra);
     setFormData({
@@ -133,8 +139,8 @@ export default function AdminObrasPublicas() {
       data_inicio: obra.data_inicio || '',
       data_previsao_termino: obra.data_previsao_termino || '',
       data_conclusao: obra.data_conclusao || '',
-      valor_contratado: obra.valor_contratado?.toString() || '',
-      valor_executado: obra.valor_executado?.toString() || '',
+      valor_contratado: formatarValorBrasileiro(obra.valor_contratado),
+      valor_executado: formatarValorBrasileiro(obra.valor_executado),
       percentual_execucao: obra.percentual_execucao || 0,
       empresa_executora: obra.empresa_executora || '',
       cnpj_empresa: obra.cnpj_empresa || '',
@@ -148,6 +154,17 @@ export default function AdminObrasPublicas() {
       publicado: obra.publicado ?? true,
     });
     setDialogOpen(true);
+  };
+
+  // Função para converter valor brasileiro (1.234,56) ou americano (1234.56) para número
+  const parseValorBrasileiro = (valor: string): number => {
+    if (!valor) return 0;
+    // Se contém vírgula, assume formato brasileiro
+    if (valor.includes(',')) {
+      return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+    }
+    // Caso contrário, assume formato americano/numérico simples
+    return parseFloat(valor.replace(/[^\d.-]/g, '')) || 0;
   };
 
   const handleSave = async () => {
@@ -167,8 +184,8 @@ export default function AdminObrasPublicas() {
         data_inicio: formData.data_inicio || null,
         data_previsao_termino: formData.data_previsao_termino || null,
         data_conclusao: formData.data_conclusao || null,
-        valor_contratado: formData.valor_contratado ? parseFloat(formData.valor_contratado) : null,
-        valor_executado: formData.valor_executado ? parseFloat(formData.valor_executado) : null,
+        valor_contratado: formData.valor_contratado ? parseValorBrasileiro(formData.valor_contratado) : null,
+        valor_executado: formData.valor_executado ? parseValorBrasileiro(formData.valor_executado) : null,
         percentual_execucao: formData.percentual_execucao,
         empresa_executora: formData.empresa_executora || null,
         cnpj_empresa: formData.cnpj_empresa || null,
@@ -452,8 +469,9 @@ export default function AdminObrasPublicas() {
                 <div className="space-y-2">
                   <Label>Valor Contratado (R$)</Label>
                   <Input
-                    type="number"
-                    step="0.01"
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0,00"
                     value={formData.valor_contratado}
                     onChange={(e) => setFormData({ ...formData, valor_contratado: e.target.value })}
                   />
@@ -461,8 +479,9 @@ export default function AdminObrasPublicas() {
                 <div className="space-y-2">
                   <Label>Valor Executado (R$)</Label>
                   <Input
-                    type="number"
-                    step="0.01"
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0,00"
                     value={formData.valor_executado}
                     onChange={(e) => setFormData({ ...formData, valor_executado: e.target.value })}
                   />
