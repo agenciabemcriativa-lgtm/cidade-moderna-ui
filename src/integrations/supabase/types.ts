@@ -561,6 +561,54 @@ export type Database = {
         }
         Relationships: []
       }
+      emendas_parlamentares: {
+        Row: {
+          ano_referencia: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at: string | null
+          data_postagem: string
+          data_referencia: string
+          descricao: string | null
+          id: string
+          observacoes: string | null
+          ordem: number | null
+          publicado: boolean | null
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ano_referencia: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at?: string | null
+          data_postagem?: string
+          data_referencia: string
+          descricao?: string | null
+          id?: string
+          observacoes?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ano_referencia?: number
+          arquivo_nome?: string
+          arquivo_url?: string
+          created_at?: string | null
+          data_postagem?: string
+          data_referencia?: string
+          descricao?: string | null
+          id?: string
+          observacoes?: string | null
+          ordem?: number | null
+          publicado?: boolean | null
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       esic_anexos: {
         Row: {
           created_at: string
