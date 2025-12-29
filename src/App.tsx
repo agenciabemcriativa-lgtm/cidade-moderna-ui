@@ -46,6 +46,7 @@ import DiariasPassagensPage from "./pages/transparencia/DiariasPassagensPage";
 import PatrimonioPublicoPage from "./pages/transparencia/PatrimonioPublicoPage";
 import DadosAbertosPage from "./pages/transparencia/DadosAbertosPage";
 import FolhaPagamentoPage from "./pages/transparencia/FolhaPagamentoPage";
+import DocumentosPessoalPage from "./pages/transparencia/DocumentosPessoalPage";
 import ESicPage from "./pages/transparencia/ESicPage";
 import ESicNovaSolicitacaoPage from "./pages/transparencia/ESicNovaSolicitacaoPage";
 import ESicConsultarPage from "./pages/transparencia/ESicConsultarPage";
@@ -136,6 +137,7 @@ const App = () => (
             <Route path="/transparencia/patrimonio" element={<PatrimonioPublicoPage />} />
             <Route path="/transparencia/dados-abertos" element={<DadosAbertosPage />} />
             <Route path="/transparencia/folha-pagamento" element={<FolhaPagamentoPage />} />
+            <Route path="/transparencia/documentos/:tipo" element={<DocumentosPessoalPage />} />
             <Route path="/transparencia/esic" element={<ESicPage />} />
             <Route path="/transparencia/esic/nova-solicitacao" element={<ESicNovaSolicitacaoPage />} />
             <Route path="/transparencia/esic/consultar" element={<ESicConsultarPage />} />

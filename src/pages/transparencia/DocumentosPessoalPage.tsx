@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FileText, Download, Calendar, ChevronDown } from 'lucide-react';
-import TransparenciaLayout from '@/components/transparencia/TransparenciaLayout';
+import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -29,17 +29,10 @@ export default function DocumentosPessoalPage() {
     document.title = `${titulo} - Transparência - Prefeitura de Ipubi`;
   }, [titulo]);
 
-  const breadcrumbs = [
-    { label: 'Início', href: '/' },
-    { label: 'Transparência', href: '/transparencia' },
-    { label: titulo },
-  ];
-
   return (
     <TransparenciaLayout
       title={titulo}
       description={`Consulte os documentos de ${titulo.toLowerCase()} do município de Ipubi.`}
-      breadcrumbs={breadcrumbs}
     >
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
