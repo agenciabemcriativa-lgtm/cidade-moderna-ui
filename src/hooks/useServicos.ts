@@ -58,8 +58,8 @@ const fallbackServicos: Servico[] = [
   },
   {
     icon: FileCheck,
-    title: "Licitações e Contratos",
-    description: "Consulte processos licitatórios e contratos",
+    title: "Licitações",
+    description: "Consulte processos licitatórios",
     color: "bg-primary",
     href: "/licitacoes"
   },
