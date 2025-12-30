@@ -34,7 +34,7 @@ const quickLinks = [
 
 const socialLinks = [
   { icon: Facebook, href: "https://www.facebook.com/prefeituradeipubi", label: "Facebook" },
-  { icon: Instagram, href: "https://www.instagram.com/prefeituradeipubi", label: "Instagram" },
+  { icon: Instagram, href: "https://www.instagram.com/prefeituraipubi/", label: "Instagram" },
 ];
 
 interface FooterProps {

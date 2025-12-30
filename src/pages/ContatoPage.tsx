@@ -66,8 +66,8 @@ export default function ContatoPage() {
   };
 
   const socialLinks = [
-    { icon: Facebook, href: "https://facebook.com", label: "Facebook", color: "bg-blue-600 hover:bg-blue-700" },
-    { icon: Instagram, href: "https://instagram.com", label: "Instagram", color: "bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600" },
+    { icon: Facebook, href: "https://www.facebook.com/prefeituradeipubi", label: "Facebook", color: "bg-blue-600 hover:bg-blue-700" },
+    { icon: Instagram, href: "https://www.instagram.com/prefeituraipubi/", label: "Instagram", color: "bg-gradient-to-br from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600" },
   ];
 
   return (
