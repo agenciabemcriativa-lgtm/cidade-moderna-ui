@@ -7,6 +7,7 @@ import { useNoticias } from "@/hooks/useNoticias";
 const categoryColorMap: Record<string, string> = {
   "bg-primary": "bg-primary",
   "bg-blue-600": "bg-blue-600",
+  "bg-cyan-500": "bg-cyan-500",
   "bg-green-600": "bg-green-600",
   "bg-green-500": "bg-green-500",
   "bg-red-600": "bg-red-600",
