@@ -11,7 +11,6 @@ export default function CardapiosEscolaresPage() {
   const { data: cardapios, isLoading } = useCardapiosEscolares();
 
   const breadcrumbItems = [
-    { label: "Início", href: "/" },
     { label: "Cardápios Escolares" },
   ];
 
@@ -25,7 +24,7 @@ export default function CardapiosEscolaresPage() {
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-primary to-primary/80 text-white py-12">
           <div className="container mx-auto px-4">
-            <Breadcrumbs items={breadcrumbItems} className="text-white/80 mb-4" />
+            <Breadcrumbs items={breadcrumbItems} variant="light" className="mb-4" />
             <h1 className="text-3xl md:text-4xl font-bold mb-2">Cardápios Escolares</h1>
             <p className="text-white/90 max-w-2xl">
               Confira os cardápios das escolas municipais, creches e tempo integral.
