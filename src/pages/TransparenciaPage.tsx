@@ -304,9 +304,6 @@ export default function TransparenciaPage() {
               </div>
             </div>
             
-            <div className="hidden md:flex items-center gap-2">
-              {renderQuickLinks()}
-            </div>
           </div>
         </div>
       </header>
