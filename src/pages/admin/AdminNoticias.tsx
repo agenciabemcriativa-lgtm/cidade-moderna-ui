@@ -34,7 +34,7 @@ const categoriasConfig: Record<string, string> = {
   "Saúde": "bg-green-500",
   "Educação": "bg-blue-600",
   "Esportes": "bg-orange-500",
-  "Administração": "bg-sky-500",
+  "Administração": "bg-amber-800",
   "Obras": "bg-yellow-500",
   "Assistência Social": "bg-purple-500",
   "Cultura": "bg-pink-500",
