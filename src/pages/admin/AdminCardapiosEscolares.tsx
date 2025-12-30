@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, FileText, ExternalLink } from "lucide-react";
-import { useCardapiosEscolaresAdmin, CardapioEscolar } from "@/hooks/useCardapiosEscolares";
+import { useCardapiosEscolaresAdmin, CardapioEscolar, CATEGORIA_RECOMENDACOES } from "@/hooks/useCardapiosEscolares";
 
 const mesesNomes = [
   { value: "1", label: "Janeiro" },
@@ -31,12 +31,10 @@ const mesesNomes = [
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
 
+// Categoria avulsa + categorias que agrupam por mês
 const categoriasList = [
-  "Cardápios e Recomendações",
-  "Educação Infantil",
-  "Ensino Fundamental",
-  "Creches",
-  "Tempo Integral",
+  CATEGORIA_RECOMENDACOES, // Categoria avulsa (não agrupa por mês)
+  "Cardápio Mensal", // Categoria padrão para cardápios por mês
 ];
 
 export default function AdminCardapiosEscolares() {
@@ -51,7 +49,7 @@ export default function AdminCardapiosEscolares() {
     arquivo_url: "",
     ordem: 0,
     publicado: true,
-    categoria: "Cardápios e Recomendações",
+    categoria: "Cardápio Mensal",
   });
 
   const { data: cardapios, isLoading } = useCardapiosEscolaresAdmin();
@@ -111,7 +109,7 @@ export default function AdminCardapiosEscolares() {
       arquivo_url: "",
       ordem: 0,
       publicado: true,
-      categoria: "Cardápios e Recomendações",
+      categoria: "Cardápio Mensal",
     });
     setEditingId(null);
     setOpen(false);
@@ -126,7 +124,7 @@ export default function AdminCardapiosEscolares() {
       arquivo_url: cardapio.arquivo_url,
       ordem: cardapio.ordem || 0,
       publicado: cardapio.publicado ?? true,
-      categoria: cardapio.categoria || "Cardápios e Recomendações",
+      categoria: cardapio.categoria || "Cardápio Mensal",
     });
     setEditingId(cardapio.id);
     setOpen(true);
@@ -141,31 +139,24 @@ export default function AdminCardapiosEscolares() {
     }
   };
 
-  // Agrupar cardápios por categoria e mês/ano para exibição
-  const groupedCardapios = cardapios?.reduce((acc, cardapio) => {
-    const categoria = cardapio.categoria || "Cardápios e Recomendações";
-    if (!acc[categoria]) {
-      acc[categoria] = {};
-    }
+  // Separar itens: recomendações (avulsos) e por mês
+  const recomendacoes = cardapios?.filter(c => c.categoria === CATEGORIA_RECOMENDACOES) || [];
+  const cardapiosMensais = cardapios?.filter(c => c.categoria !== CATEGORIA_RECOMENDACOES) || [];
+
+  // Agrupar cardápios mensais por mês/ano
+  const porMesMap = cardapiosMensais.reduce((acc, cardapio) => {
     const key = `${cardapio.ano_referencia}-${cardapio.mes_referencia}`;
-    if (!acc[categoria][key]) {
-      acc[categoria][key] = {
-        label: `${mesesNomes.find(m => m.value === String(cardapio.mes_referencia))?.label} ${cardapio.ano_referencia}`,
+    if (!acc[key]) {
+      acc[key] = {
+        label: `Cardápio ${mesesNomes.find(m => m.value === String(cardapio.mes_referencia))?.label} ${cardapio.ano_referencia}`,
         itens: [],
       };
     }
-    acc[categoria][key].itens.push(cardapio);
+    acc[key].itens.push(cardapio);
     return acc;
-  }, {} as Record<string, Record<string, { label: string; itens: CardapioEscolar[] }>>);
+  }, {} as Record<string, { label: string; itens: CardapioEscolar[] }>);
 
-  // Ordenar categorias com "Cardápios e Recomendações" primeiro
-  const sortedCategories = groupedCardapios 
-    ? Object.keys(groupedCardapios).sort((a, b) => {
-        if (a === "Cardápios e Recomendações") return -1;
-        if (b === "Cardápios e Recomendações") return 1;
-        return a.localeCompare(b);
-      })
-    : [];
+  const isRecomendacoes = form.categoria === CATEGORIA_RECOMENDACOES;
 
   return (
     <AdminLayout>
@@ -187,10 +178,10 @@ export default function AdminCardapiosEscolares() {
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Categoria</Label>
+                  <Label>Tipo</Label>
                   <Select value={form.categoria} onValueChange={(v) => setForm({ ...form, categoria: v })}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecione a categoria" />
+                      <SelectValue placeholder="Selecione o tipo" />
                     </SelectTrigger>
                     <SelectContent>
                       {categoriasList.map((cat) => (
@@ -200,6 +191,12 @@ export default function AdminCardapiosEscolares() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <p className="text-xs text-muted-foreground">
+                    {isRecomendacoes 
+                      ? "Documentos avulsos que aparecem no topo da página"
+                      : "Cardápios agrupados por mês/ano"
+                    }
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <Label>Título do Cardápio</Label>
@@ -210,38 +207,40 @@ export default function AdminCardapiosEscolares() {
                     required
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Mês de Referência</Label>
-                    <Select value={form.mes_referencia} onValueChange={(v) => setForm({ ...form, mes_referencia: v })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o mês" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {mesesNomes.map((mes) => (
-                          <SelectItem key={mes.value} value={mes.value}>
-                            {mes.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                {!isRecomendacoes && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Mês de Referência</Label>
+                      <Select value={form.mes_referencia} onValueChange={(v) => setForm({ ...form, mes_referencia: v })}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o mês" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {mesesNomes.map((mes) => (
+                            <SelectItem key={mes.value} value={mes.value}>
+                              {mes.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Ano de Referência</Label>
+                      <Select value={form.ano_referencia} onValueChange={(v) => setForm({ ...form, ano_referencia: v })}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o ano" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {years.map((year) => (
+                            <SelectItem key={year} value={String(year)}>
+                              {year}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label>Ano de Referência</Label>
-                    <Select value={form.ano_referencia} onValueChange={(v) => setForm({ ...form, ano_referencia: v })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o ano" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {years.map((year) => (
-                          <SelectItem key={year} value={String(year)}>
-                            {year}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
+                )}
                 <div className="space-y-2">
                   <Label>Nome do Arquivo</Label>
                   <Input
@@ -285,51 +284,84 @@ export default function AdminCardapiosEscolares() {
 
         {isLoading ? (
           <p>Carregando...</p>
-        ) : groupedCardapios && sortedCategories.length > 0 ? (
+        ) : cardapios && cardapios.length > 0 ? (
           <div className="space-y-8">
-            {sortedCategories.map((categoria) => (
-              <div key={categoria} className="space-y-4">
-                <h2 className="text-xl font-bold text-foreground border-b-2 border-primary pb-2">
-                  {categoria}
-                </h2>
-                {Object.entries(groupedCardapios[categoria]).map(([key, group]) => (
-                  <Card key={key}>
-                    <CardHeader className="bg-primary text-primary-foreground rounded-t-lg">
-                      <CardTitle className="text-lg">Cardápio {group.label}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-4 space-y-2">
-                      {group.itens.map((cardapio) => (
-                        <div
-                          key={cardapio.id}
-                          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
-                        >
-                          <a
-                            href={cardapio.arquivo_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-foreground hover:text-primary transition-colors flex-1"
-                          >
-                            <FileText className="h-4 w-4 text-muted-foreground" />
-                            <span>{cardapio.titulo}</span>
-                            <ExternalLink className="h-3 w-3 ml-1 opacity-50" />
-                          </a>
-                          <div className="flex items-center gap-2">
-                            <span className={`px-2 py-1 text-xs rounded ${cardapio.publicado ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
-                              {cardapio.publicado ? "Publicado" : "Rascunho"}
-                            </span>
-                            <Button variant="ghost" size="icon" onClick={() => handleEdit(cardapio)}>
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(cardapio.id)}>
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+            {/* Bloco Cardápios e Recomendações */}
+            {recomendacoes.length > 0 && (
+              <Card>
+                <CardHeader className="bg-primary text-primary-foreground rounded-t-lg">
+                  <CardTitle className="text-lg">{CATEGORIA_RECOMENDACOES}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4 space-y-2">
+                  {recomendacoes.map((cardapio) => (
+                    <div
+                      key={cardapio.id}
+                      className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
+                    >
+                      <a
+                        href={cardapio.arquivo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-foreground hover:text-primary transition-colors flex-1"
+                      >
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <span>{cardapio.titulo}</span>
+                        <ExternalLink className="h-3 w-3 ml-1 opacity-50" />
+                      </a>
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-1 text-xs rounded ${cardapio.publicado ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                          {cardapio.publicado ? "Publicado" : "Rascunho"}
+                        </span>
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(cardapio)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(cardapio.id)}>
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Blocos por Mês */}
+            {Object.entries(porMesMap).map(([key, group]) => (
+              <Card key={key}>
+                <CardHeader className="bg-primary text-primary-foreground rounded-t-lg">
+                  <CardTitle className="text-lg">{group.label}</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4 space-y-2">
+                  {group.itens.map((cardapio) => (
+                    <div
+                      key={cardapio.id}
+                      className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
+                    >
+                      <a
+                        href={cardapio.arquivo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-foreground hover:text-primary transition-colors flex-1"
+                      >
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <span>{cardapio.titulo}</span>
+                        <ExternalLink className="h-3 w-3 ml-1 opacity-50" />
+                      </a>
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-1 text-xs rounded ${cardapio.publicado ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                          {cardapio.publicado ? "Publicado" : "Rascunho"}
+                        </span>
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(cardapio)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(cardapio.id)}>
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (

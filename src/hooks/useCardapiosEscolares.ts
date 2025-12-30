@@ -22,9 +22,9 @@ export interface CardapioAgrupado {
   itens: CardapioEscolar[];
 }
 
-export interface CardapioPorCategoria {
-  categoria: string;
-  meses: CardapioAgrupado[];
+export interface CardapiosAgrupados {
+  recomendacoes: CardapioEscolar[]; // Documentos avulsos (Cardápios e Recomendações)
+  porMes: CardapioAgrupado[]; // Cardápios agrupados por mês
 }
 
 const mesesNomes = [
@@ -32,7 +32,7 @@ const mesesNomes = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-const CATEGORIA_PRIORITARIA = "Cardápios e Recomendações";
+export const CATEGORIA_RECOMENDACOES = "Cardápios e Recomendações";
 
 export function useCardapiosEscolares() {
   return useQuery({
@@ -48,39 +48,34 @@ export function useCardapiosEscolares() {
       
       if (error) throw error;
       
-      // Agrupar por categoria e depois por mês/ano
-      const porCategoria: Record<string, Record<string, CardapioAgrupado>> = {};
+      const recomendacoes: CardapioEscolar[] = [];
+      const porMesMap: Record<string, CardapioAgrupado> = {};
       
       (data as CardapioEscolar[]).forEach((item) => {
-        const categoria = item.categoria || CATEGORIA_PRIORITARIA;
-        const mesKey = `${item.ano_referencia}-${item.mes_referencia}`;
-        
-        if (!porCategoria[categoria]) {
-          porCategoria[categoria] = {};
+        // Se for "Cardápios e Recomendações", vai pro bloco avulso
+        if (item.categoria === CATEGORIA_RECOMENDACOES) {
+          recomendacoes.push(item);
+          return;
         }
         
-        if (!porCategoria[categoria][mesKey]) {
-          porCategoria[categoria][mesKey] = {
+        // Outros vão agrupados por mês/ano
+        const mesKey = `${item.ano_referencia}-${item.mes_referencia}`;
+        
+        if (!porMesMap[mesKey]) {
+          porMesMap[mesKey] = {
             mes: item.mes_referencia,
             ano: item.ano_referencia,
             label: `Cardápio ${mesesNomes[item.mes_referencia - 1]} ${item.ano_referencia}`,
             itens: [],
           };
         }
-        porCategoria[categoria][mesKey].itens.push(item);
+        porMesMap[mesKey].itens.push(item);
       });
       
-      // Converter para array e ordenar categorias (prioritária primeiro)
-      const resultado: CardapioPorCategoria[] = Object.entries(porCategoria)
-        .map(([categoria, meses]) => ({
-          categoria,
-          meses: Object.values(meses),
-        }))
-        .sort((a, b) => {
-          if (a.categoria === CATEGORIA_PRIORITARIA) return -1;
-          if (b.categoria === CATEGORIA_PRIORITARIA) return 1;
-          return a.categoria.localeCompare(b.categoria);
-        });
+      const resultado: CardapiosAgrupados = {
+        recomendacoes,
+        porMes: Object.values(porMesMap),
+      };
       
       return resultado;
     },
