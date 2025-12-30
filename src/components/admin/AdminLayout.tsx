@@ -31,7 +31,7 @@ const menuItems = [
   { icon: ClipboardList, label: "Carta de Serviços", href: "/admin/carta-servicos" },
   { icon: FileText, label: "Categorias Receitas", href: "/admin/receitas-categorias" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },
-  { icon: Shield, label: "Convênios e Transparência", href: "/admin/transparencia" },
+  { icon: Shield, label: "Transparência e Convênios", href: "/admin/transparencia" },
   { icon: FileText, label: "Dados Abertos", href: "/admin/dados-abertos" },
   { icon: FileText, label: "Diárias e Passagens", href: "/admin/diarias-passagens" },
   { icon: FileText, label: "Documentos Pessoal", href: "/admin/documentos-pessoal" },
