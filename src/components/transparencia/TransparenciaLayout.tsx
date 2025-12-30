@@ -13,9 +13,7 @@ interface TransparenciaLayoutProps {
   description?: string;
 }
 
-const quickLinks = [
-  { label: 'e-SIC', url: '/transparencia/esic', icon: Search, internal: true },
-];
+const quickLinks: { label: string; url: string; icon: typeof Search; internal: boolean }[] = [];
 
 export function TransparenciaLayout({ children, title, description }: TransparenciaLayoutProps) {
   return (
@@ -43,17 +41,19 @@ export function TransparenciaLayout({ children, title, description }: Transparen
 
           {/* Main Header */}
           <div className="flex items-center justify-between py-3">
-            <Link to="/transparencia" className="flex items-center gap-3">
-              <img 
-                src={brasaoIpubi} 
-                alt="Brasão de Ipubi" 
-                className="h-12 w-auto"
-              />
-              <div>
-                <h1 className="text-lg font-bold text-gray-900">Portal da Transparência</h1>
+            <div className="flex items-center gap-3">
+              <Link to="/">
+                <img 
+                  src={brasaoIpubi} 
+                  alt="Brasão de Ipubi" 
+                  className="h-12 w-auto hover:opacity-80 transition-opacity"
+                />
+              </Link>
+              <Link to="/transparencia">
+                <h1 className="text-lg font-bold text-gray-900 hover:text-primary transition-colors">Portal da Transparência</h1>
                 <p className="text-xs text-gray-600">Prefeitura Municipal de Ipubi - PE</p>
-              </div>
-            </Link>
+              </Link>
+            </div>
             
             <div className="hidden md:flex items-center gap-2">
               {quickLinks.map((link) => (
