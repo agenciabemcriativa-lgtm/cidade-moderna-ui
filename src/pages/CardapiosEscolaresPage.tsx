@@ -50,16 +50,14 @@ export default function CardapiosEscolaresPage() {
               <div className="space-y-10">
                 {cardapios.map((categoriaGroup) => (
                   <div key={categoriaGroup.categoria} className="space-y-6">
-                    <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-primary pb-2">
-                      {categoriaGroup.categoria}
-                    </h2>
-                    {categoriaGroup.meses.map((grupo) => (
-                      <div key={`${grupo.ano}-${grupo.mes}`} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                    {/* Categoria Avulsa - lista direta sem agrupamento por mês */}
+                    {categoriaGroup.isAvulsa ? (
+                      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                         <div className="bg-primary text-white px-6 py-4">
-                          <h3 className="text-lg font-semibold">{grupo.label}</h3>
+                          <h2 className="text-lg font-semibold">{categoriaGroup.categoria}</h2>
                         </div>
                         <div className="divide-y divide-gray-100">
-                          {grupo.itens.map((item) => (
+                          {categoriaGroup.itensAvulsos.map((item) => (
                             <a
                               key={item.id}
                               href={item.arquivo_url}
@@ -76,7 +74,38 @@ export default function CardapiosEscolaresPage() {
                           ))}
                         </div>
                       </div>
-                    ))}
+                    ) : (
+                      /* Categorias normais - agrupadas por mês */
+                      <>
+                        <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-primary pb-2">
+                          {categoriaGroup.categoria}
+                        </h2>
+                        {categoriaGroup.meses.map((grupo) => (
+                          <div key={`${grupo.ano}-${grupo.mes}`} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div className="bg-primary text-white px-6 py-4">
+                              <h3 className="text-lg font-semibold">{grupo.label}</h3>
+                            </div>
+                            <div className="divide-y divide-gray-100">
+                              {grupo.itens.map((item) => (
+                                <a
+                                  key={item.id}
+                                  href={item.arquivo_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors group"
+                                >
+                                  <FileText className="h-5 w-5 text-primary/60 group-hover:text-primary transition-colors" />
+                                  <span className="text-gray-700 group-hover:text-primary transition-colors flex-1">
+                                    {item.titulo}
+                                  </span>
+                                  <ExternalLink className="h-4 w-4 text-gray-400 group-hover:text-primary transition-colors" />
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </>
+                    )}
                   </div>
                 ))}
               </div>

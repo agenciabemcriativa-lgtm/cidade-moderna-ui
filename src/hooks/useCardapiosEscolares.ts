@@ -24,7 +24,9 @@ export interface CardapioAgrupado {
 
 export interface CardapioPorCategoria {
   categoria: string;
+  isAvulsa: boolean; // Se true, não agrupa por mês
   meses: CardapioAgrupado[];
+  itensAvulsos: CardapioEscolar[]; // Itens para categorias avulsas
 }
 
 const mesesNomes = [
@@ -32,7 +34,7 @@ const mesesNomes = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-const CATEGORIA_PRIORITARIA = "Cardápios e Recomendações";
+export const CATEGORIA_AVULSA = "Cardápios e Recomendações";
 
 export function useCardapiosEscolares() {
   return useQuery({
@@ -48,11 +50,20 @@ export function useCardapiosEscolares() {
       
       if (error) throw error;
       
-      // Agrupar por categoria e depois por mês/ano
+      // Separar itens avulsos e itens por mês
+      const itensAvulsos: CardapioEscolar[] = [];
       const porCategoria: Record<string, Record<string, CardapioAgrupado>> = {};
       
       (data as CardapioEscolar[]).forEach((item) => {
-        const categoria = item.categoria || CATEGORIA_PRIORITARIA;
+        const categoria = item.categoria || CATEGORIA_AVULSA;
+        
+        // Se for categoria avulsa, adiciona diretamente
+        if (categoria === CATEGORIA_AVULSA) {
+          itensAvulsos.push(item);
+          return;
+        }
+        
+        // Para outras categorias, agrupa por mês/ano
         const mesKey = `${item.ano_referencia}-${item.mes_referencia}`;
         
         if (!porCategoria[categoria]) {
@@ -70,16 +81,29 @@ export function useCardapiosEscolares() {
         porCategoria[categoria][mesKey].itens.push(item);
       });
       
-      // Converter para array e ordenar categorias (prioritária primeiro)
-      const resultado: CardapioPorCategoria[] = Object.entries(porCategoria)
-        .map(([categoria, meses]) => ({
-          categoria,
-          meses: Object.values(meses),
-        }))
-        .sort((a, b) => {
-          if (a.categoria === CATEGORIA_PRIORITARIA) return -1;
-          if (b.categoria === CATEGORIA_PRIORITARIA) return 1;
-          return a.categoria.localeCompare(b.categoria);
+      // Montar resultado final
+      const resultado: CardapioPorCategoria[] = [];
+      
+      // Adicionar categoria avulsa primeiro (se tiver itens)
+      if (itensAvulsos.length > 0) {
+        resultado.push({
+          categoria: CATEGORIA_AVULSA,
+          isAvulsa: true,
+          meses: [],
+          itensAvulsos: itensAvulsos,
+        });
+      }
+      
+      // Adicionar outras categorias ordenadas
+      Object.entries(porCategoria)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .forEach(([categoria, meses]) => {
+          resultado.push({
+            categoria,
+            isAvulsa: false,
+            meses: Object.values(meses),
+            itensAvulsos: [],
+          });
         });
       
       return resultado;
