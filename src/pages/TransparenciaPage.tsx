@@ -291,11 +291,13 @@ export default function TransparenciaPage() {
           {/* Main Header */}
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center gap-4">
-              <img 
-                src={brasaoIpubi} 
-                alt="Brasão de Ipubi" 
-                className="h-16 w-auto"
-              />
+              <Link to="/">
+                <img 
+                  src={brasaoIpubi} 
+                  alt="Brasão de Ipubi" 
+                  className="h-16 w-auto hover:opacity-80 transition-opacity"
+                />
+              </Link>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Portal da Transparência</h1>
                 <p className="text-sm text-gray-600">Prefeitura Municipal de Ipubi - PE</p>
