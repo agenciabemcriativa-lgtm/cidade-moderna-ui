@@ -20,13 +20,15 @@ import {
   Shield,
   HelpCircle,
   ClipboardList,
-  UtensilsCrossed
+  UtensilsCrossed,
+  CheckSquare
 } from "lucide-react";
 import { useState } from "react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
+  { icon: CheckSquare, label: "Auto Verificação", href: "/admin/auto-verificacao" },
   { icon: Users, label: "Atendimento", href: "/admin/atendimento" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
   { icon: UtensilsCrossed, label: "Cardápios Escolares", href: "/admin/cardapios-escolares" },
