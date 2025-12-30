@@ -2115,6 +2115,7 @@ export type Database = {
         | "remuneracao_cargo"
         | "servidores"
         | "lista_nominal_cargo"
+        | "terceirizados"
       tipo_publicacao:
         | "lei"
         | "decreto"
@@ -2362,6 +2363,7 @@ export const Constants = {
         "remuneracao_cargo",
         "servidores",
         "lista_nominal_cargo",
+        "terceirizados",
       ],
       tipo_publicacao: [
         "lei",
