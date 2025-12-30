@@ -32,7 +32,7 @@ interface Noticia {
 const categoriasConfig: Record<string, string> = {
   "Geral": "bg-primary",
   "Saúde": "bg-green-500",
-  "Educação": "bg-blue-600",
+  "Educação": "bg-cyan-500",
   "Esportes": "bg-orange-500",
   "Administração": "bg-amber-800",
   "Obras": "bg-yellow-500",
