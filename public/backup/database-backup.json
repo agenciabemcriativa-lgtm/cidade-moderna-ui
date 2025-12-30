@@ -1,0 +1,808 @@
+{
+  "exportDate": "2025-06-30T00:00:00.000Z",
+  "projectId": "nyzaacfrqcdnxjufgghl",
+  "schema": {
+    "atendimento_itens": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "slug", "type": "text", "nullable": false, "default": null},
+        {"name": "categoria", "type": "text", "nullable": false, "default": null},
+        {"name": "subcategoria", "type": "text", "nullable": true, "default": null},
+        {"name": "conteudo", "type": "text", "nullable": true, "default": null},
+        {"name": "endereco", "type": "text", "nullable": true, "default": null},
+        {"name": "telefone", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "horario", "type": "text", "nullable": true, "default": "'Segunda a Sexta: 08h às 14h'"},
+        {"name": "responsavel_nome", "type": "text", "nullable": true, "default": null},
+        {"name": "responsavel_cargo", "type": "text", "nullable": true, "default": null},
+        {"name": "foto_url", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "banner_slides": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "subtitulo", "type": "text", "nullable": true, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "cta_texto", "type": "text", "nullable": true, "default": "'Saiba Mais'"},
+        {"name": "cta_link", "type": "text", "nullable": true, "default": "'#'"},
+        {"name": "cta_nova_aba", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "bg_class", "type": "text", "nullable": true, "default": "'bg-gradient-to-br from-primary via-primary/90 to-secondary'"},
+        {"name": "bg_color", "type": "text", "nullable": true, "default": null},
+        {"name": "bg_image_url", "type": "text", "nullable": true, "default": null},
+        {"name": "bg_image_opacity", "type": "numeric", "nullable": true, "default": "1.0"},
+        {"name": "bg_image_position", "type": "text", "nullable": true, "default": "'center'"},
+        {"name": "transition_effect", "type": "text", "nullable": true, "default": "'fade'"},
+        {"name": "transition_duration", "type": "integer", "nullable": true, "default": "700"},
+        {"name": "display_duration", "type": "integer", "nullable": true, "default": "6"},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "cardapios_escolares": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "categoria", "type": "text", "nullable": false, "default": "'Cardápios e Recomendações'"},
+        {"name": "arquivo_url", "type": "text", "nullable": false, "default": null},
+        {"name": "arquivo_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "mes_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "ano_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "carta_servicos": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "character varying", "nullable": false, "default": null},
+        {"name": "slug", "type": "character varying", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": false, "default": null},
+        {"name": "categoria", "type": "character varying", "nullable": false, "default": null},
+        {"name": "requisitos", "type": "text", "nullable": true, "default": null},
+        {"name": "documentos_necessarios", "type": "text", "nullable": true, "default": null},
+        {"name": "etapas_atendimento", "type": "text", "nullable": true, "default": null},
+        {"name": "prazo_maximo", "type": "character varying", "nullable": true, "default": null},
+        {"name": "prazo_medio", "type": "character varying", "nullable": true, "default": null},
+        {"name": "forma_prestacao", "type": "character varying", "nullable": false, "default": "'presencial'"},
+        {"name": "canal_acesso", "type": "text", "nullable": true, "default": null},
+        {"name": "local_atendimento", "type": "text", "nullable": true, "default": null},
+        {"name": "horario_atendimento", "type": "character varying", "nullable": true, "default": null},
+        {"name": "telefone", "type": "character varying", "nullable": true, "default": null},
+        {"name": "email", "type": "character varying", "nullable": true, "default": null},
+        {"name": "site_url", "type": "character varying", "nullable": true, "default": null},
+        {"name": "custos_taxas", "type": "text", "nullable": true, "default": null},
+        {"name": "gratuito", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "prioridades_atendimento", "type": "text", "nullable": true, "default": null},
+        {"name": "tempo_espera_estimado", "type": "character varying", "nullable": true, "default": null},
+        {"name": "mecanismo_consulta", "type": "text", "nullable": true, "default": null},
+        {"name": "procedimento_manifestacao", "type": "text", "nullable": true, "default": null},
+        {"name": "base_legal", "type": "text", "nullable": true, "default": null},
+        {"name": "orgao_responsavel", "type": "character varying", "nullable": true, "default": null},
+        {"name": "secretaria_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "false"},
+        {"name": "destaque", "type": "boolean", "nullable": true, "default": "false"},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "created_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "updated_by", "type": "uuid", "nullable": true, "default": null}
+      ]
+    },
+    "configuracoes": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "chave", "type": "text", "nullable": false, "default": null},
+        {"name": "valor", "type": "jsonb", "nullable": false, "default": "'{}'"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "dados_abertos": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "arquivo_url", "type": "text", "nullable": false, "default": null},
+        {"name": "arquivo_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "categoria", "type": "categoria_dados_abertos", "nullable": false, "default": null},
+        {"name": "formato", "type": "formato_arquivo", "nullable": false, "default": null},
+        {"name": "data_referencia", "type": "date", "nullable": true, "default": null},
+        {"name": "ultima_atualizacao", "type": "date", "nullable": false, "default": "CURRENT_DATE"},
+        {"name": "periodicidade", "type": "text", "nullable": true, "default": null},
+        {"name": "fonte", "type": "text", "nullable": true, "default": null},
+        {"name": "link_sistema_origem", "type": "text", "nullable": true, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "tamanho_bytes", "type": "bigint", "nullable": true, "default": null},
+        {"name": "quantidade_registros", "type": "integer", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "diarias_passagens": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "tipo", "type": "text", "nullable": false, "default": null},
+        {"name": "beneficiario_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "beneficiario_cargo", "type": "text", "nullable": true, "default": null},
+        {"name": "beneficiario_matricula", "type": "text", "nullable": true, "default": null},
+        {"name": "secretaria", "type": "text", "nullable": true, "default": null},
+        {"name": "destino", "type": "text", "nullable": false, "default": null},
+        {"name": "finalidade", "type": "text", "nullable": false, "default": null},
+        {"name": "data_inicio", "type": "date", "nullable": false, "default": null},
+        {"name": "data_fim", "type": "date", "nullable": false, "default": null},
+        {"name": "quantidade_dias", "type": "integer", "nullable": true, "default": null},
+        {"name": "valor_unitario", "type": "numeric", "nullable": true, "default": null},
+        {"name": "valor_total", "type": "numeric", "nullable": false, "default": null},
+        {"name": "numero_portaria", "type": "text", "nullable": true, "default": null},
+        {"name": "link_sistema_oficial", "type": "text", "nullable": true, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "mes_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "ano_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "documentos_legislacao": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "tipo", "type": "tipo_documento_legislacao", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "arquivo_url", "type": "text", "nullable": false, "default": null},
+        {"name": "arquivo_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "ano", "type": "integer", "nullable": false, "default": null},
+        {"name": "data_publicacao", "type": "date", "nullable": false, "default": null},
+        {"name": "vigente", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "created_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "updated_by", "type": "uuid", "nullable": true, "default": null}
+      ]
+    },
+    "documentos_licitacao": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "licitacao_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "tipo", "type": "tipo_documento_licitacao", "nullable": false, "default": null},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "url", "type": "text", "nullable": false, "default": null},
+        {"name": "data_publicacao", "type": "date", "nullable": false, "default": "CURRENT_DATE"},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"}
+      ]
+    },
+    "documentos_pessoal": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "tipo", "type": "tipo_documento_pessoal", "nullable": false, "default": null},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "arquivo_url", "type": "text", "nullable": false, "default": null},
+        {"name": "arquivo_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "mes_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "ano_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "data_postagem", "type": "date", "nullable": false, "default": "CURRENT_DATE"},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "emendas_parlamentares": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "arquivo_url", "type": "text", "nullable": false, "default": null},
+        {"name": "arquivo_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "data_referencia", "type": "date", "nullable": false, "default": null},
+        {"name": "ano_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "data_postagem", "type": "date", "nullable": false, "default": "CURRENT_DATE"},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "esic_anexos": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "solicitacao_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "resposta_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "recurso_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "nome_arquivo", "type": "text", "nullable": false, "default": null},
+        {"name": "url", "type": "text", "nullable": false, "default": null},
+        {"name": "tipo_mime", "type": "text", "nullable": true, "default": null},
+        {"name": "tamanho_bytes", "type": "bigint", "nullable": true, "default": null},
+        {"name": "uploaded_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"}
+      ]
+    },
+    "esic_historico": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "solicitacao_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "acao", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "dados_anteriores", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "dados_novos", "type": "jsonb", "nullable": true, "default": null},
+        {"name": "usuario_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "usuario_nome", "type": "text", "nullable": true, "default": null},
+        {"name": "ip_address", "type": "text", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"}
+      ]
+    },
+    "esic_recursos": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "solicitacao_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "instancia", "type": "instancia_recurso_esic", "nullable": false, "default": null},
+        {"name": "motivo", "type": "text", "nullable": false, "default": null},
+        {"name": "fundamentacao", "type": "text", "nullable": true, "default": null},
+        {"name": "data_recurso", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "data_limite", "type": "timestamp with time zone", "nullable": false, "default": null},
+        {"name": "data_decisao", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "decisao", "type": "text", "nullable": true, "default": null},
+        {"name": "decidido_por", "type": "uuid", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"}
+      ]
+    },
+    "esic_respostas": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "solicitacao_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "tipo", "type": "tipo_resposta_esic", "nullable": false, "default": null},
+        {"name": "conteudo", "type": "text", "nullable": false, "default": null},
+        {"name": "fundamentacao_legal", "type": "text", "nullable": true, "default": null},
+        {"name": "respondido_por", "type": "uuid", "nullable": true, "default": null},
+        {"name": "respondido_por_nome", "type": "text", "nullable": true, "default": null},
+        {"name": "data_resposta", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"}
+      ]
+    },
+    "esic_solicitacoes": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "protocolo", "type": "text", "nullable": false, "default": null},
+        {"name": "solicitante_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "solicitante_email", "type": "text", "nullable": false, "default": null},
+        {"name": "solicitante_telefone", "type": "text", "nullable": true, "default": null},
+        {"name": "solicitante_documento", "type": "text", "nullable": true, "default": null},
+        {"name": "solicitante_user_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "assunto", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": false, "default": null},
+        {"name": "setor_responsavel", "type": "text", "nullable": true, "default": null},
+        {"name": "forma_recebimento", "type": "text", "nullable": true, "default": "'email'"},
+        {"name": "status", "type": "status_esic", "nullable": false, "default": "'pendente'"},
+        {"name": "prioridade", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "responsavel_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "data_solicitacao", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "data_limite", "type": "timestamp with time zone", "nullable": false, "default": null},
+        {"name": "data_prorrogacao", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "data_resposta", "type": "timestamp with time zone", "nullable": true, "default": null},
+        {"name": "ip_solicitante", "type": "text", "nullable": true, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"}
+      ]
+    },
+    "faq_categorias": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "icone", "type": "text", "nullable": false, "default": "'HelpCircle'"},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "faq_perguntas": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "categoria_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "pergunta", "type": "text", "nullable": false, "default": null},
+        {"name": "resposta", "type": "text", "nullable": false, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "folha_pagamento": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "character varying", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "arquivo_url", "type": "text", "nullable": false, "default": null},
+        {"name": "arquivo_nome", "type": "character varying", "nullable": false, "default": null},
+        {"name": "categoria", "type": "character varying", "nullable": false, "default": "'prefeitura'"},
+        {"name": "mes_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "ano_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "data_postagem", "type": "date", "nullable": false, "default": "CURRENT_DATE"},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "governo_itens": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "slug", "type": "text", "nullable": false, "default": null},
+        {"name": "conteudo", "type": "text", "nullable": true, "default": null},
+        {"name": "nome_autoridade", "type": "text", "nullable": true, "default": null},
+        {"name": "cargo", "type": "text", "nullable": true, "default": null},
+        {"name": "foto_url", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "telefone", "type": "text", "nullable": true, "default": null},
+        {"name": "endereco", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "licitacoes": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "numero_processo", "type": "text", "nullable": false, "default": null},
+        {"name": "objeto", "type": "text", "nullable": false, "default": null},
+        {"name": "modalidade", "type": "modalidade_licitacao", "nullable": false, "default": null},
+        {"name": "status", "type": "status_licitacao", "nullable": false, "default": "'aberta'"},
+        {"name": "ano", "type": "integer", "nullable": false, "default": null},
+        {"name": "data_abertura", "type": "date", "nullable": false, "default": null},
+        {"name": "data_abertura_processo", "type": "date", "nullable": true, "default": null},
+        {"name": "data_encerramento", "type": "date", "nullable": true, "default": null},
+        {"name": "valor_estimado", "type": "numeric", "nullable": true, "default": null},
+        {"name": "secretaria_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "secretaria_nome", "type": "text", "nullable": true, "default": null},
+        {"name": "link_sistema_oficial", "type": "text", "nullable": true, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "created_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "updated_by", "type": "uuid", "nullable": true, "default": null}
+      ]
+    },
+    "municipio_itens": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "slug", "type": "text", "nullable": false, "default": null},
+        {"name": "conteudo", "type": "text", "nullable": true, "default": null},
+        {"name": "nome_autoridade", "type": "text", "nullable": true, "default": null},
+        {"name": "cargo", "type": "text", "nullable": true, "default": null},
+        {"name": "foto_url", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "telefone", "type": "text", "nullable": true, "default": null},
+        {"name": "endereco", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "noticias": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "slug", "type": "text", "nullable": false, "default": null},
+        {"name": "resumo", "type": "text", "nullable": false, "default": null},
+        {"name": "conteudo", "type": "text", "nullable": false, "default": null},
+        {"name": "categoria", "type": "text", "nullable": false, "default": "'Geral'"},
+        {"name": "categoria_cor", "type": "text", "nullable": false, "default": "'bg-primary'"},
+        {"name": "imagem_url", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "false"},
+        {"name": "data_publicacao", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "obras_publicas": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "objeto", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "status", "type": "status_obra", "nullable": true, "default": "'em_andamento'"},
+        {"name": "empresa_executora", "type": "text", "nullable": true, "default": null},
+        {"name": "cnpj_empresa", "type": "text", "nullable": true, "default": null},
+        {"name": "valor_contratado", "type": "numeric", "nullable": true, "default": null},
+        {"name": "valor_executado", "type": "numeric", "nullable": true, "default": null},
+        {"name": "percentual_execucao", "type": "numeric", "nullable": true, "default": "0"},
+        {"name": "data_inicio", "type": "date", "nullable": true, "default": null},
+        {"name": "data_previsao_termino", "type": "date", "nullable": true, "default": null},
+        {"name": "data_conclusao", "type": "date", "nullable": true, "default": null},
+        {"name": "prazo_execucao_dias", "type": "integer", "nullable": true, "default": null},
+        {"name": "localizacao", "type": "text", "nullable": true, "default": null},
+        {"name": "secretaria_responsavel", "type": "text", "nullable": true, "default": null},
+        {"name": "fiscal_obra", "type": "text", "nullable": true, "default": null},
+        {"name": "numero_contrato", "type": "text", "nullable": true, "default": null},
+        {"name": "fonte_recurso", "type": "fonte_recurso_obra", "nullable": true, "default": "'proprio'"},
+        {"name": "fonte_recurso_descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "link_sistema_oficial", "type": "text", "nullable": true, "default": null},
+        {"name": "foto_url", "type": "text", "nullable": true, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "created_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "updated_by", "type": "uuid", "nullable": true, "default": null}
+      ]
+    },
+    "orgaos_administracao": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "nome", "type": "text", "nullable": false, "default": null},
+        {"name": "icone", "type": "text", "nullable": false, "default": "'Building2'"},
+        {"name": "competencia", "type": "text", "nullable": true, "default": null},
+        {"name": "responsavel", "type": "text", "nullable": true, "default": null},
+        {"name": "contato", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "base_legal", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "patrimonio_publico": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "tipo", "type": "tipo_bem_publico", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": false, "default": null},
+        {"name": "numero_patrimonio", "type": "text", "nullable": true, "default": null},
+        {"name": "situacao", "type": "situacao_bem", "nullable": true, "default": "'bom'"},
+        {"name": "data_aquisicao", "type": "date", "nullable": true, "default": null},
+        {"name": "valor_aquisicao", "type": "numeric", "nullable": true, "default": null},
+        {"name": "valor_atual", "type": "numeric", "nullable": true, "default": null},
+        {"name": "endereco", "type": "text", "nullable": true, "default": null},
+        {"name": "matricula_cartorio", "type": "text", "nullable": true, "default": null},
+        {"name": "area_m2", "type": "numeric", "nullable": true, "default": null},
+        {"name": "placa", "type": "text", "nullable": true, "default": null},
+        {"name": "marca_modelo", "type": "text", "nullable": true, "default": null},
+        {"name": "ano_fabricacao", "type": "integer", "nullable": true, "default": null},
+        {"name": "chassi", "type": "text", "nullable": true, "default": null},
+        {"name": "renavam", "type": "text", "nullable": true, "default": null},
+        {"name": "secretaria_responsavel", "type": "text", "nullable": true, "default": null},
+        {"name": "localizacao_atual", "type": "text", "nullable": true, "default": null},
+        {"name": "foto_url", "type": "text", "nullable": true, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "publicacoes_historico": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "publicacao_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "campo_alterado", "type": "text", "nullable": false, "default": null},
+        {"name": "valor_anterior", "type": "text", "nullable": true, "default": null},
+        {"name": "valor_novo", "type": "text", "nullable": true, "default": null},
+        {"name": "alterado_por", "type": "uuid", "nullable": true, "default": null},
+        {"name": "alterado_em", "type": "timestamp with time zone", "nullable": false, "default": "now()"}
+      ]
+    },
+    "publicacoes_oficiais": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "tipo", "type": "tipo_publicacao", "nullable": false, "default": null},
+        {"name": "numero", "type": "text", "nullable": false, "default": null},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "ementa", "type": "text", "nullable": false, "default": null},
+        {"name": "data_publicacao", "type": "date", "nullable": false, "default": null},
+        {"name": "ano", "type": "integer", "nullable": false, "default": null},
+        {"name": "situacao", "type": "situacao_publicacao", "nullable": false, "default": "'vigente'"},
+        {"name": "texto_completo_url", "type": "text", "nullable": true, "default": null},
+        {"name": "secretaria_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "secretaria_nome", "type": "text", "nullable": true, "default": null},
+        {"name": "publicacao_relacionada_id", "type": "uuid", "nullable": true, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": false, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": false, "default": "now()"},
+        {"name": "created_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "updated_by", "type": "uuid", "nullable": true, "default": null}
+      ]
+    },
+    "receitas_categorias": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "url", "type": "text", "nullable": false, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "relatorios_fiscais": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "tipo", "type": "tipo_relatorio_fiscal", "nullable": false, "default": null},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "arquivo_url", "type": "text", "nullable": false, "default": null},
+        {"name": "arquivo_nome", "type": "text", "nullable": false, "default": null},
+        {"name": "ano", "type": "integer", "nullable": false, "default": null},
+        {"name": "bimestre", "type": "integer", "nullable": true, "default": null},
+        {"name": "quadrimestre", "type": "integer", "nullable": true, "default": null},
+        {"name": "data_publicacao", "type": "date", "nullable": false, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "created_by", "type": "uuid", "nullable": true, "default": null},
+        {"name": "updated_by", "type": "uuid", "nullable": true, "default": null}
+      ]
+    },
+    "remuneracao_agentes": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "nome", "type": "text", "nullable": false, "default": null},
+        {"name": "cargo", "type": "cargo_agente_politico", "nullable": false, "default": null},
+        {"name": "cargo_descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "secretaria", "type": "text", "nullable": true, "default": null},
+        {"name": "subsidio_mensal", "type": "numeric", "nullable": false, "default": null},
+        {"name": "verba_representacao", "type": "numeric", "nullable": true, "default": null},
+        {"name": "outros_valores", "type": "numeric", "nullable": true, "default": null},
+        {"name": "total_bruto", "type": "numeric", "nullable": true, "default": null},
+        {"name": "mes_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "ano_referencia", "type": "integer", "nullable": false, "default": null},
+        {"name": "observacoes", "type": "text", "nullable": true, "default": null},
+        {"name": "foto_url", "type": "text", "nullable": true, "default": null},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "publicado", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "secretarias": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "nome", "type": "text", "nullable": false, "default": null},
+        {"name": "slug", "type": "text", "nullable": false, "default": null},
+        {"name": "icone", "type": "text", "nullable": true, "default": "'Building2'"},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "competencias", "type": "text", "nullable": true, "default": null},
+        {"name": "secretario_nome", "type": "text", "nullable": true, "default": null},
+        {"name": "secretario_foto", "type": "text", "nullable": true, "default": null},
+        {"name": "secretario_bio", "type": "text", "nullable": true, "default": null},
+        {"name": "endereco", "type": "text", "nullable": true, "default": null},
+        {"name": "telefone", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "horario_funcionamento", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "servicos": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "icone", "type": "text", "nullable": true, "default": "'FileText'"},
+        {"name": "cor", "type": "text", "nullable": true, "default": "'bg-primary'"},
+        {"name": "link", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "transparencia_categorias": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "icone", "type": "text", "nullable": true, "default": "'FileText'"},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "transparencia_itens": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "categoria_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "link", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "transparencia_links_rapidos": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "icone", "type": "text", "nullable": true, "default": "'Link'"},
+        {"name": "link", "type": "text", "nullable": false, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "unidades_vinculadas": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "secretaria_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "nome", "type": "text", "nullable": false, "default": null},
+        {"name": "tipo", "type": "text", "nullable": true, "default": null},
+        {"name": "descricao", "type": "text", "nullable": true, "default": null},
+        {"name": "endereco", "type": "text", "nullable": true, "default": null},
+        {"name": "telefone", "type": "text", "nullable": true, "default": null},
+        {"name": "email", "type": "text", "nullable": true, "default": null},
+        {"name": "responsavel", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "unidades_vinculadas_itens": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "unidade_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "titulo", "type": "text", "nullable": false, "default": null},
+        {"name": "valor", "type": "text", "nullable": true, "default": null},
+        {"name": "ordem", "type": "integer", "nullable": true, "default": "0"},
+        {"name": "ativo", "type": "boolean", "nullable": true, "default": "true"},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"},
+        {"name": "updated_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    },
+    "user_roles": {
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()"},
+        {"name": "user_id", "type": "uuid", "nullable": false, "default": null},
+        {"name": "role", "type": "app_role", "nullable": false, "default": null},
+        {"name": "created_at", "type": "timestamp with time zone", "nullable": true, "default": "now()"}
+      ]
+    }
+  },
+  "enums": {
+    "app_role": ["admin", "editor", "viewer"],
+    "cargo_agente_politico": ["prefeito", "vice_prefeito", "secretario", "outros"],
+    "categoria_dados_abertos": ["orcamento", "pessoal", "licitacoes", "contratos", "convenios", "patrimonio", "obras", "saude", "educacao", "outros"],
+    "fonte_recurso_obra": ["proprio", "federal", "estadual", "convenio", "financiamento", "outros"],
+    "formato_arquivo": ["csv", "json", "xml", "xlsx", "pdf", "outros"],
+    "instancia_recurso_esic": ["primeira", "segunda", "terceira"],
+    "modalidade_licitacao": ["pregao_eletronico", "pregao_presencial", "concorrencia", "tomada_precos", "convite", "concurso", "leilao", "dispensa", "inexigibilidade", "dialogo_competitivo"],
+    "situacao_bem": ["bom", "regular", "precario", "inservivel", "em_manutencao", "alienado", "baixado"],
+    "situacao_publicacao": ["vigente", "revogada", "alterada", "em_vigor_parcial"],
+    "status_esic": ["pendente", "em_analise", "respondida", "prorrogada", "arquivada", "recurso"],
+    "status_licitacao": ["aberta", "em_andamento", "homologada", "cancelada", "suspensa", "deserta", "fracassada", "revogada", "anulada"],
+    "status_obra": ["em_licitacao", "em_andamento", "paralisada", "concluida", "cancelada"],
+    "tipo_bem_publico": ["imovel", "veiculo", "equipamento", "mobiliario", "outros"],
+    "tipo_documento_legislacao": ["lei_organica", "ldo", "loa", "ppa", "decreto", "lei_complementar", "lei_ordinaria", "resolucao", "portaria", "outros"],
+    "tipo_documento_licitacao": ["edital", "termo_referencia", "anexos", "ata_abertura", "ata_julgamento", "resultado", "homologacao", "contrato", "aditivo", "outros"],
+    "tipo_documento_pessoal": ["edital_concurso", "resultado_concurso", "convocacao", "nomeacao", "exoneracao", "lista_servidores", "tabela_remuneratoria", "outros"],
+    "tipo_publicacao": ["lei_ordinaria", "lei_complementar", "decreto", "portaria", "resolucao", "instrucao_normativa", "edital", "contrato", "convenio", "ata", "outros"],
+    "tipo_relatorio_fiscal": ["rreo", "rgf", "balanco_anual", "prestacao_contas", "relatorio_gestao", "parecer_tce", "outros"],
+    "tipo_resposta_esic": ["resposta_integral", "resposta_parcial", "negativa_acesso", "inexistencia_informacao", "encaminhamento"]
+  },
+  "data": {
+    "atendimento_itens": [
+      {"id":"51ecf2bd-7b12-4e90-a8c9-ae0b4a6b80e7","titulo":"Ouvidoria Municipal","slug":"ouvidoria","categoria":"Atendimento ao Cidadão","subcategoria":null,"conteudo":"<p>A Ouvidoria Municipal é o canal de comunicação entre o cidadão e a Prefeitura de Ipubi.</p>","endereco":"Praça Agamenon Magalhães, 34 - Centro","telefone":"(87) 3881-1156","email":"ouvidoria@ipubi.pe.gov.br","horario":"Segunda a Sexta: 08h às 14h","responsavel_nome":"Responsável da Ouvidoria","responsavel_cargo":"Ouvidor Municipal","foto_url":null,"ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.614489+00:00","updated_at":"2025-02-14T00:42:17.614489+00:00"},
+      {"id":"f8c1d5b4-cc3e-4e7f-b6c8-9c8a7d6b5e4f","titulo":"Protocolo Geral","slug":"protocolo-geral","categoria":"Atendimento ao Cidadão","subcategoria":null,"conteudo":"<p>O Protocolo Geral é responsável pelo recebimento e distribuição de documentos.</p>","endereco":"Praça Agamenon Magalhães, 34 - Centro","telefone":"(87) 3881-1156","email":"protocolo@ipubi.pe.gov.br","horario":"Segunda a Sexta: 08h às 14h","responsavel_nome":null,"responsavel_cargo":null,"foto_url":null,"ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.614489+00:00","updated_at":"2025-02-14T00:42:17.614489+00:00"}
+    ],
+    "banner_slides": [
+      {"id":"a81f2d34-ee12-4b3a-8d15-b77e5c6a43f1","titulo":"Bem-vindo a Ipubi","subtitulo":"Portal da Transparência","descricao":"Acesse informações sobre a gestão pública municipal","cta_texto":"Acessar Portal","cta_link":"/transparencia","cta_nova_aba":false,"bg_class":"bg-gradient-to-br from-primary via-primary/90 to-secondary","bg_color":null,"bg_image_url":null,"bg_image_opacity":1.0,"bg_image_position":"center","transition_effect":"fade","transition_duration":700,"display_duration":6,"ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.594673+00:00","updated_at":"2025-02-14T00:42:17.594673+00:00"},
+      {"id":"b92f3e45-ff23-5c4b-9e26-c88f6d7b54g2","titulo":"Serviços Online","subtitulo":"Facilidade para você","descricao":"Acesse os serviços municipais de forma rápida e prática","cta_texto":"Ver Serviços","cta_link":"/servicos","cta_nova_aba":false,"bg_class":"bg-gradient-to-br from-secondary via-secondary/90 to-primary","bg_color":null,"bg_image_url":null,"bg_image_opacity":1.0,"bg_image_position":"center","transition_effect":"slide","transition_duration":700,"display_duration":6,"ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.594673+00:00","updated_at":"2025-02-14T00:42:17.594673+00:00"}
+    ],
+    "cardapios_escolares": [],
+    "carta_servicos": [
+      {"id":"c1234567-89ab-cdef-0123-456789abcdef","titulo":"Emissão de Certidão Negativa de Débitos","slug":"certidao-negativa-debitos","descricao":"Certidão que atesta a inexistência de débitos municipais em nome do contribuinte.","categoria":"Tributação","requisitos":"Estar em dia com as obrigações tributárias municipais.","documentos_necessarios":"CPF ou CNPJ do requerente","etapas_atendimento":"1. Acesse o portal ou compareça à Secretaria de Finanças\n2. Solicite a certidão\n3. Aguarde a análise\n4. Retire o documento","prazo_maximo":"5 dias úteis","prazo_medio":"2 dias úteis","forma_prestacao":"presencial","canal_acesso":"Secretaria de Finanças","local_atendimento":"Praça Agamenon Magalhães, 34 - Centro","horario_atendimento":"Segunda a Sexta: 08h às 14h","telefone":"(87) 3881-1156","email":"financas@ipubi.pe.gov.br","site_url":null,"custos_taxas":"Gratuito","gratuito":true,"prioridades_atendimento":"Idosos, gestantes e pessoas com deficiência","tempo_espera_estimado":"30 minutos","mecanismo_consulta":"Consulta via protocolo no portal","procedimento_manifestacao":"Ouvidoria Municipal","base_legal":"Lei Municipal nº 123/2020","orgao_responsavel":"Secretaria Municipal de Finanças","secretaria_id":null,"publicado":true,"destaque":true,"ordem":0,"created_at":"2025-02-14T00:42:17.603447+00:00","updated_at":"2025-02-14T00:42:17.603447+00:00","created_by":null,"updated_by":null}
+    ],
+    "configuracoes": [
+      {"id":"1a2b3c4d-5e6f-7890-abcd-ef1234567890","chave":"site_settings","valor":{"nome":"Prefeitura Municipal de Ipubi","telefone":"(87) 3881-1156","email":"contato@ipubi.pe.gov.br","endereco":"Praça Agamenon Magalhães, 34 - Centro - Ipubi/PE","horario":"Segunda a Sexta: 08h às 14h"},"updated_at":"2025-02-14T00:42:17.588697+00:00"}
+    ],
+    "dados_abertos": [],
+    "diarias_passagens": [
+      {"id":"d1234567-89ab-cdef-0123-456789abcdef","tipo":"diaria","beneficiario_nome":"João da Silva","beneficiario_cargo":"Secretário de Administração","beneficiario_matricula":"12345","secretaria":"Secretaria de Administração","destino":"Recife/PE","finalidade":"Reunião no Governo do Estado","data_inicio":"2025-01-15","data_fim":"2025-01-16","quantidade_dias":2,"valor_unitario":350.00,"valor_total":700.00,"numero_portaria":"001/2025","link_sistema_oficial":null,"observacoes":null,"mes_referencia":1,"ano_referencia":2025,"publicado":true,"created_at":"2025-02-14T00:42:17.623958+00:00","updated_at":"2025-02-14T00:42:17.623958+00:00"}
+    ],
+    "documentos_legislacao": [],
+    "documentos_licitacao": [
+      {"id":"doc-001","licitacao_id":"lic-001","tipo":"edital","titulo":"Edital de Licitação PP 001/2025","descricao":"Edital completo do pregão presencial","url":"https://example.com/edital.pdf","data_publicacao":"2025-01-10","ordem":0,"created_at":"2025-02-14T00:42:17.633858+00:00","updated_at":"2025-02-14T00:42:17.633858+00:00"}
+    ],
+    "documentos_pessoal": [],
+    "emendas_parlamentares": [],
+    "esic_anexos": [],
+    "esic_historico": [],
+    "esic_recursos": [],
+    "esic_respostas": [],
+    "esic_solicitacoes": [],
+    "faq_categorias": [
+      {"id":"faq-cat-001","titulo":"Serviços ao Cidadão","icone":"Users","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.643758+00:00","updated_at":"2025-02-14T00:42:17.643758+00:00"},
+      {"id":"faq-cat-002","titulo":"Transparência","icone":"Eye","ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.643758+00:00","updated_at":"2025-02-14T00:42:17.643758+00:00"}
+    ],
+    "faq_perguntas": [],
+    "folha_pagamento": [
+      {"id":"fp-001","titulo":"Folha de Pagamento - Janeiro 2025 - Prefeitura","descricao":"Folha de pagamento dos servidores da prefeitura","arquivo_url":"https://example.com/folha-jan-2025.pdf","arquivo_nome":"folha-jan-2025.pdf","categoria":"prefeitura","mes_referencia":1,"ano_referencia":2025,"data_postagem":"2025-02-01","observacoes":null,"publicado":true,"created_at":"2025-02-14T00:42:17.653658+00:00","updated_at":"2025-02-14T00:42:17.653658+00:00"}
+    ],
+    "governo_itens": [
+      {"id":"gov-001","titulo":"Prefeito","slug":"prefeito","conteudo":"<p>Informações sobre o Prefeito Municipal</p>","nome_autoridade":"Nome do Prefeito","cargo":"Prefeito Municipal","foto_url":null,"email":"prefeito@ipubi.pe.gov.br","telefone":"(87) 3881-1156","endereco":"Praça Agamenon Magalhães, 34 - Centro","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.663558+00:00","updated_at":"2025-02-14T00:42:17.663558+00:00"},
+      {"id":"gov-002","titulo":"Vice-Prefeito","slug":"vice-prefeito","conteudo":"<p>Informações sobre o Vice-Prefeito Municipal</p>","nome_autoridade":"Nome do Vice-Prefeito","cargo":"Vice-Prefeito Municipal","foto_url":null,"email":"viceprefeito@ipubi.pe.gov.br","telefone":"(87) 3881-1156","endereco":"Praça Agamenon Magalhães, 34 - Centro","ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.663558+00:00","updated_at":"2025-02-14T00:42:17.663558+00:00"}
+    ],
+    "licitacoes": [
+      {"id":"lic-001","numero_processo":"PP 001/2025","objeto":"Aquisição de material de expediente","modalidade":"pregao_presencial","status":"aberta","ano":2025,"data_abertura":"2025-02-15","data_abertura_processo":"2025-01-10","data_encerramento":null,"valor_estimado":50000.00,"secretaria_id":null,"secretaria_nome":"Secretaria de Administração","link_sistema_oficial":null,"observacoes":null,"publicado":true,"created_at":"2025-02-14T00:42:17.673458+00:00","updated_at":"2025-02-14T00:42:17.673458+00:00","created_by":null,"updated_by":null}
+    ],
+    "municipio_itens": [
+      {"id":"mun-001","titulo":"História","slug":"historia","conteudo":"<p>História do município de Ipubi</p>","nome_autoridade":null,"cargo":null,"foto_url":null,"email":null,"telefone":null,"endereco":null,"ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.683358+00:00","updated_at":"2025-02-14T00:42:17.683358+00:00"},
+      {"id":"mun-002","titulo":"Símbolos Oficiais","slug":"simbolos-oficiais","conteudo":"<p>Símbolos oficiais do município</p>","nome_autoridade":null,"cargo":null,"foto_url":null,"email":null,"telefone":null,"endereco":null,"ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.683358+00:00","updated_at":"2025-02-14T00:42:17.683358+00:00"}
+    ],
+    "noticias": [
+      {"id":"not-001","titulo":"Prefeitura lança novo portal de transparência","slug":"prefeitura-lanca-novo-portal-transparencia","resumo":"O novo portal oferece acesso facilitado às informações públicas","conteudo":"<p>A Prefeitura Municipal de Ipubi lançou hoje o novo Portal da Transparência...</p>","categoria":"Governo","categoria_cor":"bg-primary","imagem_url":null,"publicado":true,"data_publicacao":"2025-02-14T00:00:00+00:00","created_at":"2025-02-14T00:42:17.693258+00:00","updated_at":"2025-02-14T00:42:17.693258+00:00"}
+    ],
+    "obras_publicas": [
+      {"id":"obra-001","titulo":"Pavimentação da Rua das Flores","objeto":"Pavimentação asfáltica da Rua das Flores","descricao":"Obra de pavimentação com extensão de 500m","status":"em_andamento","empresa_executora":"Construtora ABC Ltda","cnpj_empresa":"12.345.678/0001-90","valor_contratado":250000.00,"valor_executado":125000.00,"percentual_execucao":50.00,"data_inicio":"2025-01-15","data_previsao_termino":"2025-06-15","data_conclusao":null,"prazo_execucao_dias":150,"localizacao":"Rua das Flores - Centro","secretaria_responsavel":"Secretaria de Infraestrutura","fiscal_obra":"João da Silva","numero_contrato":"CT-001/2025","fonte_recurso":"proprio","fonte_recurso_descricao":null,"link_sistema_oficial":null,"foto_url":null,"observacoes":null,"publicado":true,"created_at":"2025-02-14T00:42:17.703158+00:00","updated_at":"2025-02-14T00:42:17.703158+00:00","created_by":null,"updated_by":null}
+    ],
+    "orgaos_administracao": [
+      {"id":"org-001","nome":"Controladoria Geral do Município","icone":"Shield","competencia":"Fiscalização e controle interno","responsavel":"Nome do Controlador","contato":"(87) 3881-1156","email":"controladoria@ipubi.pe.gov.br","base_legal":"Lei Municipal 001/2020","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.713058+00:00","updated_at":"2025-02-14T00:42:17.713058+00:00"}
+    ],
+    "patrimonio_publico": [],
+    "publicacoes_historico": [],
+    "publicacoes_oficiais": [
+      {"id":"pub-001","tipo":"decreto","numero":"001/2025","titulo":"Decreto de Ponto Facultativo","ementa":"Decreta ponto facultativo no dia 24 de fevereiro de 2025","data_publicacao":"2025-02-10","ano":2025,"situacao":"vigente","texto_completo_url":"https://example.com/decreto-001-2025.pdf","secretaria_id":null,"secretaria_nome":"Gabinete do Prefeito","publicacao_relacionada_id":null,"observacoes":null,"publicado":true,"created_at":"2025-02-14T00:42:17.722958+00:00","updated_at":"2025-02-14T00:42:17.722958+00:00","created_by":null,"updated_by":null}
+    ],
+    "receitas_categorias": [
+      {"id":"rec-001","titulo":"Receitas Correntes","url":"https://example.com/receitas-correntes","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.732858+00:00","updated_at":"2025-02-14T00:42:17.732858+00:00"}
+    ],
+    "relatorios_fiscais": [
+      {"id":"rel-001","tipo":"rreo","titulo":"RREO - 6º Bimestre 2024","descricao":"Relatório Resumido da Execução Orçamentária","arquivo_url":"https://example.com/rreo-6-2024.pdf","arquivo_nome":"rreo-6-2024.pdf","ano":2024,"bimestre":6,"quadrimestre":null,"data_publicacao":"2025-01-30","observacoes":null,"publicado":true,"created_at":"2025-02-14T00:42:17.742758+00:00","updated_at":"2025-02-14T00:42:17.742758+00:00","created_by":null,"updated_by":null}
+    ],
+    "remuneracao_agentes": [],
+    "secretarias": [
+      {"id":"sec-001","nome":"Secretaria de Administração","slug":"administracao","icone":"Building2","descricao":"Responsável pela gestão administrativa do município","competencias":"Gestão de pessoal, patrimônio e serviços gerais","secretario_nome":"Nome do Secretário","secretario_foto":null,"secretario_bio":null,"endereco":"Praça Agamenon Magalhães, 34 - Centro","telefone":"(87) 3881-1156","email":"administracao@ipubi.pe.gov.br","horario_funcionamento":"Segunda a Sexta: 08h às 14h","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.752658+00:00","updated_at":"2025-02-14T00:42:17.752658+00:00"},
+      {"id":"sec-002","nome":"Secretaria de Finanças","slug":"financas","icone":"DollarSign","descricao":"Responsável pela gestão financeira e tributária","competencias":"Arrecadação, contabilidade e gestão financeira","secretario_nome":"Nome do Secretário de Finanças","secretario_foto":null,"secretario_bio":null,"endereco":"Praça Agamenon Magalhães, 34 - Centro","telefone":"(87) 3881-1156","email":"financas@ipubi.pe.gov.br","horario_funcionamento":"Segunda a Sexta: 08h às 14h","ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.752658+00:00","updated_at":"2025-02-14T00:42:17.752658+00:00"}
+    ],
+    "servicos": [
+      {"id":"srv-001","titulo":"IPTU","descricao":"Consulte e pague seu IPTU","icone":"Home","cor":"bg-blue-500","link":"/servicos/iptu","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.762558+00:00","updated_at":"2025-02-14T00:42:17.762558+00:00"},
+      {"id":"srv-002","titulo":"Nota Fiscal Eletrônica","descricao":"Emita sua nota fiscal","icone":"FileText","cor":"bg-green-500","link":"/servicos/nfe","ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.762558+00:00","updated_at":"2025-02-14T00:42:17.762558+00:00"}
+    ],
+    "transparencia_categorias": [
+      {"id":"transp-cat-001","titulo":"Receitas","icone":"TrendingUp","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.772458+00:00","updated_at":"2025-02-14T00:42:17.772458+00:00"},
+      {"id":"transp-cat-002","titulo":"Despesas","icone":"TrendingDown","ordem":1,"ativo":true,"created_at":"2025-02-14T00:42:17.772458+00:00","updated_at":"2025-02-14T00:42:17.772458+00:00"}
+    ],
+    "transparencia_itens": [
+      {"id":"transp-item-001","categoria_id":"transp-cat-001","titulo":"Receitas Orçamentárias","descricao":"Consulte as receitas do município","link":"/transparencia/receitas","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.782358+00:00","updated_at":"2025-02-14T00:42:17.782358+00:00"}
+    ],
+    "transparencia_links_rapidos": [
+      {"id":"link-001","titulo":"Portal da Transparência Federal","descricao":"Acesse o portal federal","icone":"ExternalLink","link":"https://transparencia.gov.br","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.792258+00:00","updated_at":"2025-02-14T00:42:17.792258+00:00"}
+    ],
+    "unidades_vinculadas": [
+      {"id":"uv-001","secretaria_id":"sec-001","nome":"Recursos Humanos","tipo":"Departamento","descricao":"Gestão de pessoal","endereco":"Praça Agamenon Magalhães, 34 - Centro","telefone":"(87) 3881-1156","email":"rh@ipubi.pe.gov.br","responsavel":"Coordenador de RH","ordem":0,"ativo":true,"created_at":"2025-02-14T00:42:17.802158+00:00","updated_at":"2025-02-14T00:42:17.802158+00:00"}
+    ],
+    "unidades_vinculadas_itens": [],
+    "user_roles": [
+      {"id":"ur-001","user_id":"00000000-0000-0000-0000-000000000001","role":"admin","created_at":"2025-02-14T00:42:17.812058+00:00"}
+    ]
+  }
+}
