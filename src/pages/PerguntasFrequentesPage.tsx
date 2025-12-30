@@ -88,7 +88,8 @@ export default function PerguntasFrequentesPage() {
           <div className="container">
             <Breadcrumbs
               items={[{ label: "Perguntas Frequentes" }]}
-              className="mb-6 text-primary-foreground/80"
+              variant="light"
+              className="mb-6"
             />
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-2xl bg-primary-foreground/20 flex items-center justify-center">
