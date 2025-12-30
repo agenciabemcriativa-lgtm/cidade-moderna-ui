@@ -7,6 +7,12 @@ import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { 
   CheckCircle, 
   XCircle, 
   AlertTriangle, 
@@ -28,11 +34,14 @@ import {
   Info,
   AlertCircle,
   Download,
-  TrendingUp
+  TrendingUp,
+  FileSpreadsheet,
+  Printer
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useState } from "react";
+import * as XLSX from "xlsx";
 
 const iconeMap: Record<string, React.ElementType> = {
   FileText,
@@ -80,6 +89,13 @@ const statusConfig = {
   },
 };
 
+const statusLabels: Record<string, string> = {
+  conforme: 'Conforme',
+  parcial: 'Parcial',
+  nao_conforme: 'Não Conforme',
+  nao_aplicavel: 'N/A',
+};
+
 function getScoreColor(score: number): string {
   if (score >= 80) return 'text-green-600';
   if (score >= 60) return 'text-yellow-600';
@@ -96,9 +112,164 @@ export default function AdminAutoVerificacao() {
   const { data, isLoading, refetch, isFetching } = useAutoVerificacao();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
+  const handleExportExcel = () => {
+    if (!data) return;
+
+    const rows: Record<string, string>[] = [];
+    
+    data.categorias.forEach(categoria => {
+      categoria.itens.forEach(item => {
+        rows.push({
+          'Categoria': categoria.nome,
+          'Item': item.item,
+          'Descrição': item.descricao,
+          'Status': statusLabels[item.status] || item.status,
+          'Detalhes': item.detalhes,
+          'Base Legal': item.baseLegal,
+          'Prazo Legal': item.prazoLegal || '-',
+          'Prioridade': item.prioridade === 'alta' ? 'Alta' : item.prioridade === 'media' ? 'Média' : 'Baixa',
+        });
+      });
+    });
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Auto Verificação");
+    
+    // Ajustar largura das colunas
+    const colWidths = [
+      { wch: 30 }, // Categoria
+      { wch: 50 }, // Item
+      { wch: 60 }, // Descrição
+      { wch: 15 }, // Status
+      { wch: 50 }, // Detalhes
+      { wch: 30 }, // Base Legal
+      { wch: 20 }, // Prazo Legal
+      { wch: 10 }, // Prioridade
+    ];
+    ws['!cols'] = colWidths;
+
+    const dataStr = format(new Date(), 'yyyy-MM-dd');
+    XLSX.writeFile(wb, `auto-verificacao-${dataStr}.xlsx`);
+  };
+
   const handleExportPDF = () => {
-    // Implementação futura de exportação
-    alert('Funcionalidade de exportação em desenvolvimento');
+    if (!data) return;
+
+    const dataFormatada = format(new Date(data.dataVerificacao), "dd/MM/yyyy 'às' HH:mm");
+    
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Relatório de Auto Verificação</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; font-size: 12px; }
+          h1 { color: #1a365d; border-bottom: 2px solid #1a365d; padding-bottom: 10px; }
+          h2 { color: #2d3748; margin-top: 30px; }
+          .header { text-align: center; margin-bottom: 30px; }
+          .score-box { background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; }
+          .score { font-size: 48px; font-weight: bold; }
+          .score.green { color: #38a169; }
+          .score.yellow { color: #d69e2e; }
+          .score.red { color: #e53e3e; }
+          .summary { display: flex; justify-content: space-around; margin: 20px 0; }
+          .summary-item { text-align: center; }
+          .summary-number { font-size: 24px; font-weight: bold; }
+          .category { margin: 20px 0; page-break-inside: avoid; }
+          .category-header { background: #edf2f7; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+          .category-title { font-weight: bold; font-size: 14px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+          th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; }
+          th { background: #f7fafc; font-weight: bold; }
+          .status-conforme { color: #38a169; font-weight: bold; }
+          .status-parcial { color: #d69e2e; font-weight: bold; }
+          .status-nao_conforme { color: #e53e3e; font-weight: bold; }
+          .status-nao_aplicavel { color: #718096; }
+          .footer { margin-top: 30px; text-align: center; font-size: 10px; color: #718096; }
+          @media print { body { padding: 0; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>Relatório de Auto Verificação de Conformidade</h1>
+          <p>Prefeitura Municipal de Ipubi - Portal da Transparência</p>
+          <p>Data da verificação: ${dataFormatada}</p>
+        </div>
+
+        <div class="score-box">
+          <div class="score ${data.scoreGeral >= 80 ? 'green' : data.scoreGeral >= 60 ? 'yellow' : 'red'}">
+            ${data.scoreGeral}%
+          </div>
+          <p>Score de Conformidade</p>
+        </div>
+
+        <div class="summary" style="display: flex; justify-content: space-around; text-align: center;">
+          <div class="summary-item">
+            <div class="summary-number" style="color: #38a169;">${data.conformes}</div>
+            <div>Conformes</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-number" style="color: #d69e2e;">${data.parciais}</div>
+            <div>Parciais</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-number" style="color: #e53e3e;">${data.naoConformes}</div>
+            <div>Não Conformes</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-number">${data.totalItens}</div>
+            <div>Total de Itens</div>
+          </div>
+        </div>
+
+        ${data.categorias.map(categoria => `
+          <div class="category">
+            <div class="category-header">
+              <span class="category-title">${categoria.nome}</span>
+              <span style="float: right;">${categoria.percentualConformidade}% conforme</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 35%;">Item</th>
+                  <th style="width: 12%;">Status</th>
+                  <th style="width: 33%;">Detalhes</th>
+                  <th style="width: 20%;">Base Legal</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${categoria.itens.map(item => `
+                  <tr>
+                    <td>${item.item}</td>
+                    <td class="status-${item.status}">${statusLabels[item.status]}</td>
+                    <td>${item.detalhes}</td>
+                    <td>${item.baseLegal}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `).join('')}
+
+        <div class="footer">
+          <p>Este relatório foi gerado automaticamente pelo Sistema de Auto Verificação do Portal da Transparência.</p>
+          <p>Legislação de referência: Lei nº 12.527/2011 (LAI), LC 101/2000 (LRF), Lei nº 14.133/2021</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
   };
 
   if (isLoading) {
@@ -135,10 +306,24 @@ export default function AdminAutoVerificacao() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={handleExportPDF}>
-              <Download className="h-4 w-4 mr-2" />
-              Exportar
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <Download className="h-4 w-4 mr-2" />
+                  Exportar
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleExportPDF}>
+                  <Printer className="h-4 w-4 mr-2" />
+                  Exportar PDF
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportExcel}>
+                  <FileSpreadsheet className="h-4 w-4 mr-2" />
+                  Exportar Excel
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button onClick={() => refetch()} disabled={isFetching}>
               <RefreshCw className={`h-4 w-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
               Atualizar
