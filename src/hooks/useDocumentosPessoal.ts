@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
-export type TipoDocumentoPessoal = 'estagiarios' | 'remuneracao_cargo' | 'servidores' | 'lista_nominal_cargo';
+export type TipoDocumentoPessoal = 'estagiarios' | 'remuneracao_cargo' | 'servidores' | 'lista_nominal_cargo' | 'terceirizados';
 
 export interface DocumentoPessoal {
   id: string;
@@ -37,6 +37,7 @@ export const tipoLabels: Record<TipoDocumentoPessoal, string> = {
   remuneracao_cargo: 'Remuneração de Cargo',
   servidores: 'Servidores',
   lista_nominal_cargo: 'Lista Nominal por Cargo',
+  terceirizados: 'Lista de Terceirizados',
 };
 
 export const mesesLabels: Record<number, string> = {

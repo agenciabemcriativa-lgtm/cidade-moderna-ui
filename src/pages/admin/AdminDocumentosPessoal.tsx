@@ -358,20 +358,24 @@ export default function AdminDocumentosPessoal() {
         </div>
 
         <Tabs defaultValue="estagiarios" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
             <TabsTrigger value="estagiarios">Estagiários</TabsTrigger>
-            <TabsTrigger value="remuneracao_cargo">Remuneração de Cargo</TabsTrigger>
+            <TabsTrigger value="terceirizados">Terceirizados</TabsTrigger>
             <TabsTrigger value="servidores">Servidores</TabsTrigger>
+            <TabsTrigger value="remuneracao_cargo">Remuneração</TabsTrigger>
             <TabsTrigger value="lista_nominal_cargo">Lista Nominal</TabsTrigger>
           </TabsList>
           <TabsContent value="estagiarios" className="mt-6">
             <DocumentForm tipo="estagiarios" />
           </TabsContent>
-          <TabsContent value="remuneracao_cargo" className="mt-6">
-            <DocumentForm tipo="remuneracao_cargo" />
+          <TabsContent value="terceirizados" className="mt-6">
+            <DocumentForm tipo="terceirizados" />
           </TabsContent>
           <TabsContent value="servidores" className="mt-6">
             <DocumentForm tipo="servidores" />
+          </TabsContent>
+          <TabsContent value="remuneracao_cargo" className="mt-6">
+            <DocumentForm tipo="remuneracao_cargo" />
           </TabsContent>
           <TabsContent value="lista_nominal_cargo" className="mt-6">
             <DocumentForm tipo="lista_nominal_cargo" />
