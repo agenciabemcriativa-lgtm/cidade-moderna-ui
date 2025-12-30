@@ -15,10 +15,10 @@ import { useMunicipioItens } from "@/hooks/useMunicipioItens";
 
 const servicosLinks = [
   { label: "Carta de Serviços", href: "/carta-de-servicos", external: false },
-  { label: "Portal da Transparência", href: "https://www.ipubi.pe.gov.br/portaldatransparencia/", external: true },
+  { label: "Portal da Transparência", href: "/transparencia", external: false },
   { label: "Licitações", href: "/licitacoes", external: false },
   { label: "Contra-Cheque Online", href: "https://mdinfor.com.br/espelhorh/contracheque/index.php", external: true },
-  { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login;jsessionid=q6hYi6fhOMbbSmqWX4Em7sP9.undefined", external: true },
+  { label: "Nota Fiscal Eletrônica", href: "http://45.163.4.114:5661/issweb/paginas/login", external: true },
   { label: "e-SIC", href: "/transparencia/esic", external: false },
   { label: "Perguntas Frequentes", href: "/perguntas-frequentes", external: false },
 ];
@@ -33,8 +33,8 @@ const quickLinks = [
 ];
 
 const socialLinks = [
-  { icon: Facebook, href: "#facebook", label: "Facebook" },
-  { icon: Instagram, href: "#instagram", label: "Instagram" },
+  { icon: Facebook, href: "https://www.facebook.com/prefeituradeipubi", label: "Facebook" },
+  { icon: Instagram, href: "https://www.instagram.com/prefeituradeipubi", label: "Instagram" },
 ];
 
 interface FooterProps {
