@@ -12,6 +12,7 @@ export interface CardapioEscolar {
   publicado: boolean | null;
   created_at: string | null;
   updated_at: string | null;
+  categoria: string;
 }
 
 export interface CardapioAgrupado {
@@ -21,10 +22,17 @@ export interface CardapioAgrupado {
   itens: CardapioEscolar[];
 }
 
+export interface CardapioPorCategoria {
+  categoria: string;
+  meses: CardapioAgrupado[];
+}
+
 const mesesNomes = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
+
+const CATEGORIA_PRIORITARIA = "Cardápios e Recomendações";
 
 export function useCardapiosEscolares() {
   return useQuery({
@@ -40,23 +48,41 @@ export function useCardapiosEscolares() {
       
       if (error) throw error;
       
-      // Agrupar por mês/ano
-      const agrupados: Record<string, CardapioAgrupado> = {};
+      // Agrupar por categoria e depois por mês/ano
+      const porCategoria: Record<string, Record<string, CardapioAgrupado>> = {};
       
       (data as CardapioEscolar[]).forEach((item) => {
-        const key = `${item.ano_referencia}-${item.mes_referencia}`;
-        if (!agrupados[key]) {
-          agrupados[key] = {
+        const categoria = item.categoria || CATEGORIA_PRIORITARIA;
+        const mesKey = `${item.ano_referencia}-${item.mes_referencia}`;
+        
+        if (!porCategoria[categoria]) {
+          porCategoria[categoria] = {};
+        }
+        
+        if (!porCategoria[categoria][mesKey]) {
+          porCategoria[categoria][mesKey] = {
             mes: item.mes_referencia,
             ano: item.ano_referencia,
             label: `Cardápio ${mesesNomes[item.mes_referencia - 1]} ${item.ano_referencia}`,
             itens: [],
           };
         }
-        agrupados[key].itens.push(item);
+        porCategoria[categoria][mesKey].itens.push(item);
       });
       
-      return Object.values(agrupados);
+      // Converter para array e ordenar categorias (prioritária primeiro)
+      const resultado: CardapioPorCategoria[] = Object.entries(porCategoria)
+        .map(([categoria, meses]) => ({
+          categoria,
+          meses: Object.values(meses),
+        }))
+        .sort((a, b) => {
+          if (a.categoria === CATEGORIA_PRIORITARIA) return -1;
+          if (b.categoria === CATEGORIA_PRIORITARIA) return 1;
+          return a.categoria.localeCompare(b.categoria);
+        });
+      
+      return resultado;
     },
   });
 }
