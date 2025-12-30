@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, FileText, ExternalLink } from "lucide-react";
-import { useCardapiosEscolaresAdmin, CardapioEscolar, CATEGORIA_AVULSA } from "@/hooks/useCardapiosEscolares";
+import { useCardapiosEscolaresAdmin, CardapioEscolar } from "@/hooks/useCardapiosEscolares";
 
 const mesesNomes = [
   { value: "1", label: "Janeiro" },
@@ -141,12 +141,9 @@ export default function AdminCardapiosEscolares() {
     }
   };
 
-  // Separar itens avulsos e agrupar por categoria/mês
-  const itensAvulsos = cardapios?.filter(c => c.categoria === CATEGORIA_AVULSA) || [];
-  const itensAgrupados = cardapios?.filter(c => c.categoria !== CATEGORIA_AVULSA) || [];
-
-  const groupedCardapios = itensAgrupados.reduce((acc, cardapio) => {
-    const categoria = cardapio.categoria;
+  // Agrupar cardápios por categoria e mês/ano para exibição
+  const groupedCardapios = cardapios?.reduce((acc, cardapio) => {
+    const categoria = cardapio.categoria || "Cardápios e Recomendações";
     if (!acc[categoria]) {
       acc[categoria] = {};
     }
@@ -161,7 +158,14 @@ export default function AdminCardapiosEscolares() {
     return acc;
   }, {} as Record<string, Record<string, { label: string; itens: CardapioEscolar[] }>>);
 
-  const sortedCategories = Object.keys(groupedCardapios).sort((a, b) => a.localeCompare(b));
+  // Ordenar categorias com "Cardápios e Recomendações" primeiro
+  const sortedCategories = groupedCardapios 
+    ? Object.keys(groupedCardapios).sort((a, b) => {
+        if (a === "Cardápios e Recomendações") return -1;
+        if (b === "Cardápios e Recomendações") return 1;
+        return a.localeCompare(b);
+      })
+    : [];
 
   return (
     <AdminLayout>
@@ -281,48 +285,8 @@ export default function AdminCardapiosEscolares() {
 
         {isLoading ? (
           <p>Carregando...</p>
-        ) : (cardapios && cardapios.length > 0) ? (
+        ) : groupedCardapios && sortedCategories.length > 0 ? (
           <div className="space-y-8">
-            {/* Categoria Avulsa - Cardápios e Recomendações */}
-            {itensAvulsos.length > 0 && (
-              <Card>
-                <CardHeader className="bg-primary text-primary-foreground rounded-t-lg">
-                  <CardTitle className="text-lg">{CATEGORIA_AVULSA}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-4 space-y-2">
-                  {itensAvulsos.map((cardapio) => (
-                    <div
-                      key={cardapio.id}
-                      className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
-                    >
-                      <a
-                        href={cardapio.arquivo_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-foreground hover:text-primary transition-colors flex-1"
-                      >
-                        <FileText className="h-4 w-4 text-muted-foreground" />
-                        <span>{cardapio.titulo}</span>
-                        <ExternalLink className="h-3 w-3 ml-1 opacity-50" />
-                      </a>
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2 py-1 text-xs rounded ${cardapio.publicado ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
-                          {cardapio.publicado ? "Publicado" : "Rascunho"}
-                        </span>
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(cardapio)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(cardapio.id)}>
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Outras categorias agrupadas por mês */}
             {sortedCategories.map((categoria) => (
               <div key={categoria} className="space-y-4">
                 <h2 className="text-xl font-bold text-foreground border-b-2 border-primary pb-2">
