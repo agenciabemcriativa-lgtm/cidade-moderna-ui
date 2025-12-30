@@ -19,7 +19,8 @@ import {
   BookOpen,
   Shield,
   HelpCircle,
-  ClipboardList
+  ClipboardList,
+  UtensilsCrossed
 } from "lucide-react";
 import { useState } from "react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";
@@ -28,6 +29,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin" },
   { icon: Users, label: "Atendimento", href: "/admin/atendimento" },
   { icon: Image, label: "Banner", href: "/admin/banner" },
+  { icon: UtensilsCrossed, label: "Cardápios Escolares", href: "/admin/cardapios-escolares" },
   { icon: ClipboardList, label: "Carta de Serviços", href: "/admin/carta-servicos" },
   { icon: FileText, label: "Categorias Receitas", href: "/admin/receitas-categorias" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes" },
