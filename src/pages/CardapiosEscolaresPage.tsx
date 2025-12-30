@@ -5,7 +5,7 @@ import { Footer } from "@/components/portal/Footer";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FileText, ExternalLink } from "lucide-react";
-import { useCardapiosEscolares } from "@/hooks/useCardapiosEscolares";
+import { useCardapiosEscolares, CATEGORIA_RECOMENDACOES } from "@/hooks/useCardapiosEscolares";
 
 export default function CardapiosEscolaresPage() {
   const { data: cardapios, isLoading } = useCardapiosEscolares();
@@ -46,39 +46,68 @@ export default function CardapiosEscolaresPage() {
                   </div>
                 ))}
               </div>
-            ) : cardapios && cardapios.length > 0 ? (
-              <div className="space-y-10">
-                {cardapios.map((categoriaGroup) => (
-                  <div key={categoriaGroup.categoria} className="space-y-6">
-                    <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-primary pb-2">
-                      {categoriaGroup.categoria}
-                    </h2>
-                    {categoriaGroup.meses.map((grupo) => (
-                      <div key={`${grupo.ano}-${grupo.mes}`} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                        <div className="bg-primary text-white px-6 py-4">
-                          <h3 className="text-lg font-semibold">{grupo.label}</h3>
-                        </div>
-                        <div className="divide-y divide-gray-100">
-                          {grupo.itens.map((item) => (
-                            <a
-                              key={item.id}
-                              href={item.arquivo_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors group"
-                            >
-                              <FileText className="h-5 w-5 text-primary/60 group-hover:text-primary transition-colors" />
-                              <span className="text-gray-700 group-hover:text-primary transition-colors flex-1">
-                                {item.titulo}
-                              </span>
-                              <ExternalLink className="h-4 w-4 text-gray-400 group-hover:text-primary transition-colors" />
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+            ) : cardapios ? (
+              <div className="space-y-8">
+                {/* Bloco Cardápios e Recomendações (avulso, sempre no topo) */}
+                {cardapios.recomendacoes.length > 0 && (
+                  <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div className="bg-primary text-white px-6 py-4">
+                      <h2 className="text-lg font-semibold">{CATEGORIA_RECOMENDACOES}</h2>
+                    </div>
+                    <div className="divide-y divide-gray-100">
+                      {cardapios.recomendacoes.map((item) => (
+                        <a
+                          key={item.id}
+                          href={item.arquivo_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors group"
+                        >
+                          <FileText className="h-5 w-5 text-primary/60 group-hover:text-primary transition-colors" />
+                          <span className="text-gray-700 group-hover:text-primary transition-colors flex-1">
+                            {item.titulo}
+                          </span>
+                          <ExternalLink className="h-4 w-4 text-gray-400 group-hover:text-primary transition-colors" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Blocos por Mês */}
+                {cardapios.porMes.map((grupo) => (
+                  <div key={`${grupo.ano}-${grupo.mes}`} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div className="bg-primary text-white px-6 py-4">
+                      <h2 className="text-lg font-semibold">{grupo.label}</h2>
+                    </div>
+                    <div className="divide-y divide-gray-100">
+                      {grupo.itens.map((item) => (
+                        <a
+                          key={item.id}
+                          href={item.arquivo_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors group"
+                        >
+                          <FileText className="h-5 w-5 text-primary/60 group-hover:text-primary transition-colors" />
+                          <span className="text-gray-700 group-hover:text-primary transition-colors flex-1">
+                            {item.titulo}
+                          </span>
+                          <ExternalLink className="h-4 w-4 text-gray-400 group-hover:text-primary transition-colors" />
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 ))}
+
+                {/* Mensagem vazia */}
+                {cardapios.recomendacoes.length === 0 && cardapios.porMes.length === 0 && (
+                  <div className="text-center py-16 bg-white rounded-lg shadow-sm">
+                    <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-xl font-medium text-gray-600 mb-2">Nenhum cardápio disponível</h3>
+                    <p className="text-gray-500">Os cardápios serão exibidos aqui quando forem publicados.</p>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center py-16 bg-white rounded-lg shadow-sm">
