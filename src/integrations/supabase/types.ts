@@ -140,6 +140,45 @@ export type Database = {
         }
         Relationships: []
       }
+      cardapios_escolares: {
+        Row: {
+          ano_referencia: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at: string | null
+          id: string
+          mes_referencia: number
+          ordem: number | null
+          publicado: boolean | null
+          titulo: string
+          updated_at: string | null
+        }
+        Insert: {
+          ano_referencia: number
+          arquivo_nome: string
+          arquivo_url: string
+          created_at?: string | null
+          id?: string
+          mes_referencia: number
+          ordem?: number | null
+          publicado?: boolean | null
+          titulo: string
+          updated_at?: string | null
+        }
+        Update: {
+          ano_referencia?: number
+          arquivo_nome?: string
+          arquivo_url?: string
+          created_at?: string | null
+          id?: string
+          mes_referencia?: number
+          ordem?: number | null
+          publicado?: boolean | null
+          titulo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       carta_servicos: {
         Row: {
           base_legal: string | null

@@ -84,6 +84,9 @@ import AdminCartaServicos from "./pages/admin/AdminCartaServicos";
 import AdminDocumentosPessoal from "./pages/admin/AdminDocumentosPessoal";
 import AdminEmendasParlamentares from "./pages/admin/AdminEmendasParlamentares";
 import EmendasParlamentaresPage from "./pages/transparencia/EmendasParlamentaresPage";
+import CardapiosEscolaresPage from "./pages/CardapiosEscolaresPage";
+import AdminCardapiosEscolares from "./pages/admin/AdminCardapiosEscolares";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -124,6 +127,7 @@ const App = () => (
             <Route path="/perguntas-frequentes" element={<PerguntasFrequentesPage />} />
             <Route path="/carta-de-servicos" element={<CartaServicosPage />} />
             <Route path="/carta-de-servicos/:slug" element={<CartaServicoDetalhePage />} />
+            <Route path="/cardapios-escolares" element={<CardapiosEscolaresPage />} />
             <Route path="/politica-de-privacidade" element={<PoliticaPrivacidadePage />} />
             <Route path="/transparencia" element={<TransparenciaPage />} />
             <Route path="/transparencia/despesas" element={<DespesasPage />} />
@@ -174,6 +178,7 @@ const App = () => (
             <Route path="/admin/folha-pagamento" element={<AdminFolhaPagamento />} />
             <Route path="/admin/documentos-pessoal" element={<AdminDocumentosPessoal />} />
             <Route path="/admin/emendas-parlamentares" element={<AdminEmendasParlamentares />} />
+            <Route path="/admin/cardapios-escolares" element={<AdminCardapiosEscolares />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
