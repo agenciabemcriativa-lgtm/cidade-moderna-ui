@@ -127,6 +127,10 @@ export default function TransparenciaPage() {
     });
   };
 
+  // Separate regular categories from "Publicações Oficiais"
+  const regularCategories = categorias?.filter((cat: CategoriaComItens) => cat.titulo !== 'Publicações Oficiais') || [];
+  const publicacoesOficiais = categorias?.find((cat: CategoriaComItens) => cat.titulo === 'Publicações Oficiais');
+
   const renderCategories = () => {
     if (loadingCategorias) {
       return Array.from({ length: 8 }).map((_, i) => (
@@ -150,7 +154,7 @@ export default function TransparenciaPage() {
       ));
     }
 
-    return categorias?.map((category: CategoriaComItens) => {
+    return regularCategories.map((category: CategoriaComItens) => {
       const IconComponent = getIcon(category.icone);
       const iconColor = getIconColor(category.cor);
       const cardColor = category.cor || 'bg-gray-50 border-gray-200';
@@ -210,6 +214,58 @@ export default function TransparenciaPage() {
         </Card>
       );
     });
+  };
+
+  const renderPublicacoesOficiais = () => {
+    if (!publicacoesOficiais || loadingCategorias) return null;
+
+    const IconComponent = getIcon(publicacoesOficiais.icone);
+    const iconColor = getIconColor(publicacoesOficiais.cor);
+    const cardColor = publicacoesOficiais.cor || 'bg-gray-50 border-gray-200';
+
+    return (
+      <section className={`${cardColor} border rounded-xl p-6 mb-8`}>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 rounded-lg bg-white shadow-sm">
+            <IconComponent className={`w-6 h-6 ${iconColor}`} />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">{publicacoesOficiais.titulo}</h3>
+            {publicacoesOficiais.descricao && (
+              <p className="text-sm text-gray-600">{publicacoesOficiais.descricao}</p>
+            )}
+          </div>
+        </div>
+        <Separator className="mb-4 bg-gray-200" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {publicacoesOficiais.itens.map((item) => (
+            item.externo ? (
+              <a
+                key={item.id}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-white rounded-lg border border-gray-200 text-sm font-medium text-primary hover:bg-primary hover:text-white hover:border-primary transition-colors group"
+              >
+                <span>{item.titulo}</span>
+                <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />
+              </a>
+            ) : (
+              <Link
+                key={item.id}
+                to={item.url}
+                className="flex items-center justify-center px-4 py-3 bg-white rounded-lg border border-gray-200 text-sm font-medium text-primary hover:bg-primary hover:text-white hover:border-primary transition-colors"
+              >
+                {item.titulo}
+              </Link>
+            )
+          ))}
+          {publicacoesOficiais.itens.length === 0 && (
+            <p className="col-span-full text-sm text-gray-400 italic text-center">Nenhum item cadastrado</p>
+          )}
+        </div>
+      </section>
+    );
   };
 
   return (
@@ -305,6 +361,9 @@ export default function TransparenciaPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
           {renderCategories()}
         </div>
+
+        {/* Publicações Oficiais - Horizontal Section */}
+        {renderPublicacoesOficiais()}
 
         {/* Legal Compliance Section */}
         <section className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
