@@ -5,7 +5,7 @@ import { Search, Clock, MapPin, Phone, Mail, ExternalLink, FileText, Filter, Che
 import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { TopBar } from "@/components/portal/TopBar";
 import { Header } from "@/components/portal/Header";
-import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
+import { PageHeader } from "@/components/portal/PageHeader";
 import { Footer } from "@/components/portal/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -76,21 +76,13 @@ export default function CartaServicosPage() {
         <AccessibilityBar />
         <TopBar />
         <Header />
-        <Breadcrumbs items={breadcrumbItems} />
+        <PageHeader
+          title="Carta de Serviços ao Cidadão"
+          subtitle="A Carta de Serviços é um documento que informa aos cidadãos os serviços prestados pelo município, como acessá-los e quais são os compromissos e padrões de qualidade do atendimento, conforme estabelecido pela Lei Federal nº 13.460/2017."
+          breadcrumbItems={breadcrumbItems}
+        />
 
         <main className="flex-1 container mx-auto px-4 py-8">
-          {/* Hero Section */}
-          <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-lg p-8 mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <FileText className="h-10 w-10" />
-              <h1 className="text-3xl font-bold">Carta de Serviços ao Cidadão</h1>
-            </div>
-            <p className="text-lg opacity-90 max-w-3xl">
-              A Carta de Serviços é um documento que informa aos cidadãos os serviços prestados
-              pelo município, como acessá-los e quais são os compromissos e padrões de qualidade
-              do atendimento, conforme estabelecido pela Lei Federal nº 13.460/2017.
-            </p>
-          </div>
 
           {/* Informações sobre a Lei */}
           <Card className="mb-8 border-l-4 border-l-primary">
