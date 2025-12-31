@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { TopBar } from '@/components/portal/TopBar';
-import { AccessibilityBar } from '@/components/portal/AccessibilityBar';
-import { Header } from '@/components/portal/Header';
-import { Breadcrumbs } from '@/components/portal/Breadcrumbs';
-import { Footer } from '@/components/portal/Footer';
 import { TransparenciaLayout } from '@/components/transparencia/TransparenciaLayout';
 import { useFolhaPagamento, mesesLabels, categoriasLabels, CategoriaFolha } from '@/hooks/useFolhaPagamento';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,8 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FileText, Download, Calendar, ExternalLink } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 export default function FolhaPagamentoPage() {
   const currentYear = new Date().getFullYear();
@@ -40,20 +33,11 @@ export default function FolhaPagamentoPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <>
       <Helmet>
         <title>Folha de Pagamento - Portal da Transparência - Prefeitura de Ipubi</title>
         <meta name="description" content="Documentos mensais da folha de pagamento dos servidores públicos municipais de Ipubi." />
       </Helmet>
-
-      <TopBar />
-      <AccessibilityBar />
-      <Header />
-      
-      <Breadcrumbs items={[
-        { label: 'Transparência', href: '/transparencia' },
-        { label: 'Folha de Pagamento' }
-      ]} />
 
       <TransparenciaLayout
         title="Folha de Pagamento"
@@ -162,8 +146,6 @@ export default function FolhaPagamentoPage() {
           </Card>
         )}
       </TransparenciaLayout>
-
-      <Footer />
-    </div>
+    </>
   );
 }

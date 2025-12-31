@@ -3,7 +3,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
-import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
+import { PageHeader } from "@/components/portal/PageHeader";
 import { useGovernoItens } from "@/hooks/useGovernoItens";
 import { Loader2, Mail, Phone, MapPin, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -52,17 +52,13 @@ export default function GovernoPage() {
       <Header />
       
       <main>
-        {/* Breadcrumbs */}
-        <div className="bg-muted/30 border-b border-border">
-          <div className="container">
-            <Breadcrumbs 
-              items={[
-                { label: "O Governo" },
-                { label: item.titulo }
-              ]} 
-            />
-          </div>
-        </div>
+        <PageHeader
+          title={item.titulo}
+          breadcrumbItems={[
+            { label: "O Governo" },
+            { label: item.titulo }
+          ]}
+        />
 
         {/* Content */}
         <div className="container py-12">

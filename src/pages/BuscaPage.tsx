@@ -181,9 +181,9 @@ export default function BuscaPage() {
       <Header />
       <main className="flex-1">
         {/* Breadcrumbs */}
-        <div className="bg-muted/30 border-b border-border">
+        <div className="bg-gradient-to-r from-primary to-primary/90">
           <div className="container">
-            <Breadcrumbs items={[{ label: "Busca" }]} />
+            <Breadcrumbs items={[{ label: "Busca" }]} variant="light" />
           </div>
         </div>
 

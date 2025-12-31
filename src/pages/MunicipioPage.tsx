@@ -3,7 +3,7 @@ import { TopBar } from "@/components/portal/TopBar";
 import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { Header } from "@/components/portal/Header";
 import { Footer } from "@/components/portal/Footer";
-import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
+import { PageHeader } from "@/components/portal/PageHeader";
 import { useMunicipioItens } from "@/hooks/useMunicipioItens";
 import { Loader2, Mail, Phone, MapPin, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -52,17 +52,13 @@ export default function MunicipioPage() {
       <Header />
       
       <main>
-        {/* Breadcrumbs */}
-        <div className="bg-muted/30 border-b border-border">
-          <div className="container">
-            <Breadcrumbs 
-              items={[
-                { label: "Município" },
-                { label: item.titulo }
-              ]} 
-            />
-          </div>
-        </div>
+        <PageHeader
+          title={item.titulo}
+          breadcrumbItems={[
+            { label: "Município" },
+            { label: item.titulo }
+          ]}
+        />
 
         {/* Content */}
         <div className="container py-12">

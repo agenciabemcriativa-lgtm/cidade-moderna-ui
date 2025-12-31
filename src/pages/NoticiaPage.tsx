@@ -89,13 +89,14 @@ export default function NoticiaPage() {
       
       <main className="flex-1">
         {/* Breadcrumbs */}
-        <div className="bg-muted/30 border-b border-border">
+        <div className="bg-gradient-to-r from-primary to-primary/90">
           <div className="container">
             <Breadcrumbs 
               items={[
                 { label: "Notícias", href: "/noticias" },
                 { label: noticia.title }
               ]} 
+              variant="light"
             />
           </div>
         </div>

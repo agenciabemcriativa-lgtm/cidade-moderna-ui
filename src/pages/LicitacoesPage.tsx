@@ -90,9 +90,9 @@ export default function LicitacoesPage() {
       
       <main className="flex-1">
         {/* Breadcrumbs */}
-        <div className="bg-muted/30 border-b border-border">
+        <div className="bg-gradient-to-r from-primary to-primary/90">
           <div className="container">
-            <Breadcrumbs items={[{ label: "Licitações" }]} />
+            <Breadcrumbs items={[{ label: "Licitações" }]} variant="light" />
           </div>
         </div>
 

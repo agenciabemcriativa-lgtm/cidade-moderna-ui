@@ -121,13 +121,14 @@ export default function LicitacaoPage() {
       
       <main className="flex-1">
         {/* Breadcrumbs */}
-        <div className="bg-muted/30 border-b border-border">
+        <div className="bg-gradient-to-r from-primary to-primary/90">
           <div className="container">
             <Breadcrumbs 
               items={[
                 { label: "Licitações", href: "/licitacoes" },
                 { label: licitacao.numero_processo }
               ]} 
+              variant="light"
             />
           </div>
         </div>
