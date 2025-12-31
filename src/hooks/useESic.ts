@@ -133,6 +133,29 @@ const gerarProtocolo = async (): Promise<string> => {
 };
 
 // Hook para criar nova solicitação
+// Função para enviar email e-SIC
+const enviarEmailESic = async (dados: {
+  tipo: 'nova_solicitacao' | 'resposta' | 'prorrogacao' | 'recurso';
+  destinatario_email: string;
+  destinatario_nome: string;
+  protocolo: string;
+  assunto?: string;
+  data_limite?: string;
+  tipo_resposta?: string;
+  conteudo_resposta?: string;
+}) => {
+  try {
+    const { error } = await supabase.functions.invoke('send-esic-email', {
+      body: dados,
+    });
+    if (error) {
+      console.error('Erro ao enviar email e-SIC:', error);
+    }
+  } catch (err) {
+    console.error('Erro ao enviar email e-SIC:', err);
+  }
+};
+
 export function useCreateSolicitacao() {
   const queryClient = useQueryClient();
 
@@ -166,6 +189,16 @@ export function useCreateSolicitacao() {
         acao: 'criado',
         descricao: 'Solicitação registrada no sistema',
         dados_novos: data,
+      });
+
+      // Enviar email de confirmação
+      await enviarEmailESic({
+        tipo: 'nova_solicitacao',
+        destinatario_email: dados.solicitante_email,
+        destinatario_nome: dados.solicitante_nome,
+        protocolo,
+        assunto: dados.assunto,
+        data_limite: dataLimite.toISOString(),
       });
 
       return data;
@@ -321,6 +354,13 @@ export function useResponderSolicitacao() {
       conteudo: string;
       fundamentacao_legal?: string;
     }) => {
+      // Buscar dados da solicitação para envio de email
+      const { data: solicitacao } = await supabase
+        .from('esic_solicitacoes')
+        .select('*')
+        .eq('id', solicitacaoId)
+        .single();
+
       // Inserir resposta
       const { data: resposta, error: respostaError } = await supabase
         .from('esic_respostas')
@@ -342,16 +382,12 @@ export function useResponderSolicitacao() {
         status: novoStatus as StatusESic,
       };
 
+      let novaDataLimite: string | undefined;
+
       if (tipo !== 'prorrogacao') {
         updates.data_resposta = new Date().toISOString();
       } else {
         // Calcular nova data limite (+10 dias úteis)
-        const { data: solicitacao } = await supabase
-          .from('esic_solicitacoes')
-          .select('data_limite')
-          .eq('id', solicitacaoId)
-          .single();
-
         if (solicitacao) {
           const dataAtual = new Date(solicitacao.data_limite);
           let diasUteis = 0;
@@ -362,7 +398,8 @@ export function useResponderSolicitacao() {
               diasUteis++;
             }
           }
-          updates.data_prorrogacao = dataAtual.toISOString();
+          novaDataLimite = dataAtual.toISOString();
+          updates.data_prorrogacao = novaDataLimite;
         }
       }
 
@@ -380,6 +417,19 @@ export function useResponderSolicitacao() {
         descricao: `Solicitação ${tipo === 'prorrogacao' ? 'prorrogada' : 'respondida'}: ${tipoRespostaLabels[tipo]}`,
         dados_novos: resposta,
       });
+
+      // Enviar email de notificação ao solicitante
+      if (solicitacao) {
+        await enviarEmailESic({
+          tipo: tipo === 'prorrogacao' ? 'prorrogacao' : 'resposta',
+          destinatario_email: solicitacao.solicitante_email,
+          destinatario_nome: solicitacao.solicitante_nome,
+          protocolo: solicitacao.protocolo,
+          tipo_resposta: tipoRespostaLabels[tipo],
+          conteudo_resposta: conteudo,
+          data_limite: novaDataLimite,
+        });
+      }
 
       return resposta;
     },
