@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -43,12 +44,17 @@ export default function ContatoPage() {
     try {
       contactSchema.parse(formData);
       
-      // Simular envio
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData,
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Erro ao enviar mensagem');
+      }
       
       toast({
         title: "Mensagem enviada!",
-        description: "Sua mensagem foi enviada com sucesso. Entraremos em contato em breve.",
+        description: "Sua mensagem foi enviada com sucesso. Você receberá uma confirmação por e-mail.",
       });
       
       setFormData({ nome: "", email: "", telefone: "", assunto: "", mensagem: "" });
