@@ -56,7 +56,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email to the municipality
     const emailResponse = await resend.emails.send({
-      from: "Portal Ipubi <onboarding@resend.dev>",
+      from: "Portal Ipubi <naoresponda@ipubi.pe.gov.br>",
       to: ["contato@ipubi.pe.gov.br"],
       reply_to: email,
       subject: `[Contato Site] ${assunto}`,
@@ -120,7 +120,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to the sender
     await resend.emails.send({
-      from: "Prefeitura de Ipubi <onboarding@resend.dev>",
+      from: "Prefeitura de Ipubi <naoresponda@ipubi.pe.gov.br>",
       to: [email],
       subject: "Recebemos sua mensagem - Prefeitura de Ipubi",
       html: `
