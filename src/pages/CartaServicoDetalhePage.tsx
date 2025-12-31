@@ -125,7 +125,11 @@ export default function CartaServicoDetalhePage() {
           <AccessibilityBar />
           <TopBar />
           <Header />
-          <Breadcrumbs items={breadcrumbItems} />
+          <div className="bg-gradient-to-r from-primary to-primary/90">
+            <div className="container">
+              <Breadcrumbs items={breadcrumbItems} variant="light" />
+            </div>
+          </div>
         </div>
 
         <main className="flex-1 container mx-auto px-4 py-8">

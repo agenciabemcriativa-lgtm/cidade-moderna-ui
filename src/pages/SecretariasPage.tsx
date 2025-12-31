@@ -52,9 +52,9 @@ export default function SecretariasPage() {
       <Header />
       <main className="flex-1">
         {/* Breadcrumbs */}
-        <div className="bg-muted/30 border-b border-border">
+        <div className="bg-gradient-to-r from-primary to-primary/90">
           <div className="container">
-            <Breadcrumbs items={[{ label: "Secretarias Municipais" }]} />
+            <Breadcrumbs items={[{ label: "Secretarias Municipais" }]} variant="light" />
           </div>
         </div>
 
