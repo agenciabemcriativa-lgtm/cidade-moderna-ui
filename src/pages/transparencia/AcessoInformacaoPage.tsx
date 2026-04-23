@@ -6,6 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
+import { FundamentacaoLegal } from '@/components/portal/FundamentacaoLegal';
 
 const faqItems = [
   {
@@ -243,6 +244,8 @@ export default function AcessoInformacaoPage() {
           </Accordion>
         </CardContent>
       </Card>
+
+      <FundamentacaoLegal className="mt-8" />
     </TransparenciaLayout>
   );
 }
