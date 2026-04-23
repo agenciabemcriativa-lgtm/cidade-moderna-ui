@@ -1126,11 +1126,10 @@ export function useAutoVerificacao() {
           categoria: 'e-SIC',
           item: 'Divulga lista de documentos classificados em sigilo?',
           descricao: 'Documentos com restrição de acesso e fundamentação',
-          status: 'parcial',
-          detalhes: 'Verificar publicação de lista de documentos sigilosos',
+          status: 'nao_aplicavel',
+          detalhes: 'Município não possui documentos classificados em sigilo',
           baseLegal: 'Art. 30, I da Lei 12.527/2011',
           prioridade: 'media',
-          acaoCorretiva: 'Publicar rol de documentos classificados (se houver)'
         },
         {
           id: 'docs-desclassificados',
