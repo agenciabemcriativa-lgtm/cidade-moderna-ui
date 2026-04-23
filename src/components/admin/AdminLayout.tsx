@@ -21,7 +21,8 @@ import {
   HelpCircle,
   ClipboardList,
   UtensilsCrossed,
-  CheckSquare
+  CheckSquare,
+  Scale
 } from "lucide-react";
 import { useState } from "react";
 import brasaoIpubi from "@/assets/brasao-ipubi.png";

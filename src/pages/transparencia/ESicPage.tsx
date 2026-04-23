@@ -12,6 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useESicEstatisticasPublicas } from '@/hooks/useESic';
+import { FundamentacaoLegal } from '@/components/portal/FundamentacaoLegal';
 
 const breadcrumbItems = [
   { label: "Transparência", href: "/transparencia" },
