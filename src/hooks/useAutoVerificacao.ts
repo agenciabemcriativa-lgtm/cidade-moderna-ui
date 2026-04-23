@@ -126,6 +126,7 @@ export function useAutoVerificacao() {
         { data: cartaServicos },
         { data: atendimentoItens },
         { data: esicLinksLegais },
+        { data: dpoEncarregado },
       ] = await Promise.all([
         supabase.from('secretarias').select('*').eq('ativo', true),
         supabase.from('orgaos_administracao').select('*').eq('ativo', true),
@@ -150,6 +151,7 @@ export function useAutoVerificacao() {
         supabase.from('carta_servicos').select('*').eq('publicado', true),
         supabase.from('atendimento_itens').select('*').eq('ativo', true),
         supabase.from('esic_links_legais').select('*').eq('ativo', true),
+        supabase.from('dpo_encarregado').select('*').eq('ativo', true),
       ]);
 
       // ========================================
@@ -1279,18 +1281,23 @@ export function useAutoVerificacao() {
       // SEÇÃO 15: LGPD E GOVERNO DIGITAL
       // ========================================
       const itensLGPD: ItemVerificacao[] = [
-        {
-          id: 'encarregado-dados',
-          codigo: '15.1',
-          categoria: 'LGPD',
-          item: 'Identifica o encarregado pelo tratamento de dados?',
-          descricao: 'DPO com canal de comunicação (telefone/e-mail)',
-          status: 'parcial',
-          detalhes: 'Verificar publicação do encarregado de dados',
-          baseLegal: 'Art. 41 da Lei 13.709/2018 (LGPD)',
-          prioridade: 'alta',
-          acaoCorretiva: 'Publicar dados do Encarregado de Proteção de Dados'
-        },
+        (() => {
+          const dpo = (dpoEncarregado || [])[0];
+          return {
+            id: 'encarregado-dados',
+            codigo: '15.1',
+            categoria: 'LGPD',
+            item: 'Identifica o encarregado pelo tratamento de dados?',
+            descricao: 'DPO com canal de comunicação (telefone/e-mail)',
+            status: dpo ? 'conforme' as const : 'parcial' as const,
+            detalhes: dpo
+              ? `DPO publicado: ${dpo.nome}${dpo.email ? ` (${dpo.email})` : ''}`
+              : 'Cadastrar DPO em Admin → Encarregado de Dados (DPO)',
+            baseLegal: 'Art. 41 da Lei 13.709/2018 (LGPD)',
+            prioridade: 'alta' as const,
+            acaoCorretiva: 'Cadastrar Encarregado de Proteção de Dados em Admin → Encarregado de Dados (DPO)'
+          };
+        })(),
         {
           id: 'politica-privacidade',
           codigo: '15.2',
