@@ -125,6 +125,7 @@ export function useAutoVerificacao() {
         { data: transparenciaItens },
         { data: cartaServicos },
         { data: atendimentoItens },
+        { data: esicLinksLegais },
       ] = await Promise.all([
         supabase.from('secretarias').select('*').eq('ativo', true),
         supabase.from('orgaos_administracao').select('*').eq('ativo', true),
@@ -148,6 +149,7 @@ export function useAutoVerificacao() {
         supabase.from('transparencia_itens').select('*').eq('ativo', true),
         supabase.from('carta_servicos').select('*').eq('publicado', true),
         supabase.from('atendimento_itens').select('*').eq('ativo', true),
+        supabase.from('esic_links_legais').select('*').eq('ativo', true),
       ]);
 
       // ========================================
