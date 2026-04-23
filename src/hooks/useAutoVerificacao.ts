@@ -125,6 +125,7 @@ export function useAutoVerificacao() {
         { data: transparenciaItens },
         { data: cartaServicos },
         { data: atendimentoItens },
+        { data: esicLinksLegais },
       ] = await Promise.all([
         supabase.from('secretarias').select('*').eq('ativo', true),
         supabase.from('orgaos_administracao').select('*').eq('ativo', true),
@@ -148,6 +149,7 @@ export function useAutoVerificacao() {
         supabase.from('transparencia_itens').select('*').eq('ativo', true),
         supabase.from('carta_servicos').select('*').eq('publicado', true),
         supabase.from('atendimento_itens').select('*').eq('ativo', true),
+        supabase.from('esic_links_legais').select('*').eq('ativo', true),
       ]);
 
       // ========================================
@@ -1067,18 +1069,33 @@ export function useAutoVerificacao() {
           baseLegal: 'Art. 10, §1º da Lei 12.527/2011',
           prioridade: 'alta'
         },
-        {
-          id: 'regulamento-lai',
-          codigo: '12.5',
-          categoria: 'e-SIC',
-          item: 'Divulga normativo local que regulamenta a LAI?',
-          descricao: 'Decreto ou lei municipal regulamentando a LAI',
-          status: (legislacao || []).some(l => l.tipo === 'outro') ? 'conforme' : 'parcial',
-          detalhes: 'Verificar publicação do decreto regulamentador',
-          baseLegal: 'Art. 45 da Lei 12.527/2011',
-          prioridade: 'alta',
-          acaoCorretiva: 'Publicar decreto regulamentador da LAI'
-        },
+        (() => {
+          const temLinkLai = (esicLinksLegais || []).some((l: any) => {
+            const txt = `${l.titulo ?? ''} ${l.url ?? ''}`.toLowerCase();
+            return txt.includes('lai') || txt.includes('12.527') || txt.includes('acesso') || txt.includes('regulament');
+          });
+          const temLegislacaoLai = (legislacao || []).some((l: any) => {
+            const titulo = (l.titulo ?? '').toLowerCase();
+            return l.tipo === 'outro' || titulo.includes('lai') || titulo.includes('12.527') || titulo.includes('acesso à informação');
+          });
+          const conforme = temLinkLai || temLegislacaoLai;
+          return {
+            id: 'regulamento-lai',
+            codigo: '12.5',
+            categoria: 'e-SIC',
+            item: 'Divulga normativo local que regulamenta a LAI?',
+            descricao: 'Decreto ou lei municipal regulamentando a LAI',
+            status: conforme ? 'conforme' as const : 'parcial' as const,
+            detalhes: conforme
+              ? (temLinkLai
+                  ? 'Normativo divulgado na Fundamentação Legal do e-SIC'
+                  : 'Documento da LAI cadastrado no módulo Legislação')
+              : 'Cadastre o decreto/lei na Fundamentação Legal do e-SIC ou no módulo Legislação',
+            baseLegal: 'Art. 45 da Lei 12.527/2011',
+            prioridade: 'alta' as const,
+            acaoCorretiva: 'Adicionar link da lei/decreto regulamentador em Admin → Fundamentação Legal (e-SIC)'
+          };
+        })(),
         {
           id: 'prazos-recursos',
           codigo: '12.6',
