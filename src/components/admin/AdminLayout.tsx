@@ -43,6 +43,7 @@ const menuItems = [
   { icon: Landmark, label: "Emendas Parlamentares", href: "/admin/emendas-parlamentares" },
   { icon: Users, label: "e-SIC", href: "/admin/esic" },
   { icon: Scale, label: "e-SIC - Fundamentação Legal", href: "/admin/esic-links-legais" },
+  { icon: Shield, label: "Encarregado de Dados (DPO)", href: "/admin/dpo-encarregado" },
   { icon: Building2, label: "Estrutura Organizacional", href: "/admin/estrutura-organizacional" },
   { icon: HelpCircle, label: "FAQ", href: "/admin/faq" },
   { icon: Users, label: "Folha de Pagamento", href: "/admin/folha-pagamento" },

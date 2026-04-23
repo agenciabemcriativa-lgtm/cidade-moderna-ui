@@ -88,6 +88,7 @@ import CardapiosEscolaresPage from "./pages/CardapiosEscolaresPage";
 import AdminCardapiosEscolares from "./pages/admin/AdminCardapiosEscolares";
 import AdminAutoVerificacao from "./pages/admin/AdminAutoVerificacao";
 import AdminEsicLinksLegais from "./pages/admin/AdminEsicLinksLegais";
+import AdminDpoEncarregado from "./pages/admin/AdminDpoEncarregado";
 
 const queryClient = new QueryClient();
 
@@ -183,6 +184,7 @@ const App = () => (
             <Route path="/admin/cardapios-escolares" element={<AdminCardapiosEscolares />} />
             <Route path="/admin/auto-verificacao" element={<AdminAutoVerificacao />} />
             <Route path="/admin/esic-links-legais" element={<AdminEsicLinksLegais />} />
+            <Route path="/admin/dpo-encarregado" element={<AdminDpoEncarregado />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

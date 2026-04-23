@@ -6,8 +6,10 @@ import { AccessibilityBar } from "@/components/portal/AccessibilityBar";
 import { Breadcrumbs } from "@/components/portal/Breadcrumbs";
 import { Shield, Lock, Eye, FileText, Users, Database, Bell, Mail } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDpoAtivo } from "@/hooks/useDpoEncarregado";
 
 export default function PoliticaPrivacidadePage() {
+  const { data: dpo } = useDpoAtivo();
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
@@ -208,11 +210,21 @@ export default function PoliticaPrivacidadePage() {
                   <p>
                     Para dúvidas, solicitações ou reclamações relacionadas ao tratamento de dados pessoais, entre em contato com o Encarregado de Proteção de Dados (DPO) da Prefeitura Municipal de Ipubi:
                   </p>
-                  <ul>
-                    <li><strong>E-mail:</strong> dpo@ipubi.pe.gov.br</li>
-                    <li><strong>Telefone:</strong> (87) 3881-1156</li>
-                    <li><strong>Endereço:</strong> Praça Professor Agamanon Magalhães, 56, Centro, Ipubi-PE</li>
-                  </ul>
+                  {dpo ? (
+                    <ul>
+                      <li><strong>Nome:</strong> {dpo.nome}</li>
+                      {dpo.cargo && <li><strong>Cargo:</strong> {dpo.cargo}</li>}
+                      <li><strong>E-mail:</strong> {dpo.email}</li>
+                      {dpo.telefone && <li><strong>Telefone:</strong> {dpo.telefone}</li>}
+                      {dpo.portaria_nomeacao && (
+                        <li><strong>Portaria de Nomeação:</strong> {dpo.portaria_nomeacao}</li>
+                      )}
+                    </ul>
+                  ) : (
+                    <p className="italic">
+                      O Encarregado de Proteção de Dados será divulgado em breve. Enquanto isso, dúvidas podem ser encaminhadas pelos canais oficiais da Prefeitura ou pelo e-SIC.
+                    </p>
+                  )}
                   <p>
                     Você também pode utilizar o <a href="/transparencia/esic" className="text-primary hover:underline">e-SIC</a> para fazer solicitações formais relacionadas aos seus dados pessoais.
                   </p>
