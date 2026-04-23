@@ -759,6 +759,39 @@ export type Database = {
           },
         ]
       }
+      esic_links_legais: {
+        Row: {
+          ativo: boolean | null
+          created_at: string
+          id: string
+          ordem: number | null
+          tipo: string
+          titulo: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string
+          id?: string
+          ordem?: number | null
+          tipo?: string
+          titulo: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string
+          id?: string
+          ordem?: number | null
+          tipo?: string
+          titulo?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       esic_recursos: {
         Row: {
           created_at: string
