@@ -309,6 +309,26 @@ export default function AdminCartaServicos() {
     }
   };
 
+  const handlePublicarTodos = async () => {
+    const naoPublicados = (servicos || []).filter((s) => !s.publicado);
+    if (naoPublicados.length === 0) {
+      toast.info("Todos os serviços já estão publicados.");
+      return;
+    }
+    try {
+      await Promise.all(
+        naoPublicados.map((s) =>
+          updateMutation.mutateAsync({ id: s.id, publicado: true })
+        )
+      );
+      toast.success(`${naoPublicados.length} serviço(s) publicado(s) com sucesso!`);
+    } catch (error) {
+      toast.error("Erro ao publicar serviços em massa");
+    }
+  };
+
+  const totalNaoPublicados = (servicos || []).filter((s) => !s.publicado).length;
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -322,10 +342,37 @@ export default function AdminCartaServicos() {
               Gerencie os serviços públicos conforme Lei 13.460/2017
             </p>
           </div>
-          <Button onClick={() => handleOpenDialog()}>
-            <Plus className="h-4 w-4 mr-2" />
-            Novo Serviço
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            {totalNaoPublicados > 0 && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Publicar todos ({totalNaoPublicados})
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Publicar todos os serviços?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Isso tornará públicos {totalNaoPublicados} serviço(s) atualmente não publicados.
+                      Você pode despublicar individualmente depois, se necessário.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={handlePublicarTodos}>
+                      Publicar todos
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+            <Button onClick={() => handleOpenDialog()}>
+              <Plus className="h-4 w-4 mr-2" />
+              Novo Serviço
+            </Button>
+          </div>
         </div>
 
         <Card>
