@@ -696,38 +696,7 @@ export default function ESicPage() {
         </CardContent>
       </Card>
 
-      {/* Fundamentação Legal */}
-      <Card className="mt-8 bg-muted/30">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Fundamentação Legal</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-3">
-            <a 
-              href="https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-primary hover:underline flex items-center gap-1"
-            >
-              Lei nº 12.527/2011 (LAI) <ExternalLink className="w-3 h-3" />
-            </a>
-            <a 
-              href="https://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2012/Decreto/D7724.htm"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-primary hover:underline flex items-center gap-1"
-            >
-              Decreto nº 7.724/2012 <ExternalLink className="w-3 h-3" />
-            </a>
-            <Link 
-              to="/legislacao/lei-acesso-informacao"
-              className="text-sm text-primary hover:underline"
-            >
-              Regulamentação Municipal
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+      <FundamentacaoLegal className="mt-8" />
         </div>
       </main>
 
