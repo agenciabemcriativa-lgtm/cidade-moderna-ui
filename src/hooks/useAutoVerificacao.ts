@@ -127,6 +127,7 @@ export function useAutoVerificacao() {
         { data: atendimentoItens },
         { data: esicLinksLegais },
         { data: dpoEncarregado },
+        { data: configuracoes },
       ] = await Promise.all([
         supabase.from('secretarias').select('*').eq('ativo', true),
         supabase.from('orgaos_administracao').select('*').eq('ativo', true),
@@ -152,6 +153,7 @@ export function useAutoVerificacao() {
         supabase.from('atendimento_itens').select('*').eq('ativo', true),
         supabase.from('esic_links_legais').select('*').eq('ativo', true),
         supabase.from('dpo_encarregado').select('*').eq('ativo', true),
+        supabase.from('configuracoes').select('*'),
       ]);
 
       // ========================================
@@ -1349,28 +1351,47 @@ export function useAutoVerificacao() {
           prioridade: 'media',
           acaoCorretiva: 'Disponibilizar dados em formatos abertos'
         },
-        {
-          id: 'regulamento-governo-digital',
-          codigo: '15.5',
-          categoria: 'LGPD',
-          item: 'Regulamenta e divulga a Lei do Governo Digital?',
-          descricao: 'Norma municipal sobre governo digital',
-          status: 'parcial',
-          detalhes: 'Verificar regulamentação local da Lei 14.129/2021',
-          baseLegal: 'Lei 14.129/2021',
-          prioridade: 'media'
-        },
-        {
-          id: 'pesquisa-satisfacao',
-          codigo: '15.6',
-          categoria: 'LGPD',
-          item: 'Realiza e divulga resultados de pesquisas de satisfação?',
-          descricao: 'Avaliação dos serviços pelos cidadãos',
-          status: 'parcial',
-          detalhes: 'Implementar pesquisa de satisfação',
-          baseLegal: 'Art. 24 da Lei 13.460/2017',
-          prioridade: 'baixa'
-        }
+        (() => {
+          const temGovernoDigital = legislacao?.some(l => {
+            const texto = `${l.titulo || ''} ${l.descricao || ''} ${l.observacoes || ''}`.toLowerCase();
+            return texto.includes('governo digital') || texto.includes('14.129') || texto.includes('14129');
+          });
+          return {
+            id: 'regulamento-governo-digital',
+            codigo: '15.5',
+            categoria: 'LGPD',
+            item: 'Regulamenta e divulga a Lei do Governo Digital?',
+            descricao: 'Norma municipal sobre governo digital',
+            status: temGovernoDigital ? 'conforme' as const : 'parcial' as const,
+            detalhes: temGovernoDigital
+              ? 'Regulamentação publicada no módulo Legislação'
+              : 'Publique a Lei/Decreto Municipal de adesão à Lei 14.129/2021 em Admin → Legislação (incluindo "governo digital" ou "14.129" no título/descrição)',
+            baseLegal: 'Lei 14.129/2021',
+            prioridade: 'media' as const,
+            acaoCorretiva: temGovernoDigital ? undefined : 'Cadastrar regulamentação local em Admin → Legislação'
+          };
+        })(),
+        (() => {
+          const geralConfig = configuracoes?.find(c => c.chave === 'geral');
+          const linkPesquisa = geralConfig?.valor && typeof geralConfig.valor === 'object' && !Array.isArray(geralConfig.valor)
+            ? (geralConfig.valor as Record<string, unknown>).link_pesquisa_satisfacao
+            : null;
+          const temPesquisa = typeof linkPesquisa === 'string' && linkPesquisa.trim().length > 0;
+          return {
+            id: 'pesquisa-satisfacao',
+            codigo: '15.6',
+            categoria: 'LGPD',
+            item: 'Realiza e divulga resultados de pesquisas de satisfação?',
+            descricao: 'Avaliação dos serviços pelos cidadãos',
+            status: temPesquisa ? 'conforme' as const : 'parcial' as const,
+            detalhes: temPesquisa
+              ? 'Link de pesquisa de satisfação configurado e exibido na Carta de Serviços'
+              : 'Configure o link da pesquisa de satisfação em Admin → Configurações → Geral',
+            baseLegal: 'Art. 24 da Lei 13.460/2017',
+            prioridade: 'baixa' as const,
+            acaoCorretiva: temPesquisa ? undefined : 'Adicionar link da pesquisa em Configurações → Geral'
+          };
+        })()
       ];
 
       categorias.push(calcularCategoriaStats('15', 'lgpd', 'LGPD e Governo Digital', 'Shield', itensLGPD));

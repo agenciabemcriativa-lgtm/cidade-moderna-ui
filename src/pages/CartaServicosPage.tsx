@@ -14,6 +14,9 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCartaServicos, useCartaServicoCategorias } from "@/hooks/useCartaServicos";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Star } from "lucide-react";
 
 const formaPrestacaoLabels: Record<string, string> = {
   presencial: "Presencial",
@@ -28,6 +31,19 @@ export default function CartaServicosPage() {
 
   const { data: servicos, isLoading } = useCartaServicos();
   const { data: categorias } = useCartaServicoCategorias();
+
+  const { data: linkPesquisa } = useQuery({
+    queryKey: ["config-pesquisa-satisfacao"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("configuracoes")
+        .select("valor")
+        .eq("chave", "geral")
+        .maybeSingle();
+      const valor = data?.valor as { link_pesquisa_satisfacao?: string } | null;
+      return valor?.link_pesquisa_satisfacao?.trim() || "";
+    },
+  });
 
   const filteredServicos = useMemo(() => {
     if (!servicos) return [];
@@ -102,6 +118,31 @@ export default function CartaServicosPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Pesquisa de Satisfação */}
+          {linkPesquisa && (
+            <Card className="mb-8 border-l-4 border-l-accent bg-accent/5">
+              <CardContent className="pt-6">
+                <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+                  <div className="flex items-start gap-4">
+                    <Star className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
+                    <div>
+                      <h2 className="text-lg font-semibold mb-1">Avalie nossos serviços</h2>
+                      <p className="text-muted-foreground text-sm">
+                        Sua opinião é fundamental para melhorarmos. Participe da pesquisa de satisfação conforme Art. 24 da Lei 13.460/2017.
+                      </p>
+                    </div>
+                  </div>
+                  <Button asChild>
+                    <a href={linkPesquisa} target="_blank" rel="noopener noreferrer">
+                      Responder Pesquisa
+                      <ExternalLink className="h-4 w-4 ml-2" />
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Filtros */}
           <Card className="mb-8">
