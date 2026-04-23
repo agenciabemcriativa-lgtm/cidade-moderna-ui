@@ -22,6 +22,10 @@ interface FooterConfig {
   instagram?: string;
 }
 
+interface GeralConfig {
+  link_pesquisa_satisfacao?: string;
+}
+
 interface Configuracao {
   id: string;
   chave: string;
@@ -39,6 +43,10 @@ export default function AdminConfiguracoes() {
     whatsapp: "",
     facebook: "",
     instagram: "",
+  });
+
+  const [geralForm, setGeralForm] = useState<GeralConfig>({
+    link_pesquisa_satisfacao: "",
   });
 
   const { data: configs, isLoading } = useQuery({
@@ -61,11 +69,18 @@ export default function AdminConfiguracoes() {
           ...(footerConfig.valor as FooterConfig)
         }));
       }
+      const geralConfig = configs.find(c => c.chave === "geral");
+      if (geralConfig && geralConfig.valor && typeof geralConfig.valor === 'object') {
+        setGeralForm(prev => ({
+          ...prev,
+          ...(geralConfig.valor as GeralConfig)
+        }));
+      }
     }
   }, [configs]);
 
   const saveMutation = useMutation({
-    mutationFn: async ({ chave, valor }: { chave: string; valor: FooterConfig }) => {
+    mutationFn: async ({ chave, valor }: { chave: string; valor: FooterConfig | GeralConfig }) => {
       const existing = configs?.find(c => c.chave === chave);
       if (existing) {
         const { error } = await supabase
@@ -91,6 +106,10 @@ export default function AdminConfiguracoes() {
     saveMutation.mutate({ chave: "footer", valor: footerForm });
   };
 
+  const handleSaveGeral = () => {
+    saveMutation.mutate({ chave: "geral", valor: geralForm });
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -107,7 +126,32 @@ export default function AdminConfiguracoes() {
               <TabsTrigger value="footer">Rodapé</TabsTrigger>
               <TabsTrigger value="contato">Contato</TabsTrigger>
               <TabsTrigger value="redes">Redes Sociais</TabsTrigger>
+              <TabsTrigger value="geral">Geral</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="geral" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Configurações Gerais</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Link da Pesquisa de Satisfação</Label>
+                    <Input
+                      value={geralForm.link_pesquisa_satisfacao || ""}
+                      onChange={(e) => setGeralForm({ ...geralForm, link_pesquisa_satisfacao: e.target.value })}
+                      placeholder="https://forms.gle/..."
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      URL externa (ex: Google Forms) onde o cidadão poderá avaliar os serviços. Conforme Art. 24 da Lei 13.460/2017. Aparecerá na Carta de Serviços ao Cidadão.
+                    </p>
+                  </div>
+                  <Button onClick={handleSaveGeral}>
+                    <Save className="h-4 w-4 mr-2" /> Salvar Alterações
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
             <TabsContent value="footer" className="space-y-4">
               <Card>
