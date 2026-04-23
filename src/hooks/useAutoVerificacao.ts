@@ -1315,9 +1315,23 @@ export function useAutoVerificacao() {
           categoria: 'LGPD',
           item: 'Possibilita acesso a serviços públicos por meio digital?',
           descricao: 'Serviços sem necessidade de atendimento presencial',
-          status: (cartaServicos || []).some(s => s.forma_prestacao === 'online') 
-            ? 'conforme' : 'parcial',
-          detalhes: 'Verificar serviços online disponíveis',
+          status: (() => {
+            const digitais = (cartaServicos || []).filter(
+              s => s.publicado && (s.forma_prestacao === 'online' || s.forma_prestacao === 'hibrida' || s.forma_prestacao === 'híbrida')
+            );
+            return digitais.length > 0 ? 'conforme' : 'parcial';
+          })(),
+          detalhes: (() => {
+            const digitais = (cartaServicos || []).filter(
+              s => s.publicado && (s.forma_prestacao === 'online' || s.forma_prestacao === 'hibrida' || s.forma_prestacao === 'híbrida')
+            );
+            const naoPublicados = (cartaServicos || []).filter(
+              s => !s.publicado && (s.forma_prestacao === 'online' || s.forma_prestacao === 'hibrida' || s.forma_prestacao === 'híbrida')
+            );
+            if (digitais.length > 0) return `${digitais.length} serviço(s) digital(is) publicado(s)`;
+            if (naoPublicados.length > 0) return `Há ${naoPublicados.length} serviço(s) digital(is) cadastrado(s), mas não publicado(s). Publique em Admin → Carta de Serviços.`;
+            return 'Cadastre serviços com forma de prestação "Online" ou "Híbrida" em Admin → Carta de Serviços';
+          })(),
           baseLegal: 'Lei 14.129/2021',
           prioridade: 'media'
         },
