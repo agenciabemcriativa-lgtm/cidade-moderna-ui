@@ -128,6 +128,7 @@ export function useAutoVerificacao() {
         { data: esicLinksLegais },
         { data: dpoEncarregado },
         { data: configuracoes },
+        { data: transparenciaLinksRapidos },
       ] = await Promise.all([
         supabase.from('secretarias').select('*').eq('ativo', true),
         supabase.from('orgaos_administracao').select('*').eq('ativo', true),
@@ -154,6 +155,7 @@ export function useAutoVerificacao() {
         supabase.from('esic_links_legais').select('*').eq('ativo', true),
         supabase.from('dpo_encarregado').select('*').eq('ativo', true),
         supabase.from('configuracoes').select('*'),
+        supabase.from('transparencia_links_rapidos').select('*').eq('ativo', true),
       ]);
 
       // ========================================
@@ -335,18 +337,27 @@ export function useAutoVerificacao() {
           baseLegal: 'Boas práticas de transparência',
           prioridade: 'baixa'
         },
-        {
-          id: 'radar-transparencia',
-          codigo: '2.9',
-          categoria: 'Informações Institucionais',
-          item: 'Inclui botão do Radar da Transparência Pública?',
-          descricao: 'Selo do Radar da Transparência',
-          status: 'parcial',
-          detalhes: 'Botão do Radar não implementado',
-          baseLegal: 'Recomendação TCE',
-          prioridade: 'baixa',
-          acaoCorretiva: 'Adicionar botão do Radar da Transparência no site'
-        }
+        (() => {
+          const radarLink = transparenciaLinksRapidos?.find(l => {
+            const titulo = (l.titulo || '').toLowerCase();
+            const url = (l.url || '').toLowerCase();
+            return titulo.includes('radar') || url.includes('radardatransparencia');
+          });
+          return {
+            id: 'radar-transparencia',
+            codigo: '2.9',
+            categoria: 'Informações Institucionais',
+            item: 'Inclui botão do Radar da Transparência Pública?',
+            descricao: 'Selo/link do Radar da Transparência',
+            status: radarLink ? 'conforme' : 'nao_conforme',
+            detalhes: radarLink
+              ? `Link "${radarLink.titulo}" configurado nos Links Rápidos`
+              : 'Link do Radar não cadastrado',
+            baseLegal: 'Recomendação TCE',
+            prioridade: 'baixa',
+            acaoCorretiva: 'Cadastrar link do Radar da Transparência em Links Rápidos'
+          } as ItemVerificacao;
+        })()
       ];
 
       categorias.push(calcularCategoriaStats('2', 'institucional', 'Informações Institucionais', 'Building2', itensInstitucionais));
