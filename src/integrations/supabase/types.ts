@@ -603,6 +603,48 @@ export type Database = {
         }
         Relationships: []
       }
+      dpo_encarregado: {
+        Row: {
+          ativo: boolean
+          cargo: string | null
+          created_at: string
+          data_nomeacao: string | null
+          email: string
+          id: string
+          nome: string
+          observacoes: string | null
+          portaria_nomeacao: string | null
+          telefone: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cargo?: string | null
+          created_at?: string
+          data_nomeacao?: string | null
+          email: string
+          id?: string
+          nome: string
+          observacoes?: string | null
+          portaria_nomeacao?: string | null
+          telefone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cargo?: string | null
+          created_at?: string
+          data_nomeacao?: string | null
+          email?: string
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          portaria_nomeacao?: string | null
+          telefone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       emendas_parlamentares: {
         Row: {
           ano_referencia: number
